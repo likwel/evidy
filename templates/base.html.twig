@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>e-vidy</title>
+		<link href="{{asset('css/okcss.css')}}" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+	</head>
+	<body>
+
+		<div class="body">
+			<div class="navtete">
+				<nav style="" class="container navbar navbar-expand-lg navbar-dark">
+					<div class="container-fluid">
+						<img src="/icons/icon.PNG" style="width:50px;"></img>
+
+					<!-- Search form -->
+					<form class="d-flex input-group w-50 ms-lg-3 my-3 my-lg-0">
+						<input type="search" class="form-control" placeholder="Rechercher" aria-label="Search"/>
+						<button class="btn btn-outline-primary" type="button">
+							Rechercher
+						</button>
+					</form>
+
+					<!-- Collapsible wrapper -->
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+						<ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<a class="nav-link" href="#!" id="liveToastBtnCart">
+									<div class="position-relative">
+										<i class="bi bi-cart icon-nav"></i>
+										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
+											8
+										</span>
+									</div>
+								</a>
+
+								<div class="toast-container position-fixed top-10 end-0 p-2">
+									<div id="liveToastCart" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+										<div class="toast-header">
+										<i class="bi bi-cart m-2"></i>
+										<strong class="me-auto">  Cartes</strong>
+										<small>11 mins ago</small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body">
+										Hello, world! This is a toast message.
+										</div>
+									</div>
+								</div>
+							</li>
+
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<a class="nav-link" href="#!" id="liveToastBtnMsg">
+									<div class="position-relative">
+										<i class="bi bi-messenger icon-nav"></i>
+										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
+											9+
+										</span>
+
+									</div>
+								</a>
+								<div class="toast-container position-fixed top-10 end-0 p-2">
+									<div id="liveToastMsg" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+										<div class="toast-header">
+										<i class="bi bi-messenger m-2"></i>
+										<strong class="me-auto">  Messages</strong>
+										<small></small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body" id="message_body">
+										Hello, world! This is a toast message.
+										</div>
+									</div>
+								</div>
+								
+							</li>
+
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<a class="nav-link" href="#!" id="liveToastBtnNotif">
+									<div class="position-relative">
+										<i class="bi bi-bell-fill icon-nav"></i>
+										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
+											9+
+										</span>
+									</div>
+								</a>
+
+								<div class="toast-container position-fixed top-10 end-0 p-2">
+									<div id="liveToastNotif" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+										<div class="toast-header">
+										<i class="bi bi-bell-fill m-2"></i>
+										<strong class="me-auto">  Notifications</strong>
+										<small>11 mins ago</small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body">
+										Hello, world! This is a toast message.
+										</div>
+									</div>
+								</div>
+							</li>
+
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<div class="icon-nav profil-show" id="liveToastBtnProfil">
+									<i class="bi bi-person-circle icon-nav"></i>
+									<small>
+										Hi, Elie
+										<i class="bi bi-chevron-down fa-sm"></i>
+									</small>
+								</div>
+
+								<div class="toast-container position-fixed top-10 end-0 p-2">
+									<div id="liveToastProfil" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+										<div class="toast-header">
+										<i class="bi bi-person-circle m-2"></i>
+										<strong class="me-auto">  Profil</strong>
+										<small></small>
+										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+										</div>
+										<div class="toast-body">
+
+											<div class="profil-label">
+												<h5 class="btn btn-outline-info"><i class="bi bi-person-circle m-2"></i>Elie Fenohasina</h5><br>
+											</div>
+											<div class="menu-profil">
+												<button class="btn btn-outline-primary mb-2"><i class="bi bi-shield-fill-check"></i> Sécurité</button><br>
+												<button class="btn btn-outline-primary mb-2"><i class="bi bi-stack"></i> Confidentialité</button><br>
+												<button class="btn btn-outline-primary mb-2"><i class="bi bi-globe"></i> Language</button>
+												<hr>
+												<button class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Deconnecter</button>	
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</li>
+
+						</ul>
+					</div>
+
+				</div>
+			</nav>
+		</div>
+
+		<div
+			class="container contenu">
+			<!-- Profil-->
+			<div class="main-left-b">
+				<div class="couverture-image">
+					<img src="/images/couverture.jpg" class="img-responsive" alt="">
+				</div>
+
+				<div class="profil-image">
+					<img src="/images/images.jfif" class="img-responsive" alt="">
+				</div>
+
+				<div class="profil-label">
+					<h5>Elie Fenohasina</h5><br>
+
+				</div>
+
+				<div class="profil-button">
+					<button class="btn btn-outline-info"> <i class="bi bi-plus"></i> Follow</button>
+					<button class="btn btn-outline-primary"><i class="bi bi-messenger"></i> Message</button>
+				</div>
+
+				<div class="profil-menu">
+					<div class="list-group-b" style="">
+						<a href="#" class="list-group-item-b active" aria-current="true"><i class="bi bi-houses"></i> 
+							Actualités
+						</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-people"></i> Amis</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-clipboard-plus"></i> Suivis</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-gear"></i> Paramettre</a>
+						<a href="#" class="list-group-item-b "> <i class="bi bi-info-square"></i> Aides</a>
+					</div>
+					
+				</div>
+
+			</div>
+			<!-- End Profil-->
+
+			<!-- Main Center-->
+			<div class="main-center-b mb-10" style="margin-left:10px;margin-right:10px;">
+				{# {% include "story.html.twig" %} #}
+				<div id="" class="card-b mb-3">
+					<div class="row p-3">
+						<div class="col-1 rounded-circle">
+							<img id="roundedImg" style="min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;" class="rounded-circle border border-1" src="/images/img.jpg">
+						</div>
+						<div class="col-11 ml-2">
+							<input id="btnShowModalAddPub" type="text" class="form-control form-control-lg rounded-pill bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#modal_publication" data-bs-whatever="@mdo" placeholder="Exprimez-vous...">
+						</div>
+						<div class="row mt-3">
+							<div class="col-3 text-center" style="cursor:pointer;">
+								<i class="bi bi-graph-up"></i> 
+								Vendre
+						</div>
+						<div class="col-3 text-center" style="cursor:pointer;">
+							<i class="bi bi-cart-fill"></i> 
+								Acheter
+						</div>
+						<div class="col-3 text-center" data-bs-toggle="modal" data-bs-target="#modal_evenement" data-bs-whatever="@mdo" style="cursor:pointer;">
+							<i class="bi bi-calendar2-event-fill">
+								</i> Evenement
+
+						</div>
+						<div class="col-3 text-center" style="cursor:pointer;">
+							<i class="bi bi-pencil-square"></i>
+							Commande
+						</div>
+					</div>
+				</div>
+				</div>
+	
+				<div class="card-b mb-3 card-article">
+					<div class="card-body">
+						<div class="mb-3" style="max-width: 540px;">
+							<div class="row g-0">
+								<div class="col-md-2">
+									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
+								</div>
+								<div class="col-md-10">
+									<i class="bi bi-three-dots float-end more-end fa-xl"></i>
+									<div class="card-body">
+										<h5 class="card-title">
+											<a href="#" class="lien">ShopRaphia.mg</a>
+										</h5>
+										<small class="card-text">
+											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
+											<small class="text-muted">il y a 3 mininutes</small> . 
+											<small class="text-muted">publique</small>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						<p class="card-text">
+							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> <span class="badge rounded-pill text-bg-success">150 000 Ariary</span></small><br>
+							
+						</p>
+						<div class="bg-transparent">
+							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
+						</div>
+
+						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
+						
+					</div>
+					<div class="row" style="margin-top:10px;">
+						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
+						<small class="col-6"><i class="float-end"> 4 commentaires</i></small>
+					</div>
+					<hr>
+
+					<div class="card-footer bg-transparent">
+						<div class="row">
+							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="card-b mb-3 card-article">
+					<div class="card-body">
+						<div class="mb-3" style="max-width: 540px;">
+							<div class="row g-0">
+								<div class="col-md-2">
+									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
+								</div>
+								<div class="col-md-10">
+									<i class="bi bi-three-dots float-end more-end fa-xl"></i>
+									<div class="card-body">
+										<h5 class="card-title">
+											<a href="#" class="lien">ShopRaphia.mg</a>
+										</h5>
+										<small class="card-text">
+											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
+											<small class="text-muted">il y a 3 mininutes</small> . 
+											<small class="text-muted">publique</small>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						<p class="card-text">
+							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> 190 000 Ariary</small><br>
+						</p>
+						<div class="bg-transparent">
+							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
+						</div>
+
+						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
+						
+					</div>
+					<div class="row" style="margin-top:10px;">
+						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
+						<small class="col-6"><i class="bi bi-hand-thumbs-up fa-sm  float-end"> 4 commentaires</i></small>
+					</div>
+					<hr>
+					<div class="card-footer bg-transparent">
+						<div class="row">
+							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<!-- Right menu-->
+			<div class="main-right-b">
+				<h5 class="sponsors"><i class="bi bi-bar-chart-line-fill"></i> Ventes premium</h5>
+				<div class="thumb-wrapper">
+					<span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+					<div class="img-box">
+						<img src="/images/img.jpg" class="img-fluid" alt="Pixel">
+					</div>
+					<div class="thumb-content">
+						<h4>Google Pixel</h4>
+						<p class="item-price"><strike>Ar 45 000</strike> <span>Ar 41 800</span></p>
+						<div class="star-rating">
+							<ul class="list-inline">
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star-half-o"></i></li>
+							</ul>
+						</div>
+						<a href="#" class="btn btn-primary"><i class="bi bi-cart2"></i> Ajouter au panier</a>
+					</div>						
+				</div>
+
+			</div>
+			<!-- End right-->
+
+		</div>
+
+	</body>
+	<script>
+	const toastTriggerMsg = document.getElementById('liveToastBtnMsg')
+	const toastLiveMsg = document.getElementById('liveToastMsg')
+	
+	if (toastTriggerMsg) {
+	toastTriggerMsg.addEventListener('click', () => {
+		const toast = new bootstrap.Toast(toastLiveMsg)
+
+		toast.show()
+
+		getMessage();
+
+	})
+	}
+	const toastTriggerNotif = document.getElementById('liveToastBtnNotif')
+	const toastLiveNotif = document.getElementById('liveToastNotif')
+	if (toastTriggerNotif) {
+	toastTriggerNotif.addEventListener('click', () => {
+		const toast = new bootstrap.Toast(toastLiveNotif)
+
+		toast.show()
+	})
+	}
+	const toastTriggerCart= document.getElementById('liveToastBtnCart')
+	const toastLiveCart = document.getElementById('liveToastCart')
+	if (toastTriggerCart) {
+	toastTriggerCart.addEventListener('click', () => {
+		const toast = new bootstrap.Toast(toastLiveCart)
+
+		toast.show()
+	})
+	}
+
+	const toastTriggerProfil= document.getElementById('liveToastBtnProfil')
+	const toastLiveProfil = document.getElementById('liveToastProfil')
+	if (toastTriggerProfil) {
+	toastTriggerProfil.addEventListener('click', () => {
+		const toast = new bootstrap.Toast(toastLiveProfil)
+
+		toast.show()
+	})
+	}
+
+	const evtSourceNotif = new EventSource("/user/notifications");
+	evtSourceNotif.onmessage = function(event) {
+        const dataset = JSON.parse(event.data);
+		if(dataset ==0){
+			document.querySelector("#nb_notif").style.display= "none"
+		}else if(dataset<=9){
+			document.querySelector("#nb_notif").textContent = dataset
+		}else{
+			document.querySelector("#nb_notif").textContent = 9+"+"
+		}
+		//console.log(" dataset : "+dataset);
+	}
+
+	const evtSourceMsg = new EventSource("/user/messages");
+	evtSourceMsg.onmessage = function(event) {
+        const dataset = JSON.parse(event.data);
+		if(dataset ==0){
+			document.querySelector("#nb_message").style.display= "none"
+		}else if(dataset<=9){
+			document.querySelector("#nb_message").textContent = dataset
+		}else{
+			document.querySelector("#nb_message").textContent = 9+"+"
+		}
+		//console.log(" dataset : "+dataset);
+	}
+
+	const evtSourceCart = new EventSource("/user/cartes");
+	evtSourceCart.onmessage = function(event) {
+        const dataset = JSON.parse(event.data);
+		if(dataset ==0){
+			document.querySelector("#nb_carte").style.display= "none"
+		}else if(dataset<=9){
+			document.querySelector("#nb_carte").textContent = dataset
+		}else{
+			document.querySelector("#nb_carte").textContent = 9+"+"
+		}
+		//console.log(" dataset : "+dataset);
+	}
+
+	function getMessage(){
+		fetch("/user/get_messages", {
+			method: "GET",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).then(response => response.json()).then(data=>{
+			if(data=="Aucun message"){
+				document.querySelector("#message_body").innerHTML = data;
+			}else if(data.length>0){
+				let res ="";
+				for(let d of data){
+					res +=d.content
+				}
+				document.querySelector("#message_body").innerHTML = `<img id="roundedImg" style="min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;" class="rounded-circle border border-1" src="/images/img.jpg">` +res
+			}else{
+				document.querySelector("#message_body").innerHTML = data;
+			}
+		})
+	}
+
+	
+		/*console.log(document.querySelector(".main-left").style.width)
+function openCloseNav() {
+if (document.getElementById("sidebar").style.width == "300px") {
+document.getElementById("sidebar").style.width = "0";
+document.getElementById("main").style.marginLeft = "0";
+} else {
+document.getElementById("sidebar").style.width = "300px";
+document.getElementById("main").style.marginLeft = "300px";
+
+}
+
+}
+
+function closeNav() {
+document.getElementById("mySidebar").style.width = "0";
+document.getElementById("main").style.marginLeft = "0";
+}*/
+	</script>
+</html>
