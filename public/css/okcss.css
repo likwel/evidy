@@ -134,6 +134,9 @@ li {
   color: #111;
   padding: 3px 2px;
 }
+.badge{
+  margin-top: 8px;
+}
 
 .logo{
   font-size: 30px;
@@ -400,5 +403,15 @@ ul li a{
 .body{
   background: #e2eaef;
 }
-.menu-profil .btn {
+.message_box {
+  text-decoration: none;
+  margin-bottom: 5px;
+  color: #111;
+  border-radius: 5px;
+  /*margin: 2px 5px;*/
+  cursor: pointer;
+}
+.message_box:hover {
+  border:1px solid #adb5bd;
+  background: #e2eaef;
 }

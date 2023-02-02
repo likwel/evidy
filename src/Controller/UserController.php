@@ -57,7 +57,7 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $nbr_nonLu = $message ->getNotRead();
+        $nbr_nonLu = $message ->getNotShow();
 
         //dd($nbr_nonLu);
 
@@ -117,4 +117,41 @@ class UserController extends AbstractController
         }
 
     }
+
+    #[Route('/user/get_messages_by_id/{user_id}', name: 'app_get_messages_by_id')]
+    public function getAllMessageById($user_id)
+    {
+        $message = new MessageService();
+
+        $messages = $message ->getMessageById($user_id);
+        if(count($messages)>0){
+            return $this->json($messages);
+        }else{
+            return $this->json("Aucun message");
+        }
+
+    }
+
+    #[Route('/user/setIsShow', name: 'app_setIsShow')]
+    public function setIsShow()
+    {
+        $message = new MessageService();
+
+        $message ->setIsShow();
+
+        return $this->json("Message vu");
+
+    }
+
+    #[Route('/user/setIsRead/{user_id}', name: 'app_setIsRead')]
+    public function setIsRead($user_id)
+    {
+        $message = new MessageService();
+
+        $message ->setIsRead($user_id);
+
+        return $this->json("Message lu");
+
+    }
+
 }

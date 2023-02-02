@@ -28,115 +28,104 @@
 					<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
 						<ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
-							<li class="nav-item text-center mx-2 mx-lg-1">
-								<a class="nav-link" href="#!" id="liveToastBtnCart">
-									<div class="position-relative">
-										<i class="bi bi-cart icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
-											8
-										</span>
-									</div>
-								</a>
 
-								<div class="toast-container position-fixed top-10 end-0 p-2">
-									<div id="liveToastCart" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-										<div class="toast-header">
-										<i class="bi bi-cart m-2"></i>
-										<strong class="me-auto">  Cartes</strong>
-										<small>11 mins ago</small>
-										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+							<!-- Modal Carte -->
+							<li class="nav-item text-center mx-2 mx-lg-1">
+
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-cart icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
+												9+
+											</span>
 										</div>
-										<div class="toast-body">
-										Hello, world! This is a toast message.
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-cart m-2"></i>
+											<strong class="me-auto">  Cartes</strong>
 										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2"> Contenu des messages</div>
+										<div><a class="dropdown-item" href="#">Separated link</a></div>
 									</div>
 								</div>
+
 							</li>
 
-							<li class="nav-item text-center mx-2 mx-lg-1">
-								<a class="nav-link" href="#!" id="liveToastBtnMsg">
-									<div class="position-relative">
-										<i class="bi bi-messenger icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
-											9+
-										</span>
+							<!-- Modal Message -->
 
-									</div>
-								</a>
-								<div class="toast-container position-fixed top-10 end-0 p-2">
-									<div id="liveToastMsg" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-										<div class="toast-header">
-										<i class="bi bi-messenger m-2"></i>
-										<strong class="me-auto">  Messages</strong>
-										<small></small>
-										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnMsg" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-messenger icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
+												9+
+											</span>
 										</div>
-										<div class="toast-body" id="message_body">
-										Hello, world! This is a toast message.
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-messenger m-2"></i>
+											<strong class="me-auto">  Messages</strong>
 										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2 mb-3 overflow-auto h-50" id="message_body" > Contenu des messages</div>
 									</div>
 								</div>
 								
 							</li>
 
-							<li class="nav-item text-center mx-2 mx-lg-1">
-								<a class="nav-link" href="#!" id="liveToastBtnNotif">
-									<div class="position-relative">
-										<i class="bi bi-bell-fill icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
-											9+
-										</span>
-									</div>
-								</a>
+							<!-- Modal Notification -->
 
-								<div class="toast-container position-fixed top-10 end-0 p-2">
-									<div id="liveToastNotif" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-										<div class="toast-header">
-										<i class="bi bi-bell-fill m-2"></i>
-										<strong class="me-auto">  Notifications</strong>
-										<small>11 mins ago</small>
-										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+							<li class="nav-item text-center mx-2 mx-lg-1">
+
+								<!-- Example single danger button -->
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-bell-fill icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
+												9+
+											</span>
 										</div>
-										<div class="toast-body">
-										Hello, world! This is a toast message.
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-bell-fill m-2"></i>
+											<strong class="me-auto">  Notifications</strong>
 										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2"> Contenu des notifs</div>
+										<div><a class="dropdown-item" href="#">Separated link</a></div>
 									</div>
 								</div>
 							</li>
 
+							<!-- Modal Profli -->
+							
 							<li class="nav-item text-center mx-2 mx-lg-1">
-								<div class="icon-nav profil-show" id="liveToastBtnProfil">
-									<i class="bi bi-person-circle icon-nav"></i>
-									<small>
-										Hi, Elie
-										<i class="bi bi-chevron-down fa-sm"></i>
-									</small>
-								</div>
 
-								<div class="toast-container position-fixed top-10 end-0 p-2">
-									<div id="liveToastProfil" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-										<div class="toast-header">
-										<i class="bi bi-person-circle m-2"></i>
-										<strong class="me-auto">  Profil</strong>
-										<small></small>
-										<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-										</div>
-										<div class="toast-body">
-
-											<div class="profil-label">
-												<h5 class="btn btn-outline-info"><i class="bi bi-person-circle m-2"></i>Elie Fenohasina</h5><br>
-											</div>
-											<div class="menu-profil">
-												<button class="btn btn-outline-primary mb-2"><i class="bi bi-shield-fill-check"></i> Sécurité</button><br>
-												<button class="btn btn-outline-primary mb-2"><i class="bi bi-stack"></i> Confidentialité</button><br>
-												<button class="btn btn-outline-primary mb-2"><i class="bi bi-globe"></i> Language</button>
-												<hr>
-												<button class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Deconnecter</button>	
-											</div>
-										</div>
+								<div class="btn-group">
+									<div class="icon-nav profil-show " data-bs-toggle="dropdown" aria-expanded="false" >
+										<i class="bi bi-person-circle icon-nav"></i>
+										<small class="dropdown-toggle m-1">
+											Hi, Elie
+										</small>
 									</div>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="#"><h5><i class="bi bi-person-circle m-2"></i>Elie Fenohasina</h5></a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-shield-fill-check"></i> Sécurité</a></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-stack"></i> Confidentialité</a></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-globe"></i> Language</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item text-danger" href="#"><i class="bi bi-box-arrow-right"></i> Deconnecter</a></li>
+									</ul>
 								</div>
-
+								
 							</li>
 
 						</ul>
@@ -346,38 +335,43 @@
 			<!-- End right-->
 
 		</div>
+		{% include 'user/chat.html.twig' %}
+
 
 	</body>
 	<script>
-	const toastTriggerMsg = document.getElementById('liveToastBtnMsg')
+	/*const toastTriggerMsg = document.querySelector("a[id^='onmessage_']")
 	const toastLiveMsg = document.getElementById('liveToastMsg')
 	
 	if (toastTriggerMsg) {
 	toastTriggerMsg.addEventListener('click', () => {
 		const toast = new bootstrap.Toast(toastLiveMsg)
-
 		toast.show()
+		getMessage();
+	})
+	}*/
+	const toastTriggerMsg = document.getElementById('liveToastBtnMsg')
+	
+	if (toastTriggerMsg) {
+	toastTriggerMsg.addEventListener('click', () => {
+		console.log("message clicked...")
+
+		setIsShow();
 
 		getMessage();
 
 	})
 	}
 	const toastTriggerNotif = document.getElementById('liveToastBtnNotif')
-	const toastLiveNotif = document.getElementById('liveToastNotif')
 	if (toastTriggerNotif) {
 	toastTriggerNotif.addEventListener('click', () => {
-		const toast = new bootstrap.Toast(toastLiveNotif)
-
-		toast.show()
+		console.log("notification clicked...")
 	})
 	}
 	const toastTriggerCart= document.getElementById('liveToastBtnCart')
-	const toastLiveCart = document.getElementById('liveToastCart')
 	if (toastTriggerCart) {
 	toastTriggerCart.addEventListener('click', () => {
-		const toast = new bootstrap.Toast(toastLiveCart)
-
-		toast.show()
+		console.log("Cart clicked...")
 	})
 	}
 
@@ -386,17 +380,18 @@
 	if (toastTriggerProfil) {
 	toastTriggerProfil.addEventListener('click', () => {
 		const toast = new bootstrap.Toast(toastLiveProfil)
-
 		toast.show()
+		
 	})
 	}
 
 	const evtSourceNotif = new EventSource("/user/notifications");
 	evtSourceNotif.onmessage = function(event) {
         const dataset = JSON.parse(event.data);
-		if(dataset ==0){
-			document.querySelector("#nb_notif").style.display= "none"
-		}else if(dataset<=9){
+		if(dataset == 0){
+			document.querySelector("#nb_notif").style.display = "none"
+		}
+		else if(dataset<=9){
 			document.querySelector("#nb_notif").textContent = dataset
 		}else{
 			document.querySelector("#nb_notif").textContent = 9+"+"
@@ -407,9 +402,10 @@
 	const evtSourceMsg = new EventSource("/user/messages");
 	evtSourceMsg.onmessage = function(event) {
         const dataset = JSON.parse(event.data);
-		if(dataset ==0){
-			document.querySelector("#nb_message").style.display= "none"
-		}else if(dataset<=9){
+		if(dataset == 0){
+			document.querySelector("#nb_message").style.display = "none"
+		}
+		else if(dataset<=9){
 			document.querySelector("#nb_message").textContent = dataset
 		}else{
 			document.querySelector("#nb_message").textContent = 9+"+"
@@ -420,9 +416,10 @@
 	const evtSourceCart = new EventSource("/user/cartes");
 	evtSourceCart.onmessage = function(event) {
         const dataset = JSON.parse(event.data);
-		if(dataset ==0){
-			document.querySelector("#nb_carte").style.display= "none"
-		}else if(dataset<=9){
+		if(dataset == 0){
+			document.querySelector("#nb_carte").style.display = "none"
+		}
+		else if(dataset<=9){
 			document.querySelector("#nb_carte").textContent = dataset
 		}else{
 			document.querySelector("#nb_carte").textContent = 9+"+"
@@ -441,34 +438,110 @@
 			if(data=="Aucun message"){
 				document.querySelector("#message_body").innerHTML = data;
 			}else if(data.length>0){
+
 				let res ="";
 				for(let d of data){
-					res +=d.content
+					let isRead = d.isRead == 0 ? "bg-info-subtle" :"";
+					if(d.content.length > 50){
+						let substr = d.content.substring(0, 50)
+						res +=`<div class="row message_box w-100 m-auto mb-2 ${isRead}"> <span onclick="openMsg(${d.id},${d.user_id})"><i class="col-2 bi bi-person-circle m-1 text-primary"> Elie Fenohasina</i><p class="col-10">${substr}...</p></span> </div>`
+				
+					}else{
+						res +=`<div class="row message_box w-100 m-auto mb-2 ${isRead}"> <span onclick="openMsg(${d.id},${d.user_id})"><i class="col-2 bi bi-person-circle m-1 text-primary"> Elie Fenohasina</i><p class="col-10">${d.content}</p></span> </div>`
+						//res +=`<a href="#" class="message_box" onclick="openMsg(${d.id},${d.receiver_id},${d.sender_id})"s><i class="bi bi-person-circle m-1"></i>${d.content}</a>`
+					}
 				}
-				document.querySelector("#message_body").innerHTML = `<img id="roundedImg" style="min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;" class="rounded-circle border border-1" src="/images/img.jpg">` +res
+				document.querySelector("#message_body").innerHTML = `<div class="list-group">` +res + '</div>';
 			}else{
 				document.querySelector("#message_body").innerHTML = data;
 			}
 		})
 	}
 
-	
-		/*console.log(document.querySelector(".main-left").style.width)
-function openCloseNav() {
-if (document.getElementById("sidebar").style.width == "300px") {
-document.getElementById("sidebar").style.width = "0";
-document.getElementById("main").style.marginLeft = "0";
-} else {
-document.getElementById("sidebar").style.width = "300px";
-document.getElementById("main").style.marginLeft = "300px";
+	function openMsg(id, user_id){
 
-}
+		console.log("receiver_id : "+user_id)
 
-}
+		setIsRead(user_id);
 
-function closeNav() {
-document.getElementById("mySidebar").style.width = "0";
-document.getElementById("main").style.marginLeft = "0";
-}*/
+		fetch("/user/get_messages_by_id/"+user_id, {
+			method: "GET",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+		.then(res =>res.json())
+		.then(message => {
+			//console.log("message : "+message.length)
+			if(message.length>0){
+				let res_me = ""
+				let res_other = ""
+				let total =""
+
+				for(let msg of message){
+					if(msg.isForMe == 1){
+						res_me +=`<div class="d-flex flex-row justify-content-start" >
+							<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 1" style="width: 45px; height: 100%;">
+							<div id="my_message">
+								<p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">${msg.content}</p>
+							</div>
+						</div>`
+						//res_me +=`<p class="small p-2 ms-3 mb-1 rounded-3" style="background-color: #f5f6f7;">${msg.content}</p>`;
+					}else{
+						res_me+=`<div class="d-flex flex-row justify-content-end mb-4 pt-1">
+						<div id="other_message">
+							<p class="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">${msg.content}</p>
+						</div>
+						<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp" alt="avatar 1" style="width: 45px; height: 100%;">
+					</div>`
+
+					}
+					//total=res_me+res_other;
+					
+				}
+
+				//document.querySelector("#my_message").innerHTML = res_me+res_other;
+
+				document.querySelector("#all_message").innerHTML = res_me;
+			}else{
+				console.log("message : "+message)
+			}
+			
+		})
+		
+		document.querySelector("#chat").style.display="block"
+
+	}
+
+	function quitMsg(){
+		document.querySelector("#chat").style.display="none"
+		
+	}
+
+	function setIsShow(){
+		fetch(new Request("/user/setIsShow", {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			}
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+		})
+	}
+
+	function setIsRead(user_id){
+		fetch(new Request("/user/setIsRead/"+user_id, {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			}
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+		})
+	}
+
 	</script>
 </html>
