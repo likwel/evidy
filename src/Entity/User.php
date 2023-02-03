@@ -3,102 +3,89 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
-class User
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $username = null;
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $fullname = null;
+    
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $photoProfil = null;
+    #[ORM\Column]
+    private array $roles = [];
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $photoCouverture = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
-
-    #[ORM\Column(length: 255)]
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getEmail(): ?string
     {
-        return $this->username;
+        return $this->email;
     }
 
-    public function setUsername(string $username): self
+    public function setEmail(string $email): self
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
 
-    public function getFullname(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->fullname;
+        return (string) $this->email;
     }
 
-    public function setFullname(string $fullname): self
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        $this->fullname = $fullname;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }
 
-    public function getPhotoProfil(): ?string
-    {
-        return $this->photoProfil;
-    }
-
-    public function setPhotoProfil(string $photoProfil): self
-    {
-        $this->photoProfil = $photoProfil;
-
-        return $this;
-    }
-
-    public function getPhotoCouverture(): ?string
-    {
-        return $this->photoCouverture;
-    }
-
-    public function setPhotoCouverture(string $photoCouverture): self
-    {
-        $this->photoCouverture = $photoCouverture;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -106,6 +93,47 @@ class User
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of fullname
+     */ 
+    public function getFullname()
+    {
+        return $this->fullname;
+    }
+
+    /**
+     * Set the value of fullname
+     *
+     * @return  self
+     */ 
+    public function setFullname($fullname)
+    {
+        $this->fullname = $fullname;
 
         return $this;
     }

@@ -1,20 +1,333 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %} E-vidy : Home{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="body">
+			<div class="navtete">
+				<nav style="" class="container navbar navbar-expand-lg navbar-dark">
+					<div class="container-fluid">
+						<img src="/icons/icon.PNG" style="width:50px;"></img>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+					<!-- Search form -->
+					<form class="d-flex input-group w-50 ms-lg-3 my-3 my-lg-0">
+						<input type="search" class="form-control" placeholder="Rechercher" aria-label="Search"/>
+						<button class="btn btn-outline-primary" type="button">
+							Rechercher
+						</button>
+					</form>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/symfony/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/symfony/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
-</div>
+					<!-- Collapsible wrapper -->
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+						<ul class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
+
+							<!-- Modal Carte -->
+							<li class="nav-item text-center mx-2 mx-lg-1">
+
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-cart icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
+												9+
+											</span>
+										</div>
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-cart m-2"></i>
+											<strong class="me-auto">  Cartes</strong>
+										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2"> Contenu des messages</div>
+										<div><a class="dropdown-item" href="#">Separated link</a></div>
+									</div>
+								</div>
+
+							</li>
+
+							<!-- Modal Message -->
+
+							<li class="nav-item text-center mx-2 mx-lg-1">
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnMsg" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-messenger icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
+												9+
+											</span>
+										</div>
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-messenger m-2"></i>
+											<strong class="me-auto">  Messages</strong>
+										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2 mb-3 overflow-auto h-50" id="message_body" > Contenu des messages</div>
+									</div>
+								</div>
+								
+							</li>
+
+							<!-- Modal Notification -->
+
+							<li class="nav-item text-center mx-2 mx-lg-1">
+
+								<!-- Example single danger button -->
+								<div class="btn-group">
+									<a class="nav-link" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+										<div class="position-relative">
+											<i class="bi bi-bell-fill icon-nav"></i>
+											<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
+												9+
+											</span>
+										</div>
+									</a>
+
+									<div class="dropdown-menu" style="width:300px;">
+										<div class="dropdown-item"><i class="bi bi-bell-fill m-2"></i>
+											<strong class="me-auto">  Notifications</strong>
+										</div>
+										<hr class="dropdown-divider">
+										<div class="m-2"> Contenu des notifs</div>
+										<div><a class="dropdown-item" href="#">Separated link</a></div>
+									</div>
+								</div>
+							</li>
+
+							<!-- Modal Profli -->
+							
+							<li class="nav-item text-center mx-2 mx-lg-1">
+
+								<div class="btn-group">
+									<div class="icon-nav profil-show " data-bs-toggle="dropdown" aria-expanded="false" >
+										<i class="bi bi-person-circle icon-nav"></i>
+										<small class="dropdown-toggle m-1">
+											Hi, Elie
+										</small>
+									</div>
+									<ul class="dropdown-menu">
+										<li><a class="dropdown-item" href="#"><h5><i class="bi bi-person-circle m-2"></i>{{lastUsername}}</h5></a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-shield-fill-check"></i> Sécurité</a></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-stack"></i> Confidentialité</a></li>
+										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-globe"></i> Language</a></li>
+										<li><hr class="dropdown-divider"></li>
+										<li><a class="dropdown-item text-danger" href="{{ path('app_logout') }}"><i class="bi bi-box-arrow-right"></i> Deconnecter</a></li>
+										
+									</ul>
+								</div>
+								
+							</li>
+
+						</ul>
+					</div>
+
+				</div>
+			</nav>
+		</div>
+
+		<div
+			class="container contenu">
+			<!-- Profil-->
+			<div class="main-left-b">
+				<div class="couverture-image">
+					<img src="/images/couverture.jpg" class="img-responsive" alt="">
+				</div>
+
+				<div class="profil-image">
+					<img src="/images/images.jfif" class="img-responsive" alt="">
+				</div>
+
+				<div class="profil-label">
+					<h5>Elie Fenohasina</h5><br>
+
+				</div>
+
+				<div class="profil-button">
+					<button class="btn btn-outline-info"> <i class="bi bi-plus"></i> Follow</button>
+					<button class="btn btn-outline-primary"><i class="bi bi-messenger"></i> Message</button>
+				</div>
+
+				<div class="profil-menu">
+					<div class="list-group-b" style="">
+						<a href="#" class="list-group-item-b active" aria-current="true"><i class="bi bi-houses"></i> 
+							Actualités
+						</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-people"></i> Amis</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-clipboard-plus"></i> Suivis</a>
+						<a href="#" class="list-group-item-b "><i class="bi bi-gear"></i> Paramettre</a>
+						<a href="#" class="list-group-item-b "> <i class="bi bi-info-square"></i> Aides</a>
+					</div>
+					
+				</div>
+
+			</div>
+			<!-- End Profil-->
+
+			<!-- Main Center-->
+			<div class="main-center-b mb-10" style="margin-left:10px;margin-right:10px;">
+				{# {% include "story.html.twig" %} #}
+				<div id="" class="card-b mb-3">
+					<div class="row p-3">
+						<div class="col-1 rounded-circle">
+							<img id="roundedImg" style="min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;" class="rounded-circle border border-1" src="/images/img.jpg">
+						</div>
+						<div class="col-11 ml-2">
+							<input id="btnShowModalAddPub" type="text" class="form-control form-control-lg rounded-pill bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#modal_publication" data-bs-whatever="@mdo" placeholder="Exprimez-vous...">
+						</div>
+						<div class="row mt-3">
+							<div class="col-3 text-center" style="cursor:pointer;">
+								<i class="bi bi-graph-up"></i> 
+								Vendre
+						</div>
+						<div class="col-3 text-center" style="cursor:pointer;">
+							<i class="bi bi-cart-fill"></i> 
+								Acheter
+						</div>
+						<div class="col-3 text-center" data-bs-toggle="modal" data-bs-target="#modal_evenement" data-bs-whatever="@mdo" style="cursor:pointer;">
+							<i class="bi bi-calendar2-event-fill">
+								</i> Evenement
+
+						</div>
+						<div class="col-3 text-center" style="cursor:pointer;">
+							<i class="bi bi-pencil-square"></i>
+							Commande
+						</div>
+					</div>
+				</div>
+				</div>
+	
+				<div class="card-b mb-3 card-article">
+					<div class="card-body">
+						<div class="mb-3" style="max-width: 540px;">
+							<div class="row g-0">
+								<div class="col-md-2">
+									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
+								</div>
+								<div class="col-md-10">
+									<i class="bi bi-three-dots float-end more-end fa-xl"></i>
+									<div class="card-body">
+										<h5 class="card-title">
+											<a href="#" class="lien">ShopRaphia.mg</a>
+										</h5>
+										<small class="card-text">
+											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
+											<small class="text-muted">il y a 3 mininutes</small> . 
+											<small class="text-muted">publique</small>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						<p class="card-text">
+							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> <span class="badge rounded-pill text-bg-success">150 000 Ariary</span></small><br>
+							
+						</p>
+						<div class="bg-transparent">
+							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
+						</div>
+
+						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
+						
+					</div>
+					<div class="row" style="margin-top:10px;">
+						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
+						<small class="col-6"><i class="float-end"> 4 commentaires</i></small>
+					</div>
+					<hr>
+
+					<div class="card-footer bg-transparent">
+						<div class="row">
+							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="card-b mb-3 card-article">
+					<div class="card-body">
+						<div class="mb-3" style="max-width: 540px;">
+							<div class="row g-0">
+								<div class="col-md-2">
+									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
+								</div>
+								<div class="col-md-10">
+									<i class="bi bi-three-dots float-end more-end fa-xl"></i>
+									<div class="card-body">
+										<h5 class="card-title">
+											<a href="#" class="lien">ShopRaphia.mg</a>
+										</h5>
+										<small class="card-text">
+											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
+											<small class="text-muted">il y a 3 mininutes</small> . 
+											<small class="text-muted">publique</small>
+										</small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+						<p class="card-text">
+							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> 190 000 Ariary</small><br>
+						</p>
+						<div class="bg-transparent">
+							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
+						</div>
+
+						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
+						
+					</div>
+					<div class="row" style="margin-top:10px;">
+						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
+						<small class="col-6"><i class="bi bi-hand-thumbs-up fa-sm  float-end"> 4 commentaires</i></small>
+					</div>
+					<hr>
+					<div class="card-footer bg-transparent">
+						<div class="row">
+							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
+							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<!-- Right menu-->
+			<div class="main-right-b">
+				<h5 class="sponsors"><i class="bi bi-bar-chart-line-fill"></i> Ventes premium</h5>
+				<div class="thumb-wrapper">
+					<span class="wish-icon"><i class="fa fa-heart-o"></i></span>
+					<div class="img-box">
+						<img src="/images/img.jpg" class="img-fluid" alt="Pixel">
+					</div>
+					<div class="thumb-content">
+						<h4>Google Pixel</h4>
+						<p class="item-price"><strike>Ar 45 000</strike> <span>Ar 41 800</span></p>
+						<div class="star-rating">
+							<ul class="list-inline">
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star"></i></li>
+								<li class="list-inline-item"><i class="fa fa-star-half-o"></i></li>
+							</ul>
+						</div>
+						<a href="#" class="btn btn-primary"><i class="bi bi-cart2"></i> Ajouter au panier</a>
+					</div>						
+				</div>
+
+			</div>
+			<!-- End right-->
+
+		</div>
+		{% include 'user/chat.html.twig' %}
 {% endblock %}

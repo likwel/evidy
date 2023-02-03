@@ -10,20 +10,20 @@
 					<h5 class="mb-0"><i class="bi bi-chat-dots-fill m-2"></i>Discussions</h5>
 					<button type="button" class="btn-close" aria-label="Close" onclick="quitMsg()"></button>
 				</div>
+				<input type="hidden" id="user_id">
 				<div class="card-body overflow-auto" style="position: relative; height: 400px;max-width:450px;" id="all_message">
-
-
+				
 				</div>
 				<div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
 					<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3" style="width: 40px; height: 100%;">
-					<input type="text" class="form-control form-control-lg" id="exampleFormControlInput1" placeholder="Ecrire votre message">
+					<input type="text" class="form-control form-control" placeholder="Ecrire votre message" id="message_content">
 					<a class="ms-1 text-muted" href="#!">
 						<i class="fas fa-paperclip"></i>
 					</a>
 					<a class="ms-3 text-muted" href="#!">
 						<i class="fas fa-smile"></i>
 					</a>
-					<a class="ms-3" href="#!">
+					<a class="ms-3" href="#!" onclick ="sendMessage()">
 						<i class="fas fa-paper-plane"></i>
 					</a>
 				</div>
@@ -33,3 +33,37 @@
 	</div>
 
 </div>
+
+<script>
+
+document.getElementById("message_content").addEventListener("keypress", function(event) {
+  if (event.key === "Enter") {
+	sendMessage();
+	this.value =""
+  }
+});
+
+function sendMessage(){
+	let user_id = document.querySelector("#user_id").value
+	let content = document.querySelector("#message_content").value
+
+	let data ={
+		"user_id" : user_id,
+		"content" : content,
+		"isForMe" : 1
+	}
+
+	fetch(new Request("/user/send_message", {
+		method: "POST",
+		headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+		})).then(req => req.json()).then(message => {
+			console.log(message);
+	});
+
+	content.value =""
+}
+</script>

@@ -5,7 +5,7 @@ namespace App\Service;
 use PDO;
 use App\Service\PDOService;
 
-class NotificationService extends PDOService{
+class UserService extends PDOService{
 
     public function getFullname($user_id){
 

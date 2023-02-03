@@ -124,8 +124,25 @@ class UserController extends AbstractController
         $message = new MessageService();
 
         $messages = $message ->getMessageById($user_id);
+
+        $response = new StreamedResponse();
+        
+        //return $response;
+
         if(count($messages)>0){
-            return $this->json($messages);
+            $response->setCallback(function () use (&$messages) {
+
+                echo "data:" . json_encode($messages) .  "\n\n";
+                ob_end_flush();
+                flush();
+            });
+            
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+            $response->headers->set('Cache-Control', 'no-cache');
+            $response->headers->set('Content-Type', 'text/event-stream');
+            return $response;
         }else{
             return $this->json("Aucun message");
         }
@@ -152,6 +169,25 @@ class UserController extends AbstractController
 
         return $this->json("Message lu");
 
+    }
+
+    /**
+     * @Route("user/send_message" , name="app_send_message")
+     */
+    public function sendMessage(Request $request)
+    {
+
+        $requestContent = json_decode($request->getContent(), true);
+
+        $user_id = $requestContent["user_id"];
+        $content = $requestContent["content"];
+        $isForMe = $requestContent["isForMe"];
+
+        $message = new MessageService();
+
+        $message ->sendOneMessage($user_id, $content, $isForMe);
+
+        return  $this->json("Message envoyé");
     }
 
 }

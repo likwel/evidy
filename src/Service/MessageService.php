@@ -90,5 +90,12 @@ class MessageService extends PDOService{
 
         return $result;
     }
+    
+    public function sendOneMessage($user_id, $content, $isForMe){
+        $conn = $this -> getConnection();
+        $sql = "INSERT INTO message (user_id, content, isForMe) VALUES (?,?,?)";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$user_id,$content,$isForMe]);
+    }
 
 }

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+		
+		<section class="vh-100">
+			<div class="container-fluid h-custom">
+				<div class="row d-flex justify-content-center align-items-center h-100">
+					<div class="col-md-9 col-lg-6 col-xl-5">
+						<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image">
+					</div>
+					<div
+						class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+						<!-- Email input -->
+                        <h1 class="">Inscription</h1><hr>
+						<div class="form-outline mb-4">
+							<label class="form-label" for="inputEmail">Email</label>
+							<input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Entrer votre e-mail" value="" autocomplete="email" required autofocus/>
+							
+						</div>
+
+						<div class="form-outline mb-4">
+							<label class="form-label" for="inputEmail">Votre nom</label>
+							<input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Entrer votre nom" value="" autocomplete="email" required autofocus/>
+							
+						</div>
+
+						<div class="form-outline mb-4">
+							<label class="form-label" for="inputEmail">Votre prénom</label>
+							<input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Entrer votre prénom" value="" autocomplete="email" required autofocus/>
+							
+						</div>
+
+						<!-- Password input -->
+						<div class="form-outline mb-3">
+                           <label class="form-label" for="inputPassword">Mot de passe</label>
+							<input type="password" id="inputPassword" class="form-control form-control" placeholder="Entrer password" name="password" autocomplete="current-password" required/>
+							
+						</div>
+
+
+                        <!-- Password input -->
+						<div class="form-outline mb-3">
+                            <label class="form-label" for="inputPassword2">Mot de passe</label>
+							<input type="password" id="inputPassword2" class="form-control form-control" placeholder="Confirmer le mot de pass" name="password" autocomplete="current-password" required/>
+							
+							
+						</div>
+
+						<div class="text-center text-lg-start mt-4 pt-2">
+							<button type="submit" class="btn btn-primary btn" style="padding-left: 2.5rem; padding-right: 2.5rem;">S'inscrire</button>
+							<p class="small fw-bold mt-2 pt-1 mb-0">
+								<a href="{{path("app_login")}}" class="link-danger">Login</a>
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+{% endblock %}
