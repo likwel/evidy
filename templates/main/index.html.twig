@@ -109,7 +109,7 @@
 										</small>
 									</div>
 									<ul class="dropdown-menu">
-										<li><a class="dropdown-item" href="#"><h5><i class="bi bi-person-circle m-2"></i>{{lastUsername}}</h5></a></li>
+										<li><a class="dropdown-item" href="#"><h5><i class="bi bi-person-circle m-2"></i>{{user.pseudo}}</h5></a></li>
 										<li><hr class="dropdown-divider"></li>
 										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-shield-fill-check"></i> Sécurité</a></li>
 										<li><a class="dropdown-item mb-2" href="#"><i class="bi bi-stack"></i> Confidentialité</a></li>
@@ -142,7 +142,10 @@
 				</div>
 
 				<div class="profil-label">
-					<h5>Elie Fenohasina</h5><br>
+				<ul>
+					<li><h5>{{lastUsername}}</h5></li>
+					<li><small>@{{user.pseudo}}</small></li>
+				<ul>
 
 				</div>
 

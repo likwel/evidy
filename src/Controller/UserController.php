@@ -34,7 +34,9 @@ class UserController extends AbstractController
     {
         $notification = new NotificationService();
 
-        $nbr_nonLu = $notification ->getNotRead();
+        $table_notif = $this->getUser()->getTablenotification();
+
+        $nbr_nonLu = $notification ->getNotRead($table_notif);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use (&$nbr_nonLu) {
@@ -57,7 +59,9 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $nbr_nonLu = $message ->getNotShow();
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $nbr_nonLu = $message ->getNotShow($table_msg);
 
         //dd($nbr_nonLu);
 
@@ -83,7 +87,9 @@ class UserController extends AbstractController
     {
         $carte = new CarteService();
 
-        $nbr_nonLu = $carte ->getNotWait();
+        $table_carte = $this->getUser()->getTablecarte();
+
+        $nbr_nonLu = $carte ->getNotWait($table_carte);
 
         //dd($nbr_nonLu);
 
@@ -109,7 +115,11 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $messages = $message ->getAll();
+        $table_msg = $this->getUser()->getTablemessage();
+
+        dd($table_msg);
+
+        $messages = $message ->getAll($table_msg);
         if(count($messages)>0){
             return $this->json($messages);
         }else{
@@ -123,7 +133,9 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $messages = $message ->getMessageById($user_id);
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $messages = $message ->getMessageById($table_msg,$user_id);
 
         $response = new StreamedResponse();
         
@@ -154,7 +166,9 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $message ->setIsShow();
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $message ->setIsShow($table_msg);
 
         return $this->json("Message vu");
 
@@ -165,7 +179,9 @@ class UserController extends AbstractController
     {
         $message = new MessageService();
 
-        $message ->setIsRead($user_id);
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $message ->setIsRead($table_msg,$user_id);
 
         return $this->json("Message lu");
 
@@ -185,7 +201,9 @@ class UserController extends AbstractController
 
         $message = new MessageService();
 
-        $message ->sendOneMessage($user_id, $content, $isForMe);
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $message ->sendOneMessage($table_msg, $user_id, $content, $isForMe);
 
         return  $this->json("Message envoyé");
     }

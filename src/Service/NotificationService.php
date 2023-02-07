@@ -7,10 +7,11 @@ use App\Service\PDOService;
 
 class NotificationService extends PDOService{
 
-    public function getNotRead(){
+    public function getNotRead($table_notif){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM notification where isRead = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_notif where isRead = 0");
 
         $statement->execute();
 
@@ -19,10 +20,11 @@ class NotificationService extends PDOService{
         return $result;
 
     }
-    public function getNotShow(){
+    public function getNotShow($table_notif){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) FROM notification where isShow = 0");
+        $statement = $conn->prepare("SELECT count(*) FROM $table_notif where isShow = 0");
 
         $statement->execute();
 
@@ -32,10 +34,11 @@ class NotificationService extends PDOService{
 
     }
 
-    public function getAll(){
+    public function getAll($table_notif){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM notification ");
+        $statement = $conn->prepare("SELECT * FROM $table_notif ");
 
         $statement->execute();
 

@@ -4,13 +4,17 @@ namespace App\Service;
 
 use PDO;
 use App\Service\PDOService;
+use App\Service\UserService;
+use Doctrine\ORM\EntityManagerInterface;
 
 class MessageService extends PDOService{
 
-    public function getNotRead(){
+
+    public function getNotRead($table_msg){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM message where isRead = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where isRead = 0");
 
         $statement->execute();
 
@@ -19,10 +23,11 @@ class MessageService extends PDOService{
         return $result;
 
     }
-    public function getNotShow(){
+    public function getNotShow($table_msg){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM message where isShow = 0 and isForMe = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where isShow = 0 and isForMe = 0");
 
         $statement->execute();
 
@@ -32,29 +37,32 @@ class MessageService extends PDOService{
 
     }
 
-    public function setIsRead($user_id){
+    public function setIsRead($table_msg, $user_id){
+
         $conn = $this -> getConnection();
 
-        $sql = "UPDATE message SET isRead = 1 where user_id = ?";
+        $sql = "UPDATE $table_msg SET isRead = 1 where user_id = ?";
         $statement = $conn->prepare($sql);
         $statement->execute([$user_id]);
 
     }
 
 
-    public function setIsShow(){
+    public function setIsShow($table_msg){
+
         $conn = $this -> getConnection();
 
-        $sql = "UPDATE message SET isShow = 1 ";
+        $sql = "UPDATE $table_msg SET isShow = 1 ";
         $statement = $conn->prepare($sql);
         $statement->execute();
 
     }
 
-    public function getAll(){
+    public function getAll($table_msg){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM message GROUP BY user_id ORDER BY id DESC");
+        $statement = $conn->prepare("SELECT * FROM $table_msg GROUP BY user_id ORDER BY id DESC");
 
         $statement->execute();
 
@@ -64,10 +72,11 @@ class MessageService extends PDOService{
     }
 
     
-    public function getMessageById($user_id){
+    public function getMessageById($table_msg,$user_id){
+
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM message where user_id = $user_id");
+        $statement = $conn->prepare("SELECT * FROM $table_msg where user_id = $user_id");
 
         $statement->execute();
 
@@ -76,13 +85,13 @@ class MessageService extends PDOService{
         return $result;
     }
 
-    public function getMessageUser($user_id){
+    public function getMessageUser($table_msg, $user_id){
 
         $my_id = 1;
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM message where receiver_id = $my_id and sender_id = $user_id order by id ASC");
+        $statement = $conn->prepare("SELECT * FROM $table_msg where receiver_id = $my_id and sender_id = $user_id order by id ASC");
 
         $statement->execute();
 
@@ -91,9 +100,9 @@ class MessageService extends PDOService{
         return $result;
     }
     
-    public function sendOneMessage($user_id, $content, $isForMe){
+    public function sendOneMessage($table_msg, $user_id, $content, $isForMe){
         $conn = $this -> getConnection();
-        $sql = "INSERT INTO message (user_id, content, isForMe) VALUES (?,?,?)";
+        $sql = "INSERT INTO $table_msg (user_id, content, isForMe) VALUES (?,?,?)";
         $statement = $conn->prepare($sql);
         $statement->execute([$user_id,$content,$isForMe]);
     }

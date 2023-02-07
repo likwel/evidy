@@ -7,10 +7,11 @@ use App\Service\PDOService;
 
 class CarteService extends PDOService{
 
-    public function getNotWait(){
+    public function getNotWait($table_carte){
+        
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM carte where isWait = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_carte where isWait = 0");
 
         $statement->execute();
 
@@ -20,10 +21,11 @@ class CarteService extends PDOService{
 
     }
 
-    public function getAll(){
+    public function getAll($table_carte){
+        
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM carte ");
+        $statement = $conn->prepare("SELECT * FROM $table_carte ");
 
         $statement->execute();
 

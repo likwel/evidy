@@ -25,12 +25,16 @@ class MainController extends AbstractController
 
         //dd($user);
 
+
         if($user == null){
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }else{
+            $fullname = $user->getFirstname().' '.$user->getLastname();
+
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
-                'lastUsername' => $user->getFullname()
+                'lastUsername' => $fullname,
+                'user' => $user
             ]);
         }
         //dd($user);

@@ -21,7 +21,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $fullname = null;
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $pseudo = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablemessage = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablenotification = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablecarte = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablepublication= null;
     
 
     #[ORM\Column]
@@ -118,22 +136,143 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+
     /**
-     * Get the value of fullname
+     * Get the value of lastname
      */ 
-    public function getFullname()
+    public function getLastname()
     {
-        return $this->fullname;
+        return $this->lastname;
     }
 
     /**
-     * Set the value of fullname
+     * Set the value of lastname
      *
      * @return  self
      */ 
-    public function setFullname($fullname)
+    public function setLastname($lastname)
     {
-        $this->fullname = $fullname;
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of firstname
+     */ 
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * Set the value of firstname
+     *
+     * @return  self
+     */ 
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of pseudo
+     */ 
+    public function getPseudo()
+    {
+        return $this->pseudo;
+    }
+
+    /**
+     * Set the value of pseudo
+     *
+     * @return  self
+     */ 
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablecarte
+     */ 
+    public function getTablecarte()
+    {
+        return $this->tablecarte;
+    }
+
+    /**
+     * Set the value of tablecarte
+     *
+     * @return  self
+     */ 
+    public function setTablecarte($tablecarte)
+    {
+        $this->tablecarte = $tablecarte;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablemessage
+     */ 
+    public function getTablemessage()
+    {
+        return $this->tablemessage;
+    }
+
+    /**
+     * Set the value of tablemessage
+     *
+     * @return  self
+     */ 
+    public function setTablemessage($tablemessage)
+    {
+        $this->tablemessage = $tablemessage;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablenotification
+     */ 
+    public function getTablenotification()
+    {
+        return $this->tablenotification;
+    }
+
+    /**
+     * Set the value of tablenotification
+     *
+     * @return  self
+     */ 
+    public function setTablenotification($tablenotification)
+    {
+        $this->tablenotification = $tablenotification;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablepublication
+     */ 
+    public function getTablepublication()
+    {
+        return $this->tablepublication;
+    }
+
+    /**
+     * Set the value of tablepublication
+     *
+     * @return  self
+     */ 
+    public function setTablepublication($tablepublication)
+    {
+        $this->tablepublication = $tablepublication;
 
         return $this;
     }
