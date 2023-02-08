@@ -307,7 +307,7 @@
 			<!-- Right menu-->
 			<div class="main-right-b">
 				<h5 class="sponsors"><i class="bi bi-bar-chart-line-fill"></i> Ventes premium</h5>
-				<div class="thumb-wrapper">
+				<div class="thumb-wrapper mb-5">
 					<span class="wish-icon"><i class="fa fa-heart-o"></i></span>
 					<div class="img-box">
 						<img src="/images/img.jpg" class="img-fluid" alt="Pixel">
@@ -326,6 +326,13 @@
 						</div>
 						<a href="#" class="btn btn-primary"><i class="bi bi-cart2"></i> Ajouter au panier</a>
 					</div>						
+				</div>
+
+				<div class="list-group">
+					{% for user in user_list %}
+					<a href="/user/message/{{user.id}}" class="list-group-item list-group-item-action">@{{user.pseudo}}</a>
+						
+					{% endfor %}
 				</div>
 
 			</div>

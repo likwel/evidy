@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,8 +14,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class MainController extends AbstractController
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator)
+    private $em;
+    public function __construct(private UrlGeneratorInterface $urlGenerator, EntityManagerInterface $em)
     {
+        $this->em = $em;
     }
     #[Route('/', name: 'app_main')]
     public function index(AuthenticationUtils $authenticationUtils): Response
@@ -23,8 +27,9 @@ class MainController extends AbstractController
         //$lastUsername = $authenticationUtils->getLastUsername();
         //$lastUsername = $user->getEmail();
 
-        //dd($user);
+        $user_list = $this->em->getRepository(User::class)->findAll();
 
+        //dd($user_list);
 
         if($user == null){
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
@@ -34,7 +39,8 @@ class MainController extends AbstractController
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
                 'lastUsername' => $fullname,
-                'user' => $user
+                'user' => $user,
+                'user_list' =>$user_list
             ]);
         }
         //dd($user);

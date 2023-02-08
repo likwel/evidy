@@ -75,7 +75,7 @@ class UserService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT fullname FROM user where id = $user_id");
+        $statement = $conn->prepare("SELECT concat(firstname,' ', lastname) FROM user where id = $user_id");
 
         $statement->execute();
 

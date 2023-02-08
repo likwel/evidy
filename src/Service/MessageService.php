@@ -62,7 +62,7 @@ class MessageService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM $table_msg GROUP BY user_id ORDER BY id DESC");
+        $statement = $conn->prepare("SELECT * FROM $table_msg ORDER BY id ASC");
 
         $statement->execute();
 
@@ -105,6 +105,19 @@ class MessageService extends PDOService{
         $sql = "INSERT INTO $table_msg (user_id, content, isForMe) VALUES (?,?,?)";
         $statement = $conn->prepare($sql);
         $statement->execute([$user_id,$content,$isForMe]);
+    }
+
+    public function getLastMessage($table_msg){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM $table_msg order by id DESC limit 1");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
     }
 
 }

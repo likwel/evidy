@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use PDO;
+use App\Entity\User;
 use App\Service\PDOService;
+use App\Service\UserService;
 use App\Service\CarteService;
 use App\Service\MessageService;
 use App\Repository\UserRepository;
@@ -17,9 +19,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {
+    private $em;
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
     
     #[Route('/user', name: 'app_user')]
-    public function index(UserRepository $userRepo, EntityManagerInterface $entityManager,): Response
+    public function index(UserRepository $userRepo, EntityManagerInterface $entityManager): Response
     {
         $user = $userRepo->findOneById(1);
         dd($user);
@@ -192,20 +199,92 @@ class UserController extends AbstractController
      */
     public function sendMessage(Request $request)
     {
+        $user = $this->getUser();
 
         $requestContent = json_decode($request->getContent(), true);
 
         $user_id = $requestContent["user_id"];
         $content = $requestContent["content"];
-        $isForMe = $requestContent["isForMe"];
 
         $message = new MessageService();
 
         $table_msg = $this->getUser()->getTablemessage();
 
-        $message ->sendOneMessage($table_msg, $user_id, $content, $isForMe);
+        $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+
+        $tbl_msg_other_user = $other_user->getTablemessage();
+
+        $message ->sendOneMessage($table_msg, $user_id, $content, 1);
+
+        $message ->sendOneMessage($tbl_msg_other_user, $user->getId(), $content, 0);
 
         return  $this->json("Message envoyé");
+    }
+    #[Route('/user/all_messages', name: 'app_messenger')]
+    public function getMessageUser(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $msg_serv = new MessageService();
+
+        $user_list = $this->em->getRepository(User::class)->findAll();
+
+        $last_msg = null;
+
+        $all_message = null;
+
+        if($msg_serv ->getLastMessage($table_msg)){
+            $last_msg = $msg_serv ->getLastMessage($table_msg);
+            $all_message =$msg_serv->getMessageById($table_msg, $last_msg["user_id"]);
+        }
+
+
+        return $this->render('user/message.html.twig', [
+            'controller_name' => 'UserController',
+            'user'=>$user,
+            'user_list' =>$user_list,
+            'last_message' =>$last_msg,
+            'all_message' => $all_message,
+        ]);
+    }
+
+    #[Route('/user/messages_by', name: 'app_messenger_user_id')]
+    public function getMessageAll(): Response
+    {
+        $user = $this->getUser();
+
+        $table_msg = $this->getUser()->getTablemessage();
+
+        $msg_serv = new MessageService();
+
+        //$all_message =$msg_serv->getMessageById($table_msg,$user_id);
+        $all_message = $msg_serv->getAll($table_msg);
+
+        $response = new StreamedResponse();
+        
+        //return $response;
+
+        if(count($all_message)>0){
+            $response->setCallback(function () use (&$all_message) {
+
+                echo "data:" . json_encode($all_message) .  "\n\n";
+                ob_end_flush();
+                flush();
+            });
+            
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+            $response->headers->set('Cache-Control', 'no-cache');
+            $response->headers->set('Content-Type', 'text/event-stream');
+            return $response;
+            //return  $this->json($all_message);
+        }else{
+            return $this->json("Aucun message");
+        }
+
     }
 
 }
