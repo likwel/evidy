@@ -235,9 +235,12 @@ class UserController extends AbstractController
 
         $all_message = null;
 
+        $other_user = null;
+
         if($msg_serv ->getLastMessage($table_msg)){
             $last_msg = $msg_serv ->getLastMessage($table_msg);
             $all_message =$msg_serv->getMessageById($table_msg, $last_msg["user_id"]);
+            $other_user = $this->em->getRepository(User::class)->findOneById($last_msg["user_id"]);
         }
 
 
@@ -247,6 +250,7 @@ class UserController extends AbstractController
             'user_list' =>$user_list,
             'last_message' =>$last_msg,
             'all_message' => $all_message,
+            'other_user' => $other_user,
         ]);
     }
 

@@ -82,7 +82,7 @@
 			float: left;
 			width: 11%;
 		}
-        .chat_img_title {
+		.chat_img_title {
 			float: left;
 			width: 11%;
 		}
@@ -99,8 +99,8 @@
 		.chat_list {
 			border-bottom: 1px solid #c4c4c4;
 			margin: 0;
-			padding: 10px 16px 10px;
-            cursor :pointer;
+			padding: 10px 16px;
+			cursor: pointer;
 		}
 		.inbox_chat {
 			height: 550px;
@@ -137,7 +137,7 @@
 			margin: 8px 0 0;
 		}
 		.received_withd_msg {
-			width: 57%;
+			width: 70%;
 		}
 		.mesgs {
 			float: left;
@@ -160,7 +160,8 @@
 		}
 		.sent_msg {
 			float: right;
-			width: 46%;
+			width: 70%;
+			margin-right: 10px;
 		}
 		.input_msg_write input {
 			background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
@@ -196,413 +197,223 @@
 	</style>
 
 	<body class="body">
-		<div class="navtete">
-			<nav style="" class="container navbar navbar-expand-lg navbar-dark">
-				<div class="container-fluid">
-					<img src="/icons/icon.PNG" style="width:50px;"></img>
-
-				<!-- Search form -->
-				<form class="d-flex input-group w-50 ms-lg-3 my-3 my-lg-0">
-					<input type="search" class="form-control" placeholder="Rechercher" aria-label="Search"/>
-					<button class="btn btn-outline-primary" type="button">
-						Rechercher
-					</button>
-				</form>
-
-				<!-- Collapsible wrapper -->
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-					<ul
-						class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
-
-						<!-- Modal Carte -->
-						<li class="nav-item text-center mx-2 mx-lg-1">
-
-							<div class="btn-group">
-								<a class="nav-link" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
-									<div class="position-relative">
-										<i class="bi bi-cart icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
-											9+
-										</span>
-									</div>
-								</a>
-
-								<div class="dropdown-menu" style="width:300px;">
-									<div class="dropdown-item">
-										<i class="bi bi-cart m-2"></i>
-										<strong class="me-auto">
-											Cartes</strong>
-									</div>
-									<hr class="dropdown-divider">
-									<div class="m-2">
-										Contenu des messages</div>
-									<div>
-										<a class="dropdown-item" href="#">Separated link</a>
-									</div>
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div class="messaging">
+				<div class="inbox_msg">
+					<div class="inbox_people">
+						<div class="headind_srch">
+							<div class="recent_heading">
+								<h4>Messages</h4>
+							</div>
+							<div class="srch_bar">
+								<div class="stylish-input-group">
+									<input type="text" class="search-bar w-100" placeholder="Recherche">
+									<span class="input-group-addon">
+										<button type="button">
+											<i class="fa fa-search" aria-hidden="true"></i>
+										</button>
+									</span>
 								</div>
 							</div>
+						</div>
+						<div class="inbox_chat">
+							{% for user in user_list %}
+								{% if user.id != app.user.id %}
+									<div class="chat_list active_chat" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
+										<div class="chat_people">
+											<div class="chat_img">
+												<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+											</div>
+											<div class="chat_ib">
+												<h5>{{user.firstname}}
+													{{user.lastname}}
+													<span class="chat_date" style="text-align:center;border-radius:50%;width:15px; color:white;background:red;">2</span>
+												</h5>
+												<small>@{{user.pseudo}}</small>
 
-						</li>
-
-						<!-- Modal Message -->
-
-						<li class="nav-item text-center mx-2 mx-lg-1">
-							<div class="btn-group">
-								<a class="nav-link" href="#!" id="liveToastBtnMsg" data-bs-toggle="dropdown" aria-expanded="false">
-									<div class="position-relative">
-										<i class="bi bi-messenger icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
-											9+
-										</span>
+											</div>
+										</div>
 									</div>
-								</a>
+								{% endif %}
 
-								<div class="dropdown-menu" style="width:300px;">
-									<div class="dropdown-item">
-										<i class="bi bi-messenger m-2"></i>
-										<strong class="me-auto">
-											Messages</strong>
-									</div>
-									<hr class="dropdown-divider">
-									<div class="m-2 mb-3 overflow-auto h-50" id="message_body">
-										Contenu des messages</div>
-								</div>
-							</div>
+							{% endfor %}
 
-						</li>
-
-						<!-- Modal Notification -->
-
-						<li
-							class="nav-item text-center mx-2 mx-lg-1">
-
-							<!-- Example single danger button -->
-							<div class="btn-group">
-								<a class="nav-link" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
-									<div class="position-relative">
-										<i class="bi bi-bell-fill icon-nav"></i>
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
-											9+
-										</span>
-									</div>
-								</a>
-
-								<div class="dropdown-menu" style="width:300px;">
-									<div class="dropdown-item">
-										<i class="bi bi-bell-fill m-2"></i>
-										<strong class="me-auto">
-											Notifications</strong>
-									</div>
-									<hr class="dropdown-divider">
-									<div class="m-2">
-										Contenu des notifs</div>
-									<div>
-										<a class="dropdown-item" href="#">Separated link</a>
-									</div>
-								</div>
-							</div>
-						</li>
-
-						<!-- Modal Profli -->
-
-						<li class="nav-item text-center mx-2 mx-lg-1">
-
-							<div class="btn-group">
-								<div class="icon-nav profil-show " data-bs-toggle="dropdown" aria-expanded="false">
-									<i class="bi bi-person-circle icon-nav"></i>
-									<small class="dropdown-toggle m-1">
-										Hi, Elie
-									</small>
-								</div>
-								<ul class="dropdown-menu">
-									<li>
-										<a class="dropdown-item" href="#">
-											<h5>
-												<i class="bi bi-person-circle m-2"></i>
-												{{user.pseudo}}</h5>
-										</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li>
-										<a class="dropdown-item mb-2" href="#">
-											<i class="bi bi-shield-fill-check"></i>
-											Sécurité</a>
-									</li>
-									<li>
-										<a class="dropdown-item mb-2" href="#">
-											<i class="bi bi-stack"></i>
-											Confidentialité</a>
-									</li>
-									<li>
-										<a class="dropdown-item mb-2" href="#">
-											<i class="bi bi-globe"></i>
-											Language</a>
-									</li>
-									<li><hr class="dropdown-divider"></li>
-									<li>
-										<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
-											<i class="bi bi-box-arrow-right"></i>
-											Deconnecter</a>
-									</li>
-
-								</ul>
-							</div>
-
-						</li>
-
-					</ul>
-				</div>
-
-			</div>
-		</nav>
-	</body>
-</div>
-<div class="container contenu">
-	<div class="messaging">
-		<div class="inbox_msg">
-			<div class="inbox_people">
-				<div class="headind_srch">
-					<div class="recent_heading">
-						<h4>Messages</h4>
+						</div>
 					</div>
-					<div class="srch_bar">
-						<div class="stylish-input-group">
-							<input type="text" class="search-bar" placeholder="Search">
-							<span class="input-group-addon">
-								<button type="button">
-									<i class="fa fa-search" aria-hidden="true"></i>
-								</button>
-							</span>
+
+					<div class="mesgs">
+
+						<div class="msg_history">
+							<div class="incoming_msg">
+								<div class="incoming_msg_img">
+									<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+								</div>
+								<div class="received_msg">
+									<div class="received_withd_msg">
+										{% if other_user %}
+											<input type="hidden" data-userid="{{other_user.id}}" value="" id="message_user_id">
+											<a href="#" style="text-decoration: none;">
+												<h5 id="message_fullname">{{other_user.firstname}}
+													{{other_user.lastname}}</h5>
+												<span class="time_date" id="message_pseudo">@{{other_user.pseudo}}</span>
+											</a>
+										{% else %}
+											<input type="hidden" value="1" id="message_user_id">
+											<a href="#" style="text-decoration: none;">
+												<h5 id="message_fullname">Votre profil</h5>
+												<span class="time_date" id="message_pseudo">@votre_pseudo</span>
+											</a>
+										{% endif %}
+
+
+									</div>
+								</div>
+								<hr>
+							</div>
+							<div id="discussion">
+								{% if all_message %}
+
+									{% for message in all_message %}
+										{% if message.isForMe == 0 %}
+											<div class="incoming_msg">
+												<div class="incoming_msg_img">
+													<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+												</div>
+												<div class="received_msg">
+													<div class="received_withd_msg">
+														<p>{{message.content}}</p>
+														<span class="time_date">{{message.datetime}}</span>
+													</div>
+												</div>
+											</div>
+										{% else %}
+											<div class="outgoing_msg">
+												<div class="sent_msg">
+													<p>{{message.content}}</p>
+													<span class="time_date">{{message.datetime}}</span>
+												</div>
+											</div>
+
+										{% endif %}
+
+									{% endfor %}
+								{% endif %}
+
+							</div>
+
+						</div>
+
+						<div class="type_msg">
+							<div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+								<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3" style="width: 40px; height: 100%;">
+								<input type="text" class="form-control" placeholder="Ecrire votre message" id="message_content_user">
+								<a class="ms-1 text-muted" href="#!">
+									<i class="fas fa-paperclip"></i>
+								</a>
+								<a class="ms-3 text-muted" href="#!">
+									<i class="fas fa-smile"></i>
+								</a>
+								<a class="ms-3" onclick="sendMessage()" style="cursor:pointer;">
+									<i class="fas fa-paper-plane"></i>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="inbox_chat">
-                    {% for user in user_list %}
-						{% if user.id != app.user.id %}
-							<div class="chat_list active_chat" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
-								<div class="chat_people">
-									<div class="chat_img">
-										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-									</div>
-									<div class="chat_ib">
-										<h5>{{user.firstname}} {{user.lastname}}
-											<span class="chat_date">Dec 25</span>
-										</h5>
-										<small>@{{user.pseudo}}</small>
-										
-									</div>
-								</div>
-							</div>
-						{% endif %}
-                        
-                    {% endfor %}
-					
-				</div>
+
+
+				<p class="text-center top_spac"></p>
+
 			</div>
-            
-			<div class="mesgs">
-                
-				<div class="msg_history">
-				<div class="incoming_msg">
-					<div class="incoming_msg_img">
-						<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-					</div>
-					<div class="received_msg">
-						<div class="received_withd_msg">
-							{% if last_message %}
-								<input type="hidden" data-userId ="{{last_message.user_id}}" value="" id="message_user_id">
-							{% else %}
-								<input type="hidden" value="1" id="message_user_id">
-							{% endif %}
-							
-							<a href="#" style="text-decoration: none;">
-							<h5 id="message_fullname">Elie Fenohasina</h5>
-							<span class="time_date" id="message_pseudo">@elie_fenohasina</span>
-							</a>
-						</div>
-					</div>
-					<hr>
-				</div>
-				<div id="discussion">
-				{% if all_message %}
+			<script>
 
-					{% for message in all_message %}
-                        {% if message.isForMe == 0 %}
-                            <div class="incoming_msg">
-                                <div class="incoming_msg_img">
-                                    <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>{{message.content}}</p>
-                                        <span class="time_date">{{message.datetime}}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        {% else %}
-                            <div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>{{message.content}}</p>
-                                    <span class="time_date">{{message.datetime}}</span>
-                                </div>
-                            </div>
+				let user_id = document.querySelector("#message_user_id").getAttribute("data-userId");
 
-                        {% endif %}
-                        
-                    {% endfor %}
-				{% endif %}
-                    
-				</div>
-					
-				</div>
-                
-				<div class="type_msg">
-                
-					<div class="input_msg_write">
-						<div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-							<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3" style="width: 40px; height: 100%;">
-							<input type="text" class="form-control" placeholder="Ecrire votre message" id="message_content_user">
-							<a class="ms-1 text-muted" href="#!">
-								<i class="fas fa-paperclip"></i>
-							</a>
-							<a class="ms-3 text-muted" href="#!">
-								<i class="fas fa-smile"></i>
-							</a>
-							<a class="ms-3" onclick ="sendMessage()">
-								<i class="fas fa-paper-plane"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+function clickOneMessage(user_id, fullname, pseudo) { // document.querySelector("#message_user_id").value = user_id
+document.querySelector("#message_user_id").setAttribute("data-userId", user_id)
+document.querySelector("#message_fullname").textContent = fullname
+document.querySelector("#message_pseudo").textContent = "@" + pseudo
+document.querySelector("#discussion").innerHTML = "";
 
+}
 
-		<p class="text-center top_spac"></p>
-
-	</div>
-	<script>
-
-	let user_id = document.querySelector("#message_user_id").getAttribute("data-userId");
-
-	function clickOneMessage(user_id, fullname, pseudo){
-		
-		//document.querySelector("#message_user_id").value = user_id
-		document.querySelector("#message_user_id").setAttribute("data-userId",user_id)
-		document.querySelector("#message_fullname").textContent = fullname
-		document.querySelector("#message_pseudo").textContent = "@"+pseudo
-
-		//user_id = document.querySelector("#message_user_id").getAttribute("data-userId");
-
-		document.querySelector("#discussion").innerHTML ="";
-
-		/*fetch("/user/messages_by/"+user_id)
-		.then(res =>res.json())
-		.then(msg =>{
-			let messages = msg.data;
-			//console.log(messages);
-			if(msg!="Aucun message"){
-				let res =""
-				for(let message of msg){
-					if(message.isForMe==0){
-						res+=`<div class="incoming_msg">
-                                <div class="incoming_msg_img">
-                                    <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                                </div>
-                                <div class="received_msg">
-                                    <div class="received_withd_msg">
-                                        <p>${message.content}</p>
-                                        <span class="time_date">
-                                            11:01 AM    |    June 9</span>
-                                    </div>
-                                </div>
-                            </div>`
-					}else{
-						res+=`<div class="outgoing_msg">
-                                <div class="sent_msg">
-                                    <p>${message.content}</p>
-                                    <span class="time_date">
-                                        11:01 AM    |    June 9</span>
-                                </div>
-                            </div>`
-					}
-					
-				}
-
-				document.querySelector("#discussion").innerHTML =res;
-			}
-		})*/
-
-	}
-
-	let eventSourceMsg = new EventSource("/user/messages_by");
-	eventSourceMsg.onmessage = function(event) {
-        const msg = JSON.parse(event.data);
-		console.log("user_id :" +document.querySelector("#message_user_id").getAttribute("data-userId"))
-		console.log(msg)
-		if(msg!="Aucun message"){
-				let res =""
-				for(let message of msg){
-					if(message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")){
-						if(message.isForMe==0){
-							res+=`<div class="incoming_msg">
+let eventSourceMsg = new EventSource("/user/messages_by");
+eventSourceMsg.onmessage = function (event) {
+const msg = JSON.parse(event.data);
+if (msg != "Aucun message") {
+let res = ""
+for (let message of msg) {
+if (message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")) {
+if (message.isForMe == 0) {
+res += `<div class="incoming_msg">
 									<div class="incoming_msg_img">
 										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
 									</div>
 									<div class="received_msg">
 										<div class="received_withd_msg">
-											<p>${message.content}</p>
-											<span class="time_date">${message.datetime}</span>
+											<p>${
+message.content
+}</p>
+											<span class="time_date">${
+message.datetime
+}</span>
 										</div>
 									</div>
 								</div>`
-						}else{
-							res+=`<div class="outgoing_msg">
+} else {
+res += `<div class="outgoing_msg">
 									<div class="sent_msg">
-										<p>${message.content}</p>
-										<span class="time_date">${message.datetime}</span>
+										<p>${
+message.content
+}</p>
+										<span class="time_date">${
+message.datetime
+}</span>
 									</div>
 								</div>`
-						}
-					}
-					
-				}
+}
+}
 
-				document.querySelector("#discussion").innerHTML =res;
-			}else{
-				document.querySelector("#discussion").innerHTML ="<p>Dite bonjour!</p>";
-			}
-	}
+}
 
-	document.getElementById("message_content_user").addEventListener("keypress", function(event) {
-		if (event.key === "Enter") {
-			sendMessage();
-			this.value =""
-		}
-	});
+document.querySelector("#discussion").innerHTML = res;
+} else {
+document.querySelector("#discussion").innerHTML = "<p>Dite bonjour!</p>";
+}
+}
 
-	function sendMessage(){
-		let user_id = document.querySelector("#message_user_id").getAttribute("data-userId")
-		let content = document.querySelector("#message_content_user").value
+document.getElementById("message_content_user").addEventListener("keypress", function (event) {
+if (event.key === "Enter") {
+sendMessage();
+this.value = ""
+}
+});
 
-		let data ={
-			"user_id" : user_id,
-			"content" : content,
-		}
+function sendMessage() {
+let user_id = document.querySelector("#message_user_id").getAttribute("data-userId")
+let content = document.querySelector("#message_content_user").value
 
-		fetch(new Request("/user/send_message", {
-			method: "POST",
-			headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(data)
-			})).then(req => req.json()).then(message => {
-				console.log(message);
-		});
+let data = {
+"user_id": user_id,
+"content": content
+}
+if (content.trim() != "") {
+fetch(new Request("/user/send_message", {
+method: "POST",
+headers: {
+'Accept': 'application/json',
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(data)
+})).then(req => req.json()).then(message => {
+console.log(message);
+});
+}
 
-	}
-	
-	</script>
-</div></body>{% endblock %}
+
+}
+			</script>
+		</div>
+	</body>
+{% endblock %}
