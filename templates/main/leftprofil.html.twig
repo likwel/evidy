@@ -1,51 +1,70 @@
-<div class="main-left-b">
-	<div class="couverture-image">
-		<img src="/images/couverture.jpg" class="img-responsive" alt="">
-	</div>
+<div class="col-lg-3">
+	<div class="card overflow-hidden">
+		<div class="couverture-image">
+			<img src="/images/couverture.jpg" class="img-responsive" alt="">
+		</div>
 
-	<div class="profil-image">
-		<img src="/images/images.jfif" class="img-responsive" alt="">
-	</div>
+		<div class="profil-image">
+			<img src="/images/images.jfif" class="img-responsive" alt="">
+		</div>
 
-	<div class="profil-label">
-		<ul>
-			<li>
+		<div class="profil-label text-center">
+			<div class="mb-3">
 				<h5>{{lastUsername}}</h5>
-			</li>
-			<li>
 				<small>@{{user.pseudo}}</small>
-			</li>
-			<ul></div>
 
-			<div class="profil-button">
-				<button class="btn btn-outline-info">
-					<i class="bi bi-plus"></i>
-					Follow</button>
-				<button class="btn btn-outline-primary">
-					<i class="bi bi-messenger"></i>
-					Message</button>
 			</div>
+		</div>
 
-			<div class="profil-menu">
-				<div class="list-group-b" style="">
-					<a href="#" class="list-group-item-b active" aria-current="true">
-						<i class="bi bi-houses"></i>
-						Actualités
-					</a>
-					<a href="#" class="list-group-item-b ">
-						<i class="bi bi-people"></i>
-						Amis</a>
-					<a href="#" class="list-group-item-b ">
-						<i class="bi bi-clipboard-plus"></i>
-						Suivis</a>
-					<a href="#" class="list-group-item-b ">
-						<i class="bi bi-gear"></i>
-						Paramettre</a>
-					<a href="#" class="list-group-item-b ">
-						<i class="bi bi-info-square"></i>
-						Aides</a>
+		<div class="profil-button">
+			<div
+				class="hstack gap-2 gap-xl-3 justify-content-center">
+				<!-- User stat item -->
+				<div>
+					<h6 class="mb-0">256</h6>
+					<small>Post</small>
 				</div>
+				<!-- Divider -->
+				<div class="vr"></div>
+				<!-- User stat item -->
+				<div>
+					<h6 class="mb-0">2.5K</h6>
+					<small>Followers</small>
+				</div>
+				<!-- Divider -->
+				<div class="vr"></div>
+				<!-- User stat item -->
+				<div>
+					<h6 class="mb-0">365</h6>
+					<small>Following</small>
+				</div>
+			</div>
+		</div>
 
+		<div class="profil-menu">
+			<div class="list-group-b" style="">
+				<a href="#" class="list-group-item-b active" aria-current="true">
+					<i class="bi bi-houses"></i>
+					Actualités
+				</a>
+				<a href="#" class="list-group-item-b ">
+					<i class="bi bi-people"></i>
+					Amis</a>
+				<a href="#" class="list-group-item-b ">
+					<i class="bi bi-clipboard-plus"></i>
+					Followers</a>
+				<a href="#" class="list-group-item-b ">
+					<i class="bi bi-clipboard-plus"></i>
+					Suivis</a>
+				<a href="#" class="list-group-item-b ">
+					<i class="bi bi-gear"></i>
+					Paramettre</a>
+				<a href="#" class="list-group-item-b ">
+					<i class="bi bi-info-square"></i>
+					Aides</a>
 			</div>
 
 		</div>
+
+	</div>
+</div>

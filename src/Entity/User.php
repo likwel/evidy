@@ -40,6 +40,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $tablepublication= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tableactivity= null;
     
 
     #[ORM\Column]
@@ -273,6 +276,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTablepublication($tablepublication)
     {
         $this->tablepublication = $tablepublication;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tableactivity
+     */ 
+    public function getTableactivity()
+    {
+        return $this->tableactivity;
+    }
+
+    /**
+     * Set the value of tableactivity
+     *
+     * @return  self
+     */ 
+    public function setTableactivity($tableactivity)
+    {
+        $this->tableactivity = $tableactivity;
 
         return $this;
     }

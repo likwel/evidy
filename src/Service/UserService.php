@@ -57,11 +57,34 @@ class UserService extends PDOService{
 
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-            `productName` varchar(255) NOT NULL,
+            `publication` varchar(255) NOT NULL,
+            `confidentiality` text NOT NULL,
+            `photos` longtext NULL COMMENT '(DC2Type:json)',
+            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+        $conn = $this->getConnection();
+        $conn->exec($rqt);
+
+    }
+
+    public function createTableactivity($table){
+
+        $rqt ="CREATE TABLE ".$table." (
+            `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+            `product` varchar(255) NOT NULL,
+            `description` text NOT NULL,
+            `devise` varchar(255) NOT NULL,
+            `location` varchar(255) NOT NULL,
             `user_id` int(11) NOT NULL,
             `price` float NOT NULL,
-            `taxe` float NOT NULL,
+            `notPrice` float NOT NULL,
+            `taxe` float NOT NULL DEFAULT 0,
             `quantity` float NOT NULL,
+            `photos` longtext NULL COMMENT '(DC2Type:json)',
+            `isSale` tinyint(1) NOT NULL DEFAULT 1,
+            `isDelivery` tinyint(1) NOT NULL DEFAULT 0,
             `isWait` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";

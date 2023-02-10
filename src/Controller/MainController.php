@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\VenteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,18 +30,26 @@ class MainController extends AbstractController
 
         $user_list = $this->em->getRepository(User::class)->findAll();
 
-        //dd($user_list);
+
+        $activity_serv = new VenteService();
+
+        //dd($all_activity);
 
         if($user == null){
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
         }else{
             $fullname = $user->getFirstname().' '.$user->getLastname();
 
+            $user_tab_activity = $user->getTableactivity();
+
+            $all_activity = $activity_serv->getAll($user_tab_activity);
+
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
                 'lastUsername' => $fullname,
                 'user' => $user,
-                'user_list' =>$user_list
+                'user_list' => $user_list,
+                "activities" => $all_activity,
             ]);
         }
         //dd($user);

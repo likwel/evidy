@@ -130,9 +130,9 @@ li {
 }
 
 .icon-nav{
-  font-size:25px;
-  color: #111;
-  padding: 3px 2px;
+  font-size:20px;
+  color: #676a79;
+  padding: 5px 2px;
 }
 .badge{
   margin-top: 8px;
@@ -174,6 +174,10 @@ li {
   background-color: rgb(232, 236, 236);
   border-radius: 10px;
 }*/
+
+div a{
+  text-decoration: none;
+}
 
 .main-center{
   display: inline-block;
@@ -223,8 +227,8 @@ li {
 .couverture-image img{
   width: 100%;
   height: 100px;
-  border: 2px solid white;
-  border-radius: 10px;
+  /* border: 2px solid white; */
+  border-radius: 5px;
 } 
 .profil-label{
   display: flex;
@@ -300,7 +304,7 @@ ul li a{
 }
 .contenu{
   background: #e2eaef;
-  padding-top: 80px;
+  padding-top: 75px;
 }
 .card-b{
   border-radius: 10px;
@@ -414,4 +418,54 @@ ul li a{
 .message_box:hover {
   border:1px solid #adb5bd;
   background: #e2eaef;
+}
+.items-ico{
+  background:#eff2f6;
+  border-radius:10px;
+}
+.text-secondary{
+  padding-right: 1rem;
+    padding-left: 1rem;
+}
+.avatar-img{
+  min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;
+}
+
+.dropzone.dz-clickable {
+  cursor: pointer;
+}
+
+.dropzone {
+  min-height: auto;
+  border-radius: 0.4rem;
+  position: relative;
+  z-index: 0;
+  border: 2px dashed #eef0f2;
+  box-sizing: border-box;
+}
+
+.btn-primary-soft {
+  color: #0f6fec;
+  background-color: rgba(15, 111, 236, 0.1);
+}
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8125rem;
+  border-radius: 0.2rem;
+}
+.point-separateur{
+  background:gray; border-radius:50%; height:4px; margin-top:10px;width:4px;margin-left:10px;margin-right:10px;
+}
+
+.btn-card{
+  position: absolute;
+  margin-top: 10px;
+  left: 65%;
+  margin-right: 20px;
+}
+.btn-card-vendu{
+  position: absolute;
+  margin-top: 10px;
+  left: 78%;
+  margin-right: 20px;
 }

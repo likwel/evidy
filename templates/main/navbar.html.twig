@@ -1,162 +1,163 @@
 <div class="navtete">
 	<nav style="" class="container navbar navbar-expand-lg navbar-dark">
 		<div class="container-fluid">
-        <a href="/"><img src="/icons/icon.PNG" style="width:50px;"></a>
-			
+			<a href="/"><img src="/icons/icon1.PNG" style="width:150px;"></a>
 
-		<!-- Search form -->
-		<form class="d-flex input-group w-50 ms-lg-3 my-3 my-lg-0">
-			<input type="search" class="form-control" placeholder="Rechercher" aria-label="Search"/>
-			<button class="btn btn-outline-primary" type="button">
-				Rechercher
-			</button>
-		</form>
+			<form class="rounded position-relative w-70 ms-lg-3 my-3 my-lg-0">
+				<input class="form-control ps-5 bg-light" type="search" placeholder="Rechercher..." aria-label="Search">
+				<button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit">
+					<i class="bi bi-search fs-5"></i>
+				</button>
+			</form>
+		
+			<!-- Collapsible wrapper -->
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-		<!-- Collapsible wrapper -->
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul
+					class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
 
-			<ul
-				class="navbar-nav ms-auto d-flex flex-row mt-3 mt-lg-0">
+					<!-- Modal Carte -->
+					<li class="nav-item text-center mx-2 mx-lg-1 items-ico">
 
-				<!-- Modal Carte -->
-				<li class="nav-item text-center mx-2 mx-lg-1">
+						<div class="btn-group">
+							<a class="nav-link items-ico" style="" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
+								<div class="position-relative">
+									<i class="bi bi-cart icon-nav"></i>
+									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
+										0
+									</span>
+								</div>
+							</a>
 
-					<div class="btn-group">
-						<a class="nav-link" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
-							<div class="position-relative">
-								<i class="bi bi-cart icon-nav"></i>
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
-									9+
-								</span>
-							</div>
-						</a>
-
-						<div class="dropdown-menu" style="width:300px;">
-							<div class="dropdown-item">
-								<i class="bi bi-cart m-2"></i>
-								<strong class="me-auto">
-									Cartes</strong>
-							</div>
-							<hr class="dropdown-divider">
-							<div class="m-2">
-								Contenu des messages</div>
-							<div>
-								<a class="dropdown-item" href="#">Separated link</a>
-							</div>
-						</div>
-					</div>
-
-				</li>
-
-				<!-- Modal Message -->
-
-				<li class="nav-item text-center mx-2 mx-lg-1">
-					<div class="btn-group">
-						<a class="nav-link" href="/user/all_messages" id="liveToastBtnMsg">
-                        {# <a class="nav-link" href="/user/all_messages" id="liveToastBtnMsg" data-bs-toggle="dropdown" aria-expanded="false"> #}
-							<div class="position-relative">
-								<i class="bi bi-messenger icon-nav"></i>
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
-									9+
-								</span>
-							</div>
-						</a>
-
-						{# <div class="dropdown-menu" style="width:300px;">
-							<div class="dropdown-item">
-								<i class="bi bi-messenger m-2"></i>
-								<strong class="me-auto">
-									Messages</strong>
-							</div>
-							<hr class="dropdown-divider">
-							<div class="m-2 mb-3 overflow-auto h-50" id="message_body">
-								Contenu des messages</div>
-						</div> #}
-					</div>
-
-				</li>
-
-				<!-- Modal Notification -->
-
-				<li
-					class="nav-item text-center mx-2 mx-lg-1">
-
-					<!-- Example single danger button -->
-					<div class="btn-group">
-						<a class="nav-link" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
-							<div class="position-relative">
-								<i class="bi bi-bell-fill icon-nav"></i>
-								<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
-									9+
-								</span>
-							</div>
-						</a>
-
-						<div class="dropdown-menu" style="width:300px;">
-							<div class="dropdown-item">
-								<i class="bi bi-bell-fill m-2"></i>
-								<strong class="me-auto">
-									Notifications</strong>
-							</div>
-							<hr class="dropdown-divider">
-							<div class="m-2">
-								Contenu des notifs</div>
-							<div>
-								<a class="dropdown-item" href="#">Separated link</a>
+							<div class="dropdown-menu" style="width:300px;">
+								<div class="dropdown-item">
+									<i class="bi bi-cart m-2"></i>
+									<strong class="me-auto">
+										Cartes</strong>
+								</div>
+								<hr class="dropdown-divider">
+								<div class="m-2">
+									Contenu des messages</div>
+								<div>
+									<a class="dropdown-item" href="#">Separated link</a>
+								</div>
 							</div>
 						</div>
-					</div>
-				</li>
 
-				<!-- Modal Profli -->
+					</li>
 
-				<li class="nav-item text-center mx-2 mx-lg-1">
+					<!-- Modal Message -->
 
-					<div class="btn-group">
-						<div class="icon-nav profil-show " data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="bi bi-person-circle icon-nav"></i>
-							<small class="dropdown-toggle m-1">
-								Hi, Elie
-							</small>
+					<li class="nav-item text-center mx-2 mx-lg-1 items-ico">
+						<div class="btn-group">
+							<a
+								class="nav-link items-ico" href="/user/all_messages" id="liveToastBtnMsg">
+								{# <a class="nav-link" href="/user/all_messages" id="liveToastBtnMsg" data-bs-toggle="dropdown" aria-expanded="false"> #}
+								<div class="position-relative">
+									<i class="bi bi-messenger icon-nav"></i>
+									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_message">
+										0
+									</span>
+								</div>
+							</a>
+
+							{# <div class="dropdown-menu" style="width:300px;">
+														<div class="dropdown-item">
+															<i class="bi bi-messenger m-2"></i>
+															<strong class="me-auto">
+																Messages</strong>
+														</div>
+														<hr class="dropdown-divider">
+														<div class="m-2 mb-3 overflow-auto h-50" id="message_body">
+															Contenu des messages</div>
+													</div> #}
 						</div>
-						<ul class="dropdown-menu">
-							<li>
-								<a class="dropdown-item" href="#">
-									<h5>
-										<i class="bi bi-person-circle m-2"></i>
-										{{user.pseudo}}</h5>
-								</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<a class="dropdown-item mb-2" href="#">
-									<i class="bi bi-shield-fill-check"></i>
-									Sécurité</a>
-							</li>
-							<li>
-								<a class="dropdown-item mb-2" href="#">
-									<i class="bi bi-stack"></i>
-									Confidentialité</a>
-							</li>
-							<li>
-								<a class="dropdown-item mb-2" href="#">
-									<i class="bi bi-globe"></i>
-									Language</a>
-							</li>
-							<li><hr class="dropdown-divider"></li>
-							<li>
-								<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
-									<i class="bi bi-box-arrow-right"></i>
-									Deconnecter</a>
-							</li>
 
-						</ul>
-					</div>
+					</li>
 
-				</li>
+					<!-- Modal Notification -->
 
-			</ul>
+					<li
+						class="nav-item text-center mx-2 mx-lg-1 items-ico">
+
+						<!-- Example single danger button -->
+						<div class="btn-group">
+							<a class="nav-link items-ico" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+								<div class="position-relative">
+									<i class="bi bi-bell-fill icon-nav"></i>
+									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
+										0
+									</span>
+								</div>
+							</a>
+
+							<div class="dropdown-menu" style="width:300px;">
+								<div class="dropdown-item">
+									<i class="bi bi-bell-fill m-2"></i>
+									<strong class="me-auto">
+										Notifications</strong>
+								</div>
+								<hr class="dropdown-divider">
+								<div class="m-2">
+									Contenu des notifs</div>
+								<div>
+									<a class="dropdown-item" href="#">Separated link</a>
+								</div>
+							</div>
+						</div>
+					</li>
+
+					<!-- Modal Profli -->
+
+					<li class="nav-item text-center mx-2 mx-lg-2 items-ico">
+
+						<div class="btn-group">
+							<div class="icon-nav profil-show " data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bi bi-person-circle icon-nav"></i>
+								<small class="dropdown-toggle p-3">
+									Hi,
+									{{user.firstname}}
+								</small>
+							</div>
+							<ul class="dropdown-menu">
+								<li>
+									<a class="dropdown-item" href="#">
+										<h5>
+											<i class="bi bi-person-circle m-2"></i>
+											{{user.pseudo}}</h5>
+									</a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+								<li>
+									<a class="dropdown-item mb-2" href="#">
+										<i class="bi bi-shield-fill-check"></i>
+										Sécurité</a>
+								</li>
+								<li>
+									<a class="dropdown-item mb-2" href="#">
+										<i class="bi bi-stack"></i>
+										Confidentialité</a>
+								</li>
+								<li>
+									<a class="dropdown-item mb-2" href="#">
+										<i class="bi bi-globe"></i>
+										Language</a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+								<li>
+									<a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+										<i class="bi bi-box-arrow-right"></i>
+										Deconnecter</a>
+								</li>
+
+							</ul>
+						</div>
+
+					</li>
+
+				</ul>
+			</div>
+
 		</div>
-
-	</div>
-</nav></div>
+	</nav>
+</div>

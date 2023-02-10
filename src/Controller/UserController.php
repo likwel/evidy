@@ -8,6 +8,7 @@ use App\Service\PDOService;
 use App\Service\UserService;
 use App\Service\CarteService;
 use App\Service\MessageService;
+use App\Service\VenteService;
 use App\Repository\UserRepository;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -290,5 +291,40 @@ class UserController extends AbstractController
         }
 
     }
+    #[Route('/user/post_sale', name: 'app_post_sale')]
+    public function postVente(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $table_vente = $this->getUser()->getTableactivity();
+
+        $vente_serv = new VenteService();
+
+        $data = json_decode($request->getContent(), true);
+
+        $vente_serv->publierVente($table_vente, $data);
+
+        return  $this->json("Post avec succès");
+        
+    }
+
+    #[Route('/user/get_sale', name: 'app_get_sale')]
+    public function getVente(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $table_vente = $this->getUser()->getTableactivity();
+
+        $vente_serv = new VenteService();
+
+        $data = $vente_serv->getAll($table_vente);
+        if(count($data)>0){
+            return  $this->json($data);
+        }else{
+            return  $this->json("Aucun post");
+        }
+        
+    }
+
 
 }

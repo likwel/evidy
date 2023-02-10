@@ -136,6 +136,10 @@ class SecurityController extends AbstractController
 
                 $user_service ->createTablepublication("tb_publication_".$user_id);
 
+                $user->setTableactivity("tb_activity_".$user_id);
+
+                $user_service ->createTableactivity("tb_activity_".$user_id);
+
                 $entityManager->flush();
 
                 return new RedirectResponse($urlGenerator->generate('app_login'));

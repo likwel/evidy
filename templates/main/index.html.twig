@@ -1,166 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} E-vidy : Home{% endblock %}
+{% block title %}
+	E-vidy : Home
+{% endblock %}
 
 {% block body %}
-<div class="body">
-		
+	<div class="body">
+
 		{% include "main/navbar.html.twig" %}
 
-		<div
-			class="container contenu">
-			<!-- Profil-->
-			{% include "main/leftprofil.html.twig" %}
-			<!-- End Profil-->
 
-			<!-- Main Center-->
-			<div class="main-center-b mb-10" style="margin-left:10px;margin-right:10px;">
-				{# {% include "story.html.twig" %} #}
-				<div id="" class="card-b mb-3">
-					<div class="row p-3">
-						<div class="col-1 rounded-circle">
-							<img id="roundedImg" style="min-height: 50px; min-width:50px; max-width:50px; max-height: 50px;" class="rounded-circle border border-1" src="/images/img.jpg">
-						</div>
-						<div class="col-11 ml-2">
-							<input id="btnShowModalAddPub" type="text" class="form-control form-control-lg rounded-pill bg-transparent text-white" data-bs-toggle="modal" data-bs-target="#modal_publication" data-bs-whatever="@mdo" placeholder="Exprimez-vous...">
-						</div>
-						<div class="row mt-3">
-							<div class="col-3 text-center" style="cursor:pointer;">
-								<i class="bi bi-graph-up"></i> 
-								Vendre
-						</div>
-						<div class="col-3 text-center" style="cursor:pointer;">
-							<i class="bi bi-cart-fill"></i> 
-								Acheter
-						</div>
-						<div class="col-3 text-center" data-bs-toggle="modal" data-bs-target="#modal_evenement" data-bs-whatever="@mdo" style="cursor:pointer;">
-							<i class="bi bi-calendar2-event-fill">
-								</i> Evenement
+		<div class="container contenu">
+			<div
+				class="row g-4">
+				<!-- Profil-->
+				{% include "main/leftprofil.html.twig" %}
+				<!-- End Profil-->
 
-						</div>
-						<div class="col-3 text-center" style="cursor:pointer;">
-							<i class="bi bi-pencil-square"></i>
-							Commande
-						</div>
-					</div>
-				</div>
-				</div>
-	
-				<div class="card-b mb-3 card-article">
-					<div class="card-body">
-						<div class="mb-3" style="">
-							<div class="row g-0">
-								<div class="col-2">
-									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
-								</div>
-								<div class="col-9">
-									<div class="card-body">
-										<h5 class="card-title">
-											<a href="#" class="lien">ShopRaphia.mg</a>
-										</h5>
-										<small class="card-text">
-											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
-											<small class="text-muted">il y a 3 mininutes</small> . 
-											<small class="text-muted">publique</small>
-										</small>
-									</div>
-								</div>
-								<div class="col-1 float-end">
-								<i class="bi bi-three-dots fa-xl float-end"></i>
-								</div>
-							</div>
-						</div>
+				<!-- Main Center-->
+				{% include "main/main.html.twig" %}
 
-						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-						<p class="card-text">
-							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> <span class="badge rounded-pill text-bg-success">150 000 Ariary</span></small><br>
-							
-						</p>
-						<div class="bg-transparent">
-							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
-						</div>
-
-						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
-						
-					</div>
-					<div class="row" style="margin-top:10px;">
-						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
-						<small class="col-6"><i class="float-end"> 4 commentaires</i></small>
-					</div>
-					<hr>
-
-					<div class="card-footer bg-transparent">
-						<div class="row">
-							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
-							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
-							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
-						</div>
-					</div>
-				</div>
-
-				<div class="card-b mb-3 card-article">
-					<div class="card-body">
-						<div class="mb-3" style="max-width: 540px;">
-							<div class="row g-0">
-								<div class="col-md-2">
-									<img src="/images/images.jfif" class="img-responsive" alt="" style="width:60px;">
-								</div>
-								<div class="col-md-10">
-									<i class="bi bi-three-dots float-end more-end fa-xl"></i>
-									<div class="card-body">
-										<h5 class="card-title">
-											<a href="#" class="lien">ShopRaphia.mg</a>
-										</h5>
-										<small class="card-text">
-											<a href="#" class="lien"><i class="bi bi-person-circle"></i> Elie Fenohasina</a> . 
-											<small class="text-muted">il y a 3 mininutes</small> . 
-											<small class="text-muted">publique</small>
-										</small>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-						<p class="card-text">
-							Prix : <small class="text-muted"><strike>Ar 200 000 </strike> 190 000 Ariary</small><br>
-						</p>
-						<div class="bg-transparent">
-							<button class="btn btn-outline-primary float-end"><i class="bi bi-cart2"></i> Ajouter au panier</button>
-						</div>
-
-						<img src="/images/img.jpg" class="card-img-bottom" alt="..." style="height:300px;">
-						
-					</div>
-					<div class="row" style="margin-top:10px;">
-						<small class="col-6 float-start"><i class="bi bi-hand-thumbs-up fa-sm reaction-number"> 48</i></small>
-						<small class="col-6"><i class="bi bi-hand-thumbs-up fa-sm  float-end"> 4 commentaires</i></small>
-					</div>
-					<hr>
-					<div class="card-footer bg-transparent">
-						<div class="row">
-							<button class="btn btn-light text-center col-4"><i class="bi bi-hand-thumbs-up"></i> J'aime</button>
-							<button class="btn btn-light text-center col-4"><i class="bi bi-chat-square"></i> Commenter</button>
-							<button class="btn btn-light text-center col-4"><i class="bi bi-share"></i> Partager</button>
-						</div>
-					</div>
-				</div>
-
-
+				<!-- Right menu-->
+			{% include "main/rightmenu.html.twig" %}
+				<!-- End right-->
 			</div>
 
-			<!-- Right menu-->
-			{% include "main/rightmenu.html.twig" %}
-			<!-- End right-->
-
 		</div>
+
 		<script>
 
-		function openMsgByUser(user_id){
-			document.querySelector("#message_user_id").setAttribute("data-userId",user_id)
-		}
-		
+			function openMsgByUser(user_id) {
+				document.querySelector("#message_user_id").setAttribute("data-userId", user_id)
+			}
+
+			function sendActivity(){
+
+				let user_id = {{app.user.id}}
+
+				let data ={
+					"product": document.querySelector("#qwq_product").value,
+					"description" : document.querySelector("#qwq_description").value,
+					"devise" : document.querySelector("#qwq_devise").value,
+					"location" : document.querySelector("#qwq_location").value,
+					"user_id" : user_id,
+					"price" : document.querySelector("#qwq_price").value,
+					"quantity" : document.querySelector("#qwq_quantity").value,
+					"photos" : "",
+					"isDelivery" : document.querySelector("#qwq_isDelivery").value == "on" ? 1 : 0,
+					"isWait" : 0,
+				};
+
+				console.log(data);
+
+				fetch(new Request("/user/post_sale", {
+					method: "POST",
+					headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+					})).then(req => req.json()).then(message => {
+						console.log(message);
+				})
+			}
+
 		</script>
 
 		{% include 'user/chat.html.twig' %}
-{% endblock %}
+	{% endblock %}
