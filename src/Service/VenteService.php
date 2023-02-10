@@ -7,20 +7,9 @@ use App\Service\PDOService;
 
 class VenteService extends PDOService{
 
-    public function publierVente($table_vente, $data){
+    public function publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, $photos, $isDelivery, $isWait){
 
         $conn = $this -> getConnection();
-
-        $product = $data["product"];
-        $description = $data["description"];
-        $devise= $data["devise"];
-        $location = $data["location"]; 
-        $user_id = $data["user_id"];
-        $price = $data["price"];
-        $quantity = $data["quantity"];
-        $photos= $data["photos"];
-        $isDelivery= $data["isDelivery"];
-        $isWait = $data["isWait"];
 
         $sql = "INSERT INTO $table_vente (product, description, devise, location, user_id, price, quantity, photos, isDelivery, isWait) VALUES (?,?,?,?,?,?,?,?,?,?)";
 

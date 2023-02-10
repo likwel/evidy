@@ -473,15 +473,19 @@
           
           <!-- Upload Photos or Videos -->
           <!-- Dropzone photo START -->
-          <div>
-            <label class="form-label">Photos</label>
-            <div class="dropzone dropzone-default card shadow-none dz-clickable" data-dropzone="{&quot;maxFiles&quot;:2}" id="qwq_photo">
-              <div class="dz-message">
-                <i class="bi bi-file-earmark-text display-3"></i>
-                <p>Drop presentation and document here or click to upload.</p>
-              </div>
-            </div>
+          <div class="col-12">
+		  	<label>Photos</label><br>
+			<progress class="w-100" id="progress-bar" max=100 value=0></progress>
+			<label class="button w-100" for="fileElem">
+			<div id="drop-area">
+				<form class="my-form">
+					<p>Vous pouvez glisser vos images vers ici</p>
+					<input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)">
+				</form>
+				<div id="gallery" /></div>
+				</div>
           </div>
+		  </label>
           <!-- Dropzone photo END -->
         </form>
         <!-- Form END -->
@@ -496,3 +500,62 @@
     </div>
   </div>
 </div>
+
+<script>
+
+ 	function dataURLtoFile(dataurl, filename) {
+ 
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), 
+            n = bstr.length, 
+            u8arr = new Uint8Array(n);
+            
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        
+        return new File([u8arr], filename, {type:mime});
+    }
+    
+
+	function sendActivity(){
+
+		let user_id = {{app.user.id}}
+
+		let photos =[]
+
+		document.querySelectorAll("#gallery > img").forEach(img =>{
+			let img_64 = (img.getAttribute("src"));
+			photos.push(img_64)
+		})
+
+		//console.log("lenght : " +photos)
+
+		let data ={
+			"photos" : photos,
+			"product": document.querySelector("#qwq_product").value,
+			"description" : document.querySelector("#qwq_description").value,
+			"devise" : document.querySelector("#qwq_devise").value,
+			"location" : document.querySelector("#qwq_location").value,
+			"user_id" : user_id,
+			"price" : document.querySelector("#qwq_price").value,
+			"quantity" : document.querySelector("#qwq_quantity").value,
+			"isDelivery" : document.querySelector("#qwq_isDelivery").value == "on" ? 1 : 0,
+			"isWait" : 0,
+		};
+
+		console.log(data);
+
+		fetch(new Request("/user/post_sale", {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+		})
+	}
+</script>

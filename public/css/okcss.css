@@ -469,3 +469,34 @@ ul li a{
   left: 78%;
   margin-right: 20px;
 }
+
+#drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  width: 100%;
+  font-family: sans-serif;
+  margin: auto;
+  padding: 20px;
+}
+#drop-area.highlight {
+  border-color: purple;
+}
+p {
+  margin-top: 0;
+}
+.my-form {
+  margin-bottom: 0px;
+}
+#gallery {
+  margin-top: 10px;
+}
+#gallery img {
+  width: 150px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+#fileElem {
+  display: none;
+}

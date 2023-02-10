@@ -33,36 +33,6 @@
 				document.querySelector("#message_user_id").setAttribute("data-userId", user_id)
 			}
 
-			function sendActivity(){
-
-				let user_id = {{app.user.id}}
-
-				let data ={
-					"product": document.querySelector("#qwq_product").value,
-					"description" : document.querySelector("#qwq_description").value,
-					"devise" : document.querySelector("#qwq_devise").value,
-					"location" : document.querySelector("#qwq_location").value,
-					"user_id" : user_id,
-					"price" : document.querySelector("#qwq_price").value,
-					"quantity" : document.querySelector("#qwq_quantity").value,
-					"photos" : "",
-					"isDelivery" : document.querySelector("#qwq_isDelivery").value == "on" ? 1 : 0,
-					"isWait" : 0,
-				};
-
-				console.log(data);
-
-				fetch(new Request("/user/post_sale", {
-					method: "POST",
-					headers: {
-					'Accept': 'application/json',
-					'Content-Type': 'application/json'
-					},
-					body: JSON.stringify(data)
-					})).then(req => req.json()).then(message => {
-						console.log(message);
-				})
-			}
 
 		</script>
 

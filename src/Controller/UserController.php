@@ -302,9 +302,44 @@ class UserController extends AbstractController
 
         $data = json_decode($request->getContent(), true);
 
-        $vente_serv->publierVente($table_vente, $data);
+        
 
-        return  $this->json("Post avec succès");
+        //extract($data); /// $from , $to , $message , $images
+        
+        $path = $this->getParameter('kernel.project_dir') . '/public/uploads/post/'; 
+
+        $product = $data["product"];
+        $description = $data["description"];
+        $devise= $data["devise"];
+        $location = $data["location"]; 
+        $user_id = $data["user_id"];
+        $price = $data["price"];
+        $quantity = $data["quantity"];
+        $photos= $data["photos"];
+        $isDelivery= $data["isDelivery"];
+        $isWait = $data["isWait"];
+
+        $photos_name = array();
+
+        if(count($photos) > 0 ){
+
+            foreach( $photos as $photo ){
+                // Function to write image into file
+                $temp = explode(";", $photo );
+                $extension = explode("/", $temp[0])[1];
+
+                $image_name = "post_image_". time() . uniqid(). '.'.$extension;
+
+                file_put_contents($path ."/". $image_name, file_get_contents($photo));
+                
+                array_push($photos_name,$image_name);
+
+            }
+        }
+
+        $vente_serv->publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait);
+        
+        return  $this->json("Publication succès");
         
     }
 
