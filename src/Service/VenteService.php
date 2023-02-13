@@ -50,7 +50,7 @@ class VenteService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM $table_vente ");
+        $statement = $conn->prepare("SELECT * FROM $table_vente order by id DESC");
 
         $statement->execute();
 

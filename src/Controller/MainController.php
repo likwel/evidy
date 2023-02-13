@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Service\UserService;
 use App\Service\VenteService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,12 +45,24 @@ class MainController extends AbstractController
 
             $all_activity = $activity_serv->getAll($user_tab_activity);
 
+            $user_serv = new UserService();
+
+            //dd($user_serv->diff4humans("2023-02-13 12:12:12"));
+
+            $data = array();
+
+            forEach($all_activity as $activity){
+                array_push($data, ["user"=>["fullname"=>$user_serv->getFullname(intval($activity["user_id"])),"id"=>$activity["user_id"],"timesForHumans"=>$user_serv->diff4humans($activity["datetime"])],"activity"=>$activity]);
+            }
+
+            //dd($data);
+
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
                 'lastUsername' => $fullname,
                 'user' => $user,
                 'user_list' => $user_list,
-                "activities" => $all_activity,
+                "activities" => $data,
             ]);
         }
         //dd($user);

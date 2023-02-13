@@ -297,6 +297,7 @@ function previewFile(file) {
   }
 }
 
+
 /*function uploadFile(file, i) {
   var url = 'https://api.cloudinary.com/v1_1/joezimim007/image/upload'
   var xhr = new XMLHttpRequest()
@@ -322,7 +323,41 @@ function previewFile(file) {
   formData.append('file', file)
   xhr.send(formData)
 }*/
-	
+	function diff4humans(date){
+		let dateEnd = new Date();
+		let dateStart = new Date(date);
+
+		var delta = Math.round((dateEnd- dateStart) / 1000); //en seconde
+
+		var minute = 60,
+			hour = minute * 60,
+			day = hour * 24,
+			week = day * 7;
+
+		var fuzzy;
+
+		if (delta < 30) {
+			fuzzy = "à l'instant";
+		} else if (delta < minute) {
+			fuzzy = delta + ' sec';
+		} else if (delta < 2 * minute) {
+			fuzzy = '1 min'
+		} else if (delta < hour) {
+			fuzzy = Math.floor(delta / minute) + ' min';
+		} else if (Math.floor(delta / hour) == 1) {
+			fuzzy = '1 heure'
+		} else if (delta < day) {
+			fuzzy = Math.floor(delta / hour) + ' heures';
+		} else if (delta < day * 2) {
+			fuzzy = 'hier';
+		}else{
+			fuzzy = Math.floor(delta / day) + ' jours';
+		}
+
+		return fuzzy;
+	}
+
+	//console.log("date : "+diff4humans("2023-02-13 12:45:35"))
 
 	</script>
 </html>

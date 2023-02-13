@@ -83,14 +83,14 @@
 							<div>
 								<div class="nav nav-divider">
 									<h6 class="nav-item card-title mb-0">
-										<a href="#" style="text-decoration:none;">
-											Lori Ferguson
+										<a href="/user/{{activity.user.id}}" style="text-decoration:none;">
+											{{activity.user.fullname}}
 										</a>
 									</h6>
 									<span class="point-separateur"></span>
-									<small class="text-muted">3 minutes</small>
+									<small class="text-muted">{{ activity.user.timesForHumans}}</small>
 								</div>
-								<a href="" class="mb-0 small">Web Developer at Webestica</a>
+								<small href="" class="mb-0 small"><i>Vente</i></small>
 							</div>
 						</div>
 						<!-- Card feed action dropdown START -->
@@ -130,28 +130,32 @@
 				<!-- Card header END -->
 				<!-- Card body START -->
 				<div class="card-body">
-					<b>{% if activity.isSale == 1 %} A vendre{% else %}Cherche à achêter{% endif %}<br>{{activity.product}}</b>
-					<p>{{activity.description}}</p>
-					<p>Récuper à {{activity.location}}</p>
-					{% if activity.isDelivery == 1%}
+					<b>{% if activity.activity.isSale == 1 %} A vendre{% else %}Cherche à achêter{% endif %}<br>{{activity.activity.product}}</b>
+					<p>{{activity.activity.description}}</p>
+					<p>Récuper à {{activity.activity.location}}</p>
+					{% if activity.activity.isDelivery == 1%}
 						<span class="badge text-bg-warning">Possible à livrer</span><br>
 					{% endif %}
 					<!-- Card img -->
 					<small class="text-muted">
 						Prix : 
-						<span class="badge rounded-pill text-bg-success">{{activity.price}} {{activity.devise}}</span>
-						<strike>{{activity.notPrice}} {{activity.devise}}
+						<span class="badge rounded-pill text-bg-success">{{activity.activity.price}} {{activity.activity.devise}}</span>
+						<strike>
+						{% if activity.activity.notPrice != 0 %}
+							{{activity.activity.notPrice}} {{activity.activity.devise}}
+						{% endif %}
+						
 						</strike>
 					</small><br><br>
-					{% if activity.isSale == 1 %}
-						{% if activity.isWait == 0 %}
-							<div class="bg-transparent btn-card float-end">
+					{% if activity.activity.isSale == 1 %}
+						{% if activity.activity.isWait == 0 %}
+							<div class="bg-transparent btn-card float-end pannier">
 								<button class="btn btn-outline-primary float-end">
 									<i class="bi bi-cart2"></i>
 									Ajouter au panier</button>
 							</div>
 						{% else %}
-							<div class="bg-transparent btn-card-vendu float-end">
+							<div class="bg-transparent btn-card-vendu float-end pannier">
 								<button class="btn btn-danger float-end" disabled>
 									<i class="bi bi-cart2"></i>
 									Vendu</button>
@@ -162,38 +166,51 @@
 
 					<!-- Image slider -->
 
-					{% if activity.photos %}
+					{% if activity.activity.photos %}
 
-						{% set images = activity.photos|split(',') %}
+						{% set images = activity.activity.photos|split(',') %}
 
-						<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+						<div id="carouselExampleIndicators_{{activity.activity.id}}" class="carousel slide" data-bs-ride="carousel">
 							<div class="carousel-indicators">
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-								<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+
+							{% if images|length > 1 %}
+								{% for image in images %}
+									{% if loop.index == 1 %}
+										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" class="active" aria-current="true" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>
+									{% else %}
+										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>									
+									{% endif %}
+									
+								{% endfor %}
+							{% endif %}
+							
+
 							</div>
+
 							<div class="carousel-inner">
 								{% for image in images %}
 								{% set name_img = image|replace({'"': "", '[': "", ']': ""}) %}
-									<div class="carousel-item">
-										<img src="/uploads/post/{{name_img}}" class="d-block w-100" alt="...">
+									<div class="carousel-item active">
+										<img src="/uploads/post/{{name_img}}" class="card-img" alt="...">
 									</div>
 									
 								{% endfor %}
 								
+								
 							</div>
-							<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Previous</span>
-							</button>
-							<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-								<span class="carousel-control-next-icon" aria-hidden="true"></span>
-								<span class="visually-hidden">Next</span>
-							</button>
+
+							{% if images|length > 1 %}
+								<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Previous</span>
+								</button>
+								<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span>
+									<span class="visually-hidden">Next</span>
+								</button>
+							{% endif %}
 						</div>
 
-						
-					
 					{% endif %}
 					
 					{# <img
@@ -204,7 +221,7 @@
 							<a class="nav-link" href="#!">
 								<i class="bi bi-hand-thumbs-up-fill pe-1"></i>J'aime (56)</a>
 						</li>
-						<li class="nav-item" data-bs-toggle="collapse" href="#collapseCommentaire_{{activity.id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
+						<li class="nav-item" data-bs-toggle="collapse" href="#collapseCommentaire_{{activity.activity.id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
 							<a class="nav-link" href="#!">
 								<i class="bi bi-chat-fill pe-1"></i>Commentaires (12)</a>
 						</li>
@@ -244,7 +261,7 @@
 					<!-- Feed react END -->
 
 					<!-- Add comment -->
-					<div class="collapse" id="collapseCommentaire_{{activity.id}}">
+					<div class="collapse" id="collapseCommentaire_{{activity.activity.id}}">
 						<div
 							class="d-flex mb-3 collapse">
 							<!-- Avatar -->

@@ -3,6 +3,8 @@
 namespace App\Service;
 
 use PDO;
+use DateTime;
+use DateTimeImmutable;
 use App\Service\PDOService;
 
 class UserService extends PDOService{
@@ -94,17 +96,34 @@ class UserService extends PDOService{
 
     }
 
+    public function createTablefriends($table){
+
+        $rqt ="CREATE TABLE ".$table." (
+            `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+            `user_id` varchar(255) NOT NULL,
+            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+        $conn = $this->getConnection();
+        $conn->exec($rqt);
+
+    }
+
     public function getFullname($user_id){
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT concat(firstname,' ', lastname) FROM user where id = $user_id");
+        $statement = $conn->prepare("SELECT concat(firstname,' ', lastname) as fullname FROM user where id = $user_id");
 
         $statement->execute();
 
-        $result = $statement->fetch(PDO::FETCH_ASSOC)["fullname"];
-
-        return $result;
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        if($result){
+            return $result["fullname"];
+        }else{
+            return null;
+        }
 
     }
 
@@ -120,6 +139,30 @@ class UserService extends PDOService{
 
         return $result;
 
+    }
+
+    public function diff4humans($date){
+        $now = new DateTime("now");
+        $target = new DateTime($date);
+        $interval = $now->diff($target);
+        $heure = $interval->format("%h");
+        $min = $interval->format("%i");
+        $sec = $interval->format("%s");
+        $day = $interval->format("%d");
+
+        if($day >=1){
+            return $day." jr";
+        }else if($day < 1 && $heure<24){
+            return $heure." hr";
+        }else if($heure < 1 && $min < 60 && $sec<60){
+            return $min." min";
+
+        }else if($min <1 && $sec<60){
+            return $sec." sec";
+        }else{
+            return " à l'instant";
+        }
+        //return $interval->format("%h:%i:%s");
     }
 
 }

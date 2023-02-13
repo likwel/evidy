@@ -32,11 +32,11 @@ body{
  
 }
 
-.active{
+/* .active{
   background: #adb5bd;
   border-left: 3px solid rgb(3, 201, 215);
   color:white;
-}
+} */
 
 .sidebar a:hover {
   color: rgb(165, 174, 223);
@@ -499,4 +499,11 @@ p {
 
 #fileElem {
   display: none;
+}
+
+.pannier{
+  z-index: 1;
+}
+.nav-item .nav-link{
+  color: #111;
 }
