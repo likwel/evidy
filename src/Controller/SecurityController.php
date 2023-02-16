@@ -23,7 +23,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, EntityManagerInterface $entityManager): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('app_main');
@@ -140,6 +140,10 @@ class SecurityController extends AbstractController
 
                 $user_service ->createTableactivity("tb_activity_".$user_id);
 
+                $user->setTablefriends("tb_friends_".$user_id);
+
+                $user_service ->createTablefriends("tb_friends_".$user_id);
+
                 $entityManager->flush();
 
                 return new RedirectResponse($urlGenerator->generate('app_login'));
@@ -155,5 +159,10 @@ class SecurityController extends AbstractController
             'pwd_error' => $pwd_error,
             'email_error'=> $flash
         ]);
+    }
+    #[Route(path: '/story', name: 'app_story')]
+    public function story()
+    {
+        return $this->render('story.html.twig');
     }
 }

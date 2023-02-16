@@ -1,153 +1,124 @@
 <div class="col-lg-3">
 
-<div class="row g-4">
-          <!-- Card follow START -->
-          <div class="col-sm-6 col-lg-12">
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header pb-0 border-0 m-1">
-                <h5 class="card-title mb-0">Suggestions</h5>
-              </div>
-              <!-- Card header END -->
-              <!-- Card body START -->
-              <div class="card-body">
-                <!-- Connection item START -->
-                <div class="hstack gap-2 mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar">
-                    <a href="#!"><img class="avatar-img rounded-circle" src="/images/images.jfif" alt=""></a>
-                  </div>
-                  <!-- Title -->
-                  <div class="overflow-hidden">
-                    <a class="h6 mb-0" href="#!">Judy Nguyen </a>
-                    <p class="mb-0 small text-truncate">News anchor</p>
-                  </div>
-                  <!-- Button -->
-                  <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                </div>
-                <!-- Connection item END -->
-                <!-- Connection item START -->
-                  <div class="hstack gap-2 mb-3">
-                    <!-- Avatar -->
-                    <div class="avatar avatar-story">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="/images/images.jfif" alt=""> </a>
-                    </div>
-                    <!-- Title -->
-                    <div class="overflow-hidden">
-                      <a class="h6 mb-0" href="#!">Amanda Reed </a>
-                      <p class="mb-0 small text-truncate">Web Developer</p>
-                    </div>
-                    <!-- Button -->
-                    <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                </div>
-                <!-- Connection item END -->
+	<div
+		class="row g-4">
+		<!-- Card follow START -->
+		<div class="col-sm-6 col-lg-12">
+			<div
+				class="card">
+				<!-- Card header START -->
+				<div class="card-header pb-0 border-0 m-1  bg-white">
+					<h5 class="card-title mb-0">Suggestions</h5>
+				</div>
+				<!-- Card header END -->
+				<!-- Card body START -->
+				<div
+					class="card-body">
+					<!-- Connection item START -->
 
-                <!-- Connection item START -->
-                <div class="hstack gap-2 mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar">
-                    <a href="#"> <img class="avatar-img rounded-circle" src="/images/images.jfif" alt=""> </a>
-                  </div>
-                  <!-- Title -->
-                  <div class="overflow-hidden">
-                    <a class="h6 mb-0" href="#!">Billy Vasquez </a>
-                    <p class="mb-0 small text-truncate">News anchor</p>
-                  </div>
-                  <!-- Button -->
-                  <a class="btn btn-primary rounded-circle icon-md ms-auto" href="#"><i class="bi bi-person-check-fill"> </i></a>
-                </div>
-                <!-- Connection item END -->
-                
-                <!-- Connection item START -->
-                <div class="hstack gap-2 mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar">
-                    <a href="#"> <img class="avatar-img rounded-circle" src="/images/images.jfif" alt=""> </a>
-                  </div>
-                  <!-- Title -->
-                  <div class="overflow-hidden">
-                    <a class="h6 mb-0" href="#!">Lori Ferguson </a>
-                    <p class="mb-0 small text-truncate">Web Developer at Webestica</p>
-                  </div>
-                  <!-- Button -->
-                  <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                </div>
-                <!-- Connection item END -->
+					{% if suggestions %}
+						{% for sugg in suggestions %}
+							<div
+								class="hstack gap-2 mb-3">
+								<!-- Avatar -->
+								<div class="avatar">
+									<a href="#!">
+										{% if sugg.profil %}
+											<img class="avatar-img rounded-circle" src="/uploads/profil/{{sugg.profil}}" alt="">
+										{% else %}
+											<img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt="">
+										{% endif %}
+									</a>
+								</div>
+								<!-- Title -->
+								<div class="overflow-hidden">
+									<a class="h6 mb-0" href="/user/{{sugg.id}}">{{sugg.firstname}}
+										{{sugg.lastname}}</a>
+									<p class="mb-0 small text-truncate">
+										<i>@{{sugg.pseudo}}</i>
+									</p>
+								</div>
+								<!-- Button -->
+								<button class="btn btn-outline-primary rounded-circle icon-md ms-auto" onclick="addFriend(this,{{sugg.id}})">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
 
-                <!-- Connection item START -->
-                <div class="hstack gap-2 mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar">
-                    <a href="#"> <img class="avatar-img rounded-circle" src="/images/images.jfif" alt=""> </a>
-                  </div>
-                  <!-- Title -->
-                  <div class="overflow-hidden">
-                    <a class="h6 mb-0" href="#!">Carolyn Ortiz </a>
-                    <p class="mb-0 small text-truncate">News anchor</p>
-                  </div>
-                  <!-- Button -->
-                  <a class="btn btn-primary-soft rounded-circle icon-md ms-auto" href="#"><i class="fa-solid fa-plus"> </i></a>
-                </div>
-                <!-- Connection item END -->
+						{% endfor %}
 
-                <!-- View more button -->
-                <div class="d-grid mt-3">
-                  <a class="btn btn-sm btn-primary-soft" href="#!">View more</a>
-                </div>
-              </div>
-              <!-- Card body END -->
-            </div>
-          </div>
-          <!-- Card follow START -->
+					{% endif %}
 
-          <!-- Card News START -->
-          <div class="col-sm-6 col-lg-12">
-            <div class="card">
-              <!-- Card header START -->
-              <div class="card-header pb-0 border-0">
-                <h5 class="card-title mb-0">Today’s news</h5>
-              </div>
-              <!-- Card header END -->
-              <!-- Card body START -->
-              <div class="card-body">
-                <!-- News item -->
-                <div class="mb-3">
-                  <h6 class="mb-0"><a href="blog-details.html">Ten questions you should answer truthfully</a></h6>
-                  <small>2hr</small>
-                </div>
-                <!-- News item -->
-                <div class="mb-3">
-                  <h6 class="mb-0"><a href="blog-details.html">Five unbelievable facts about money</a></h6>
-                  <small>3hr</small>
-                </div>
-                <!-- News item -->
-                <div class="mb-3">
-                  <h6 class="mb-0"><a href="blog-details.html">Best Pinterest Boards for learning about business</a></h6>
-                  <small>4hr</small>
-                </div>
-                <!-- News item -->
-                <div class="mb-3">
-                  <h6 class="mb-0"><a href="blog-details.html">Skills that you can learn from business</a></h6>
-                  <small>6hr</small>
-                </div>
-                <!-- Load more comments -->
-                <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                  <div class="spinner-dots me-2">
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                  </div>
-                  View all latest news
-                </a>
-              </div>
-              <!-- Card body END -->
-            </div>
-          </div>
-          <!-- Card News END -->
-        </div>
+
+					<!-- Connection item END -->
+
+					<!-- View more button -->
+					<div class="d-grid mt-3">
+						<a class="btn btn-sm btn-outline-primary" href="#">Voir plus</a>
+					</div>
+				</div>
+				<!-- Card body END -->
+			</div>
+		</div>
+		<!-- Card follow START -->
+
+		<!-- Card News START -->
+		<div class="col-sm-6 col-lg-12">
+			<div
+				class="card">
+				<!-- Card header START -->
+				<div class="card-header pb-0 border-0">
+					<h5 class="card-title mb-0">Today’s news</h5>
+				</div>
+				<!-- Card header END -->
+				<!-- Card body START -->
+				<div
+					class="card-body">
+					<!-- News item -->
+					<div class="mb-3">
+						<h6 class="mb-0">
+							<a href="blog-details.html">Ten questions you should answer truthfully</a>
+						</h6>
+						<small>2hr</small>
+					</div>
+					<!-- News item -->
+					<div class="mb-3">
+						<h6 class="mb-0">
+							<a href="blog-details.html">Five unbelievable facts about money</a>
+						</h6>
+						<small>3hr</small>
+					</div>
+					<!-- News item -->
+					<div class="mb-3">
+						<h6 class="mb-0">
+							<a href="blog-details.html">Best Pinterest Boards for learning about business</a>
+						</h6>
+						<small>4hr</small>
+					</div>
+					<!-- News item -->
+					<div class="mb-3">
+						<h6 class="mb-0">
+							<a href="blog-details.html">Skills that you can learn from business</a>
+						</h6>
+						<small>6hr</small>
+					</div>
+					<!-- Load more comments -->
+					<a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
+						<div class="spinner-dots me-2">
+							<span class="spinner-dot"></span>
+							<span class="spinner-dot"></span>
+							<span class="spinner-dot"></span>
+						</div>
+						View all latest news
+					</a>
+				</div>
+				<!-- Card body END -->
+			</div>
+		</div>
+		<!-- Card News END -->
+	</div>
 	<h5 class="sponsors">
 		<i class="bi bi-bar-chart-line-fill"></i>
-		Ventes premium</h5>
+		Publicités</h5>
 	<div class="thumb-wrapper mb-5">
 		<span class="wish-icon">
 			<i class="fa fa-heart-o"></i>
@@ -186,13 +157,94 @@
 		</div>
 	</div>
 
-	<h5 class="text-center"><i class="bi bi-messenger"></i> Créer un message</h5>
 
-	<div class="list-group">
-		{% for user in user_list %}
-			<a href="/user/all_messages" class="list-group-item list-group-item-action" onclick="openMsgByUser({{user.id}})">@{{user.pseudo}}</a>
+	<a class="icon-md btn btn-primary position-fixed end-0 bottom-0 me-5 mb-5" data-bs-toggle="offcanvas" href="#offcanvasChat" role="button" aria-controls="offcanvasChat">
+		<i class="bi bi-people-fill"></i>
+	</a>
 
-		{% endfor %}
+	<div class="offcanvas offcanvas-end" style="margin-top:60px;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasChat" aria-modal="true" role="dialog">
+		<div class="offcanvas-header d-flex justify-content-between">
+			<h5 class="offcanvas-title">Amis</h5>
+			<div
+				class="d-flex">
+				<!-- New chat box open button -->
+				<a href="#" class="btn btn-secondary-soft-hover py-1 px-2">
+					<i class="bi bi-pencil-square"></i>
+				</a>
+				<!-- Chat action START -->
+				<div class="dropdown">
+					<a href="#" class="btn btn-secondary-soft-hover py-1 px-2" id="chatAction" data-bs-toggle="dropdown" aria-expanded="false">
+						<i class="bi bi-three-dots"></i>
+					</a>
+					<!-- Chat action menu -->
+					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatAction" style="">
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-check-square fa-fw pe-2"></i>Mark all as read</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-gear fa-fw pe-2"></i>Chat setting
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-bell fa-fw pe-2"></i>Disable notifications</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-volume-up-fill fa-fw pe-2"></i>Message sounds</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-slash-circle fa-fw pe-2"></i>Block setting</a>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<a class="dropdown-item" href="#">
+								<i class="bi bi-people fa-fw pe-2"></i>Create a group chat</a>
+						</li>
+					</ul>
+				</div>
+				<!-- Chat action END -->
+
+				<!-- Close  -->
+				<a href="#" class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close">
+					<i class="fa-solid fa-xmark"></i>
+				</a>
+
+			</div>
+		</div>
+
+		<div class="container">
+			<form class="rounded position-relative">
+				<input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search">
+				<button class="btn bg-transparent px-3 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit">
+					<i class="bi bi-search fs-5"></i>
+				</button>
+			</form>
+
+			<div class="list-group mt-3">
+				{% for user in friends %}
+					<a href="/user/all_messages" class="list-group-item list-group-item-action d-flex justify-content-between align-items-start" aria-current="true" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
+						{% if user.profil %}
+							<img class="avatar-img rounded-circle" src="/uploads/profil/{{user.profil}}" alt="">
+						{% else %}
+							<img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt="">
+						{% endif %}
+
+						<div class="ms-2 me-auto">
+							<div class="fw-bold">{{user.firstname}}
+								{{user.lastname}}</div>
+							@{{user.pseudo}}
+						</div>
+						<span class="badge bg-success rounded-pill">En ligne</span>
+					</a>
+				{% endfor %}
+
+			</div>
+
+
+		</div>
+
 	</div>
-
-</div>

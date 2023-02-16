@@ -366,9 +366,9 @@ ul li a{
 	color: #ff6161;
 }
 
-.item .img-box {
-	height: 120px;
-	margin-bottom: 20px;
+.img-box {
+	height: 100px;
+	margin-bottom: 2px;
 	width: 100%;
 	position: relative;
 }
@@ -505,5 +505,25 @@ p {
   z-index: 1;
 }
 .nav-item .nav-link{
-  color: #111;
+  color: #676a79;
 }
+
+.smallTitle{
+  color: #676a79;
+}
+.sponsors{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.list-group-item-b{
+  color: #676a79;
+}
+.menu-active {
+ border-left: 3px solid greenyellow;
+ background-color:#e2eaef;
+ color:#0d6efd;
+}
+.list-group-item-b:hover{
+  background-color:#e2eaef;
+  color:#0d6efd;
+ }

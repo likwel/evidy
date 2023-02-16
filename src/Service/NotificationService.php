@@ -11,7 +11,7 @@ class NotificationService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_notif where isRead = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_notif where is_read = 0");
 
         $statement->execute();
 
@@ -24,7 +24,7 @@ class NotificationService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) FROM $table_notif where isShow = 0");
+        $statement = $conn->prepare("SELECT count(*) FROM $table_notif where is_show = 0");
 
         $statement->execute();
 
@@ -45,6 +45,18 @@ class NotificationService extends PDOService{
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
+    }
+
+    public function sendOneNotification($table_notif, $content,$sender_id, $type){
+
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table_notif (content, sender_id, type) VALUES (?,?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$content,$sender_id, $type]);
+
     }
 
 }

@@ -7,14 +7,15 @@ use App\Entity\User;
 use App\Service\PDOService;
 use App\Service\UserService;
 use App\Service\CarteService;
-use App\Service\MessageService;
 use App\Service\VenteService;
+use App\Service\MessageService;
 use App\Repository\UserRepository;
 use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -339,6 +340,7 @@ class UserController extends AbstractController
 
         $vente_serv->publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait);
         
+        //return new RedirectResponse($this->urlGenerator->generate('app_main'));
         return  $this->json("Publication succès");
         
     }
@@ -359,6 +361,82 @@ class UserController extends AbstractController
             return  $this->json("Aucun post");
         }
         
+    }
+
+    #[Route('/user/add_friend', name: 'app_add_friend')]
+    public function addFriend(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $my_table_friend = $this->getUser()->getTablefriends();
+
+        $data = json_decode($request->getContent(), true);
+
+        $user_id = $data["user_id"];
+        /*$isFollow = 1;
+        $isWait = 0;*/
+
+        $user_serv = new UserService();
+
+        $user_serv->addFriend($my_table_friend,$user_id, 0, 1);
+
+        $table_friend_other_user = $other_user->getTablefriends();
+
+        $user_serv->addFriend($table_friend_other_user,$this->getUser()->getId(), 1, 1);
+
+        //send notification
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." vous envoyé une invitation d'amis";
+
+        $type ="Demande d'amis";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
+        
+        return  $this->json("Bien ajouter");
+        
+    }
+    #[Route('/user/friends', name: 'app_friends')]
+    public function getFriends(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $friend_list = $user_serv ->getAllFriends($user_table_friend);
+
+        $tab_friend =array();
+
+        foreach($friend_list as $friend){
+            array_push($friend, $this->em->getRepository(User::class)->findOneById($friend["user_id"]));
+            array_push($tab_friend,$friend);
+        }
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/friends.html.twig', [
+            'user'=>$user,
+            'friends'=>$tab_friend,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number
+        ]);
+
     }
 
 

@@ -495,7 +495,7 @@
       <!-- Button -->
       <div class="modal-footer">
         <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Annuler</button>
-        <button type="button" class="btn btn-success" onclick="sendActivity()">Publier</button>
+        <button type="button" class="btn btn-success" onclick="sendActivity()" data-bs-dismiss="modal">Publier</button>
       </div>
     </div>
   </div>
@@ -541,7 +541,7 @@
 			"user_id" : user_id,
 			"price" : document.querySelector("#qwq_price").value,
 			"quantity" : document.querySelector("#qwq_quantity").value,
-			"isDelivery" : document.querySelector("#qwq_isDelivery").value == "on" ? 1 : 0,
+			"isDelivery" : document.querySelector("#qwq_isDelivery").checked == true ? 1 : 0,
 			"isWait" : 0,
 		};
 

@@ -59,4 +59,65 @@ class VenteService extends PDOService{
         return $result;
     }
 
+    public function getOneBy($table_vente, $id){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM $table_vente where id=$id order by id DESC");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getAllByListUser($my_id, $user_id_list){
+
+        $conn = $this -> getConnection();
+
+        $tab_activity = array();
+
+        $rqt = "SELECT * from ";
+
+        $final_rqt ="";
+
+        if(count($user_id_list)>0){
+            for($i=0 ; $i < count($user_id_list); $i++){
+                if($i != count($user_id_list) -1){
+                    $rqt .='tb_activity_' . $user_id_list[$i] . ' union SELECT * FROM ';
+                }else{
+                    $rqt .='tb_activity_' . $user_id_list[$i] .' ';
+                }
+            }
+            $final_rqt = $rqt." union SELECT * from tb_activity_".$my_id." order by datetime DESC";
+        }else{
+            $final_rqt =$rqt .'tb_activity_'.$my_id." order by datetime DESC";
+        }
+
+       
+        
+
+        $statement = $conn->prepare($final_rqt);
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getPostNumber($table_vente){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT count(*) as NB FROM $table_vente");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["NB"];
+
+        return $result;
+    }
+
 }

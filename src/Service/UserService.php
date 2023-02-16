@@ -29,8 +29,10 @@ class UserService extends PDOService{
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
             `content` text NOT NULL,
-            `isRead` tinyint(1) NOT NULL DEFAULT 0,
-            `isShow` tinyint(1) NOT NULL DEFAULT 0,
+            `sender_id` int(11) NOT NULL,
+            `type` varchar(100) NOT NULL,
+            `is_read` tinyint(1) NOT NULL DEFAULT 0,
+            `is_show` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         
@@ -101,7 +103,8 @@ class UserService extends PDOService{
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
             `user_id` varchar(255) NOT NULL,
-            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `is_follower` tinyint(1) NOT NULL DEFAULT 0,
+            `is_wait` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -141,28 +144,88 @@ class UserService extends PDOService{
 
     }
 
-    public function diff4humans($date){
-        $now = new DateTime("now");
-        $target = new DateTime($date);
-        $interval = $now->diff($target);
-        $heure = $interval->format("%h");
-        $min = $interval->format("%i");
-        $sec = $interval->format("%s");
-        $day = $interval->format("%d");
+    public function getAllFriends($table){
+        
+        $conn = $this -> getConnection();
 
-        if($day >=1){
-            return $day." jr";
-        }else if($day < 1 && $heure<24){
-            return $heure." hr";
-        }else if($heure < 1 && $min < 60 && $sec<60){
-            return $min." min";
+        $statement = $conn->prepare("SELECT * FROM $table ");
 
-        }else if($min <1 && $sec<60){
-            return $sec." sec";
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
+    
+    public function isFriend($table, $user_id){
+        
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT count(*) as Nb FROM $table where user_id = '$user_id' ");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["Nb"];
+        
+        if($result > 0){
+            return true;
         }else{
-            return " à l'instant";
+            return false;
         }
-        //return $interval->format("%h:%i:%s");
+    }
+
+    public function addFriend($table,$user_id, $isFollow, $isWait){
+        
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table (user_id, is_follower, is_wait) VALUES (?,?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$user_id, $isFollow, $isWait]);
+
+    }
+
+    public function getAllSponsored($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab where is_active = 1 order by id DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
+    public function getFollowerNumber($table){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT count(*) as NB FROM $table where is_follower =1");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["NB"];
+
+        return $result;
+    }
+
+    public function getSuiviNumber($table){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT count(*) as NB FROM $table where is_follower = 0");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["NB"];
+
+        return $result;
     }
 
 }

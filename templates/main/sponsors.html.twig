@@ -1,0 +1,302 @@
+<style>
+.thumb-wrapper 
+{
+    padding: 5px 1px;
+    background: #fff;
+    border-radius: 6px;
+    text-align: center;
+    position: relative;
+}
+
+.MultiCarousel { float: left; overflow: hidden; margin-top:5px; padding: 5px; width: 100%; position:relative; }
+.MultiCarousel .MultiCarousel-inner { transition: 1s ease all; float: left; }
+.MultiCarousel .MultiCarousel-inner .item { float: left;}
+.MultiCarousel .MultiCarousel-inner .item > div { text-align: center; padding:10px; margin-right:10px;margin-left:10px; background:#f1f1f1; color:#666;}
+.MultiCarousel .leftLst, .MultiCarousel .rightLst { position:absolute; border-radius:20%;top:calc(50% - 20px); }
+.MultiCarousel .leftLst { left:0; }
+.MultiCarousel .rightLst { right:0; }
+.MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
+
+#myImg {
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#myImg:hover {opacity: 0.7;}
+
+/* The Modal (background) */
+.modal-image {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content-image {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  max-height :700px;
+  border-radius :10px;
+}
+
+/* Caption of Modal Image */
+#caption {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+  text-align: center;
+  color: #ccc;
+  padding: 10px 0;
+  height: 150px;
+}
+
+/* Add Animation */
+.modal-content-image, #caption {  
+  -webkit-animation-name: zoom;
+  -webkit-animation-duration: 0.6s;
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+  from {-webkit-transform:scale(0)} 
+  to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+  from {transform:scale(0)} 
+  to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 80px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+  .modal-content-image {
+    width: 100%;
+  }
+}
+
+</style>
+{% if sponsors %}
+<div class="">
+		<div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+            <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
+				<h6 class="card-title mb-0">Sponsorisés</h6>
+				<a class="btn btn-sm btn-outline-primary" href="/user/sponsored">
+					Voir plus
+				</a>
+			</div>
+			<div class="MultiCarousel-inner">
+				<!-- boucle for item -->
+
+				{% for sponsor in sponsors %}
+
+				<div class="item">
+                    <div class="thumb-wrapper bg-white">
+                        <div class="img-box">
+							<img src="/uploads/post/{{sponsor.photos|split(',')[0]|replace({'"': "", '[': "", ']': ""})}}" class="img-fluid" alt="">
+						</div>
+						<div class="thumb-content">
+							<small>{{sponsor.product}}</small>
+
+							<small class="item-price">
+								<b>{{sponsor.price}} {{sponsor.devise|slice(0, 2)}}</b>
+							</small>
+							<a href="#" class="btn btn-primary"><i class="bi bi-plus"></i><i class="bi bi-cart2"></i></a>
+						</div>
+                    </div>
+                </div>
+					
+				{% endfor %}
+                
+				<!-- end boucle item -->
+                
+            </div>
+	
+            <button class="btn btn-outline-primary leftLst"><i class="bi bi-chevron-left"></i></button>
+            <button class="btn btn-outline-primary rightLst"><i class="bi bi-chevron-right"></i></button>
+        </div>
+	</div>
+{% endif %}
+
+<div id="myModalImage" class="modal-image">
+  <span class="close">&times;</span>
+  <img class="modal-content-image" id="img01">
+  <div id="caption"></div>
+</div>
+
+<script>
+
+var modal = document.getElementById("myModalImage");
+
+// Get the image and insert it inside the modal - use its "alt" text as a caption
+//var img = document.getElementById("myImg");
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+
+function expandImg(img){
+	modal.style.display = "block";
+	modalImg.src = img.src;
+	captionText.innerHTML = img.alt;
+}
+
+document.querySelectorAll(".img-fluid").forEach(img=>{
+	img.onclick = function(){
+	modal.style.display = "block";
+	modalImg.src = this.src;
+	captionText.innerHTML = this.alt;
+	}
+})
+/*img.onclick = function(){
+  modal.style.display = "block";
+  modalImg.src = this.src;
+  captionText.innerHTML = this.alt;
+}*/
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
+
+$(document).ready(function () {
+    var itemsMainDiv = ('.MultiCarousel');
+    var itemsDiv = ('.MultiCarousel-inner');
+    var itemWidth = "";
+
+    $('.leftLst, .rightLst').click(function () {
+        var condition = $(this).hasClass("leftLst");
+        if (condition)
+            click(0, this);
+        else
+            click(1, this)
+    });
+
+    ResCarouselSize();
+
+
+
+
+    $(window).resize(function () {
+        ResCarouselSize();
+    });
+
+    //this function define the size of the items
+    function ResCarouselSize() {
+        var incno = 0;
+        var dataItems = ("data-items");
+        var itemClass = ('.item');
+        var id = 0;
+        var btnParentSb = '';
+        var itemsSplit = '';
+        var sampwidth = $(itemsMainDiv).width();
+        var bodyWidth = $('body').width();
+		
+        $(itemsDiv).each(function () {
+            id = id + 1;
+            var itemNumbers = $(this).find(itemClass).length;
+            btnParentSb = $(this).parent().attr(dataItems);
+            itemsSplit = btnParentSb.split(',');
+			//console.log("itemsSplit : "+itemsSplit)
+            $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+            if (bodyWidth >= 1200) {
+                incno = itemsSplit[3];
+                itemWidth = sampwidth / (incno-2);
+            }
+            else if (bodyWidth >= 992) {
+                incno = itemsSplit[2];
+                itemWidth = sampwidth / (incno-2);
+            }
+            else if (bodyWidth >= 768) {
+                incno = itemsSplit[1];
+                itemWidth = sampwidth / 4;
+            }
+            else {
+                incno = itemsSplit[0];
+                itemWidth = sampwidth / 3;
+            }
+            $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+            $(this).find(itemClass).each(function () {
+                $(this).outerWidth(itemWidth);
+            });
+
+            $(".leftLst").addClass("over");
+            $(".rightLst").removeClass("over");
+
+        });
+    }
+
+
+    //this function used to move the items
+    function ResCarousel(e, el, s) {
+        var leftBtn = ('.leftLst');
+        var rightBtn = ('.rightLst');
+        var translateXval = '';
+        var divStyle = $(el + ' ' + itemsDiv).css('transform');
+        var values = divStyle.match(/-?[\d\.]+/g);
+        var xds = Math.abs(values[4]);
+        if (e == 0) {
+            translateXval = parseInt(xds) - parseInt(itemWidth * s);
+            $(el + ' ' + rightBtn).removeClass("over");
+
+            if (translateXval <= itemWidth / 2) {
+                translateXval = 0;
+                $(el + ' ' + leftBtn).addClass("over");
+            }
+        }
+        else if (e == 1) {
+            var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+            translateXval = parseInt(xds) + parseInt(itemWidth * s);
+            $(el + ' ' + leftBtn).removeClass("over");
+
+            if (translateXval >= itemsCondition - itemWidth / 2) {
+                translateXval = itemsCondition;
+                $(el + ' ' + rightBtn).addClass("over");
+            }
+        }
+        $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+    }
+
+    //It is used to get some elements from btn
+    function click(ell, ee) {
+        var Parent = "#" + $(ee).parent().attr("id");
+        var slide = $(Parent).attr("data-slide");
+        ResCarousel(ell, Parent, slide);
+    }
+
+});
+
+</script>

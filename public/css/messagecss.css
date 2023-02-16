@@ -181,7 +181,9 @@ img {
     top: 11px;
     width: 33px;
 }
-.messaging {}
+.messaging {
+    
+}
 .msg_history {
     height: 516px;
     overflow-y: auto;

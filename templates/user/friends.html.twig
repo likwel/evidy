@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+	<style>
+
+		
+	</style>
+
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div
+				class="row g-4">
+				<!-- Profil-->
+				{% include "main/leftprofil.html.twig" %}
+				<!-- End Profil-->
+
+				<!-- Main Center-->
+				{# {% include "main/main.html.twig" %} #}
+
+				<!-- Right menu-->
+			{# {% include "main/rightmenu.html.twig" %} #}
+				<!-- End right-->
+			</div>
+
+		</div>
+	</body>
+{% endblock %}

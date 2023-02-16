@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Ce mail est déjà utilisé par un autre utilisateur')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -43,6 +43,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $tableactivity= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablefriends= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $profil= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $couverture= null;
     
 
     #[ORM\Column]
@@ -299,4 +308,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * Get the value of tableafriends
+     */ 
+    public function getTablefriends()
+    {
+        return $this->tablefriends;
+    }
+
+    /**
+     * Set the value of tableafriends
+     *
+     * @return  self
+     */ 
+    public function setTablefriends($tablefriends)
+    {
+        $this->tablefriends = $tablefriends;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of couverture
+     */ 
+    public function getCouverture()
+    {
+        return $this->couverture;
+    }
+
+    /**
+     * Set the value of couverture
+     *
+     * @return  self
+     */ 
+    public function setCouverture($couverture)
+    {
+        $this->couverture = $couverture;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of profil
+     */ 
+    public function getProfil()
+    {
+        return $this->profil;
+    }
+
+    /**
+     * Set the value of profil
+     *
+     * @return  self
+     */ 
+    public function setProfil($profil)
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
 }

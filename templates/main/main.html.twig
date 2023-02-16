@@ -2,6 +2,13 @@
 	class="col-lg-6 gap-4">
 	{# {% include "story.html.twig" %} #}
 
+	<!-- Start sponsorized publication -->
+
+		{% include "main/sponsors.html.twig" %}
+
+	<div class="mt-3"></div>
+
+	<!-- Start div post creation ****-->
 	<div class="card card-body">
 		<div
 			class="d-flex mb-3">
@@ -88,9 +95,9 @@
 										</a>
 									</h6>
 									<span class="point-separateur"></span>
-									<small class="text-muted">{{ activity.user.timesForHumans}}</small>
+									<small class="text-muted diff4humans" data-date="{{activity.activity.datetime}}"></small>
 								</div>
-								<small href="" class="mb-0 small"><i>Vente</i></small>
+								<small href="" class="mb-0 smallTitle">Annonce</small>
 							</div>
 						</div>
 						<!-- Card feed action dropdown START -->
@@ -102,26 +109,36 @@
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction" style="">
 								<li>
 									<a class="dropdown-item" href="#">
-										<i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a>
+										<i class="bi bi-bookmark fa-fw pe-2"></i>Enregistrer l'annonce</a>
 								</li>
 								<li>
 									<a class="dropdown-item" href="#">
-										<i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson
+										<i class="bi bi-person-x fa-fw pe-2"></i>Ne suivre pas l'annonce
 									</a>
 								</li>
 								<li>
 									<a class="dropdown-item" href="#">
-										<i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a>
+										<i class="bi bi-x-circle fa-fw pe-2"></i>Cacher l'annonce</a>
 								</li>
 								<li>
-									<a class="dropdown-item" href="#">
-										<i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a>
+									<a class="dropdown-item text-danger" href="#">
+										<i class="bi bi-slash-circle fa-fw pe-2"></i>Bloquer</a>
 								</li>
-								<li><hr class="dropdown-divider"></li>
-								<li>
-									<a class="dropdown-item" href="#">
-										<i class="bi bi-flag fa-fw pe-2"></i>Report post</a>
-								</li>
+								{% if app.user.id == activity.user.id %}
+									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item" href="#">
+											<i class="bi bi-pencil fa-fw pe-2"></i>Modifier</a>
+									</li>
+									<li>
+										<a class="dropdown-item text-danger" href="#">
+											<i class="bi bi bi-trash3 fa-fw pe-2"></i>Supprimer</a>
+									</li>
+									<li>
+										<a class="dropdown-item" href="#">
+											<i class="bi bi-flag fa-fw pe-2"></i>Sponsorier</a>
+									</li>
+								{% endif %}
 							</ul>
 						</div>
 						<!-- Card feed action dropdown END -->
@@ -170,15 +187,15 @@
 
 						{% set images = activity.activity.photos|split(',') %}
 
-						<div id="carouselExampleIndicators_{{activity.activity.id}}" class="carousel slide" data-bs-ride="carousel">
+						<div id="carouselExampleIndicators_{{activity.activity.datetime|date("Y_m_d_H_i_s")}}" class="carousel slide" data-bs-ride="carousel">
 							<div class="carousel-indicators">
 
 							{% if images|length > 1 %}
 								{% for image in images %}
 									{% if loop.index == 1 %}
-										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" class="active" aria-current="true" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>
+										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.datetime|date("Y_m_d_H_i_s")}}" class="active" aria-current="true" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>
 									{% else %}
-										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>									
+										<button type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>									
 									{% endif %}
 									
 								{% endfor %}
@@ -191,7 +208,7 @@
 								{% for image in images %}
 								{% set name_img = image|replace({'"': "", '[': "", ']': ""}) %}
 									<div class="carousel-item active">
-										<img src="/uploads/post/{{name_img}}" class="card-img" alt="...">
+										<img src="/uploads/post/{{name_img}}" class="card-img" alt="..." onclick="expandImg(this)">
 									</div>
 									
 								{% endfor %}
@@ -200,11 +217,11 @@
 							</div>
 
 							{% if images|length > 1 %}
-								<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide="prev">
+								<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide="prev">
 									<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 									<span class="visually-hidden">Previous</span>
 								</button>
-								<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.id}}" data-bs-slide="next">
+								<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_{{activity.activity.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide="next">
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
 									<span class="visually-hidden">Next</span>
 								</button>
