@@ -81,7 +81,7 @@
 															</a>
 														</li>
 														<li>
-															<a href="#" class="text-info" data-toggle="tooltip" title="" data-original-title="Edit">
+															<a href="#" class="text-info" onclick="retirerAmis({{friend.user_id}})">
 																<i class="bi bi-trash3"></i> Rétirer
 															</a>
 														</li>
@@ -141,7 +141,7 @@
 
 										{% for friend in friends %}
 
-                                        {% if friend.is_follower == 1 %}
+                                        {% if friend.is_follower == 0 %}
 
 											<tr class="candidates-list">
 												<td class="title">
@@ -174,7 +174,7 @@
 
                                                         <ul class="list-unstyled mb-0 d-flex justify-content-end">
                                                             <li>
-                                                                <a href="#" class="text-danger" data-toggle="tooltip" title="" data-original-title="Delete">
+                                                                <a href="#" class="text-danger" onclick="annulerDemande({{friend.user_id}})">
                                                                     <i class="bi bi-trash3"></i> Annuler la demande
                                                                 </a>
                                                             </li>
@@ -182,7 +182,7 @@
                                                     {% else %}
                                                         <ul class="list-unstyled mb-0 d-flex justify-content-end">
                                                             <li>
-                                                                <a href="#" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
+                                                                <a href="#" class="text-primary">
                                                                     <i class="bi bi-check2-circle"></i> Déjà confirmé
                                                                 </a>
                                                             </li>
@@ -243,7 +243,7 @@
 
 										{% for friend in friends %}
 
-                                            {% if friend.is_follower == 0 %}
+                                            {% if friend.is_follower == 1 %}
 
 											<tr class="candidates-list">
 												<td class="title">
@@ -276,12 +276,12 @@
 
                                                     <ul class="list-unstyled mb-0 d-flex justify-content-end">
 														<li>
-															<a href="#" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
+															<a href="#" class="text-primary" onclick="accepterInvitation({{friend.user_id}})">
 																<i class="bi bi-check2-circle"></i> Accepter
 															</a>
 														</li>
 														<li>
-															<a href="#" class="text-danger" data-toggle="tooltip" title="" data-original-title="Delete">
+															<a href="#" class="text-danger" onclick="supprimerInvitation({{friend.user_id}})" >
 																<i class="bi bi-trash3"></i> Supprimer
 															</a>
 														</li>
@@ -289,7 +289,7 @@
                                                 {% else %}
                                                     <ul class="list-unstyled mb-0 d-flex justify-content-end">
 														<li>
-															<a href="#" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
+															<a href="#" class="text-primary">
 																<i class="bi bi-check2-circle"></i> Déjà confirmé
 															</a>
 														</li>

@@ -228,4 +228,25 @@ class UserService extends PDOService{
         return $result;
     }
 
+    public function acceptFriend($table, $user_id)
+    {
+        $sql = "UPDATE $table SET is_wait = 0 WHERE user_id =?";
+
+        $stm2 = $this->getPDO()->prepare($sql);
+
+        $stm2->bindParam(1, $user_id);
+
+        $stm2->execute();
+    }
+    public function deleteInvitation($user_id, Request $request): Response
+    {
+    }
+
+    public function retirerFriend($user_id, Request $request): Response
+    {
+    }
+    public function annulerDemande($user_id, Request $request): Response
+    {
+    }
+
 }

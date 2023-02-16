@@ -439,5 +439,31 @@ class UserController extends AbstractController
 
     }
 
+    #[Route('/user/accept_invitation/{user_id}', name: 'app_accept_invitation')]
+    public function acceptFriend($user_id, Request $request): Response
+    {
+        $user = $this->getUser();
+        $user_serv = new UserService();
+        $user_serv->acceptFriend($user->getTablefriends(), $user_id);
+        //Send notification
+
+        return $this->json("Bien accepté");
+    }
+    
+    #[Route('/user/delete_invitation/{user_id}', name: 'app_delete_invitation')]
+    public function deleteInvitation($user_id, Request $request): Response
+    {
+    }
+
+    #[Route('/user/retirer_friend/{user_id}', name: 'app_retirer_friend')]
+    public function retirerFriend($user_id, Request $request): Response
+    {
+    }
+    #[Route('/user/annuler_demande/{user_id}', name: 'app_annuler_demande')]
+    public function annulerDemande($user_id, Request $request): Response
+    {
+    }
+
+
 
 }
