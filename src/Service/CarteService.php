@@ -34,4 +34,16 @@ class CarteService extends PDOService{
         return $result;
     }
 
+    public function addOneCard($table_carte, $id, $user_id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table_carte (content, sender_id, type) VALUES (?,?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$content,$sender_id, $type]);
+
+    }
+
 }

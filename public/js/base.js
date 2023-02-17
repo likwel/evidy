@@ -392,3 +392,8 @@ function previewFile(file) {
 		})
 
 	}
+
+	function addToCard(pub_id,user_id){
+		
+
+	}
