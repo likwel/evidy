@@ -15,7 +15,11 @@
 			<!-- Avatar -->
 			<div class="avatar avatar-xs me-2">
 				<a href="#">
-					<img class="avatar-img rounded-circle" src="/images/img.jpg" alt="">
+				{% if user.profil %}
+				<img class="avatar-img rounded-circle" src="/uploads/profif/{{user.profil}}" alt="">
+				{% else %}
+				<img src="/images/placeholder.jpg" class="avatar-img rounded-circle" alt="">
+				{% endif %}
 				</a>
 			</div>
 			<!-- Post input -->
@@ -83,7 +87,12 @@
 							<!-- Avatar -->
 							<div class="avatar avatar-story me-2">
 								<a href="#">
-									<img class="avatar-img rounded-circle" src="/images/images.jfif" alt="">
+									{% if activity.user.profil %}
+									<img class="avatar-img rounded-circle" src="/uploads/profif/{{activity.user.profil}}" alt="">
+									{% else %}
+									<img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt="">
+									{% endif %}
+									
 								</a>
 							</div>
 							<!-- Info -->

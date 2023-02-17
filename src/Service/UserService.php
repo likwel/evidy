@@ -15,8 +15,8 @@ class UserService extends PDOService{
             `user_id` int(11) NOT NULL,
             `content` text NOT NULL,
             `isForMe` tinyint(1) NOT NULL DEFAULT 0,
-            `isRead` tinyint(1) NOT NULL DEFAULT 0,
-            `isShow` tinyint(1) NOT NULL DEFAULT 0,
+            `is_read` tinyint(1) NOT NULL DEFAULT 0,
+            `is_show` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -44,12 +44,12 @@ class UserService extends PDOService{
 
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-            `productName` varchar(255) NOT NULL,
+            `product` varchar(255) NOT NULL,
             `user_id` int(11) NOT NULL,
             `price` float NOT NULL,
-            `taxe` float NOT NULL,
+            `taxe` float NOT NULL DEFAULT 0,
             `quantity` float NOT NULL,
-            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `status` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         $conn = $this->getConnection();
@@ -228,25 +228,83 @@ class UserService extends PDOService{
         return $result;
     }
 
-    public function acceptFriend($table, $user_id)
+    public function acceptFriend($table, $user_id, $my_id)
     {
+        $conn = $this -> getConnection();
+
         $sql = "UPDATE $table SET is_wait = 0 WHERE user_id =?";
 
-        $stm2 = $this->getPDO()->prepare($sql);
+        $stm = $conn->prepare($sql);
 
-        $stm2->bindParam(1, $user_id);
+        $tb = "tb_friends_".$user_id;
+
+        $sql2 = "UPDATE $tb SET is_wait = 0 WHERE user_id = ? ";
+
+        $stm2 = $conn->prepare($sql2);
+
+        $stm->bindParam(1, $user_id);
+
+        $stm->execute();
+
+        $stm2->bindParam(1, $my_id);
 
         $stm2->execute();
     }
-    public function deleteInvitation($user_id, Request $request): Response
+    public function deleteFriend($table, $user_id, $my_id)
     {
+        $conn = $this -> getConnection();
+        $sql = "DELETE FROM $table WHERE user_id=?";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute([$user_id]);
+
+        $tb = "tb_friends_".$user_id;
+        $sql2 = "DELETE FROM $tb WHERE user_id=?";
+        $stmt2= $conn->prepare($sql2);
+        $stmt2->execute([$my_id]);
     }
 
-    public function retirerFriend($user_id, Request $request): Response
+    public function getProfil($user_id)
     {
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT profil FROM user where id = $user_id");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["profil"];
+
+        return $result;
     }
-    public function annulerDemande($user_id, Request $request): Response
+    public function getCouverture($user_id)
     {
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT couverture FROM user where id = $user_id");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["couverture"];
+
+        return $result;
+    }
+
+    public function updateUser($nom, $prenom, $pseudo, $email, $pswd, $pswd2, $user_id)
+    {
+        if($pswd != $pswd2){
+            return false;
+        }else{
+
+            $conn = $this -> getConnection();
+
+            $sql = "UPDATE user SET firstname=?, lastname =? , email =? ,pseudo =?,password =? WHERE id =?";
+
+            $stm = $conn->prepare($sql);
+
+            $stm->execute([$nom, $prenom, $pseudo, $email, $pswd, $pswd2, $user_id]);
+
+            return true;
+        }
+        
     }
 
 }

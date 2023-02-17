@@ -20,7 +20,7 @@
 					<li class="nav-item text-center mx-2 mx-lg-1 items-ico">
 
 						<div class="btn-group">
-							<a class="nav-link items-ico" style="" href="#!" id="liveToastBtnCart" data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="nav-link items-ico" style="" href="/user/shop" id="liveToastBtnCart" >
 								<div class="position-relative">
 									<i class="bi bi-cart icon-nav"></i>
 									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_carte">
@@ -28,20 +28,6 @@
 									</span>
 								</div>
 							</a>
-
-							<div class="dropdown-menu" style="width:300px;">
-								<div class="dropdown-item">
-									<i class="bi bi-cart m-2"></i>
-									<strong class="me-auto">
-										Cartes</strong>
-								</div>
-								<hr class="dropdown-divider">
-								<div class="m-2">
-									Contenu des messages</div>
-								<div>
-									<a class="dropdown-item" href="#">Separated link</a>
-								</div>
-							</div>
 						</div>
 
 					</li>
@@ -82,7 +68,7 @@
 
 						<!-- Example single danger button -->
 						<div class="btn-group">
-							<a class="nav-link items-ico" href="#!" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false">
+							<a class="nav-link items-ico" href="#" id="liveToastBtnNotif" data-bs-toggle="dropdown" aria-expanded="false" onclick="openNotif()">
 								<div class="position-relative">
 									<i class="bi bi-bell-fill icon-nav"></i>
 									<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="nb_notif">
@@ -98,10 +84,8 @@
 										Notifications</strong>
 								</div>
 								<hr class="dropdown-divider">
-								<div class="m-2">
-									Contenu des notifs</div>
-								<div>
-									<a class="dropdown-item" href="#">Separated link</a>
+								<div class="m-2 overflow-auto" id="all_notification" style="height:500px;">
+									
 								</div>
 							</div>
 						</div>

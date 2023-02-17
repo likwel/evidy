@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div class="row g-4">
+				<!-- Profil-->
+				{% include "main/leftprofil.html.twig" %}
+				<!-- End Profil-->
+
+				<!-- Main Center-->
+				
+				<div class="col-lg-8 bg-white rounded-3 mb-3"> <h5 class="m-3">Modifier votre information</h5>
+					<div class="row m-3 mb-3">
+					{{ form_start(form) }}
+						<div class="col">
+							<div class="form-floating mb-3 sm">
+								{{ form_widget(form.firstname, {'attr': {'class': 'form-control','id' : 'nom','value' : user.firstname }}) }}
+								{# <input type="text" class="form-control" id="nom" value="{{user.firstname}}"> #}
+								<label for="nom">Nom</label>
+							</div>
+							<div class="form-floating mb-3">
+								{# <input type="email" class="form-control" id="prenom" value="{{user.lastname}}"> #}
+								{{ form_widget(form.lastname, {'attr': {'class': 'form-control','id' : 'prenom','value' : user.lastname}}) }}
+								<label for="prenom">Prénom</label>
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-floating mb-3">
+								{# <input type="email" class="form-control" id="pseudo" value="{{user.pseudo}}"> #}
+								{{ form_widget(form.pseudo, {'attr': {'class': 'form-control','id' : 'pseudo','value' : user.pseudo}}) }}
+								<label for="pseudo">Pseudo</label>
+							</div>
+							<div class="form-floating mb-3">
+								{# <input type="email" class="form-control" id="email" value="{{user.email}}"> #}
+								{{ form_widget(form.email, {'attr': {'class': 'form-control','id' : 'email','value' : user.email, 'disabled':true}}) }}
+								<label for="email">Email</label>
+							</div>
+						</div>
+						
+						{% if flash == "Succes" %}
+
+							<div class="alert alert-success" role="alert" id="succes_modif">
+								Profil modifié avec succès	
+							</div>
+						{% elseif flash == "MailError" %}
+							<div class="alert alert-danger" role="alert" id="error_modif">
+								Cette adresse email déjà exist
+							</div>
+
+						{% else %}
+
+						{% endif %}
+
+						<div class="mb-10"><button type="submit" class="btn btn-primary mb-3 float-end" onclick="saveModification()">Modifier</button></div>
+					{{ form_end(form) }}
+					</div>
+
+					<hr>
+					<div class="row m-3">
+					<h5 class="m-3">Modifier votre mot de passe</h5>
+					{{ form_start(form2) }}
+						<div class="col">
+							<div class="form-floating mb-3">
+								{# <input type="password" class="form-control" id="pswd" placeholder="Password"> #}
+								{{ form_widget(form2.new_password, {'attr': {'class': 'form-control','id' : 'pswd'}}) }}
+								<label for="pswd">Nouveau mot de passe</label>
+
+							</div>
+							<div class="form-floating mb-3">
+								{# <input type="password" class="form-control" id="pswd2" placeholder="Password"> #}
+								{{ form_widget(form2.old_password, {'attr': {'class': 'form-control','id' : 'pswd2'}}) }}
+								<label for="pswd2">Ancien mot de passe</label>
+
+							</div>
+						</div>
+						
+						{% if flash == "PasswordSucces" %}
+
+							<div class="alert alert-success" role="alert" id="succes_modif">
+								Mot de passe modifié avec succès	
+							</div>
+						{% elseif flash == "PasswordError" %}
+							<div class="alert alert-danger" role="alert" id="error_modif">
+								Ancien mot de passe incorrect!
+							</div>
+
+						{% else %}
+
+						{% endif %}
+
+						<button type="submit" class="btn btn-primary mb-3 float-end" onclick="saveModification()">Modifier</button>
+					{{ form_end(form2) }}
+					</div>
+
+				</div>
+
+				
+			</div>
+
+		</div>
+
+		<script>
+			document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
+			elem.classList.remove("menu-active");
+			})
+			document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(4)").classList.add("menu-active")
+					
+			function saveModification(){
+
+				let data ={
+					nom : document.querySelector("#nom").value,
+					prenom: document.querySelector("#prenom").value,
+					pseudo : document.querySelector("#pseudo").value,
+					email: document.querySelector("#email").value,
+					pswd : document.querySelector("#pswd").value,
+					pswd2 : document.querySelector("#pswd2").value
+				}
+
+				console.log(data)
+
+				fetch(new Request("/user/update_user/", {
+					method: "POST",
+					headers: {
+					'Accept': 'application/json',
+					'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+					})).then(req => req.json()).then(message => {
+						if(message == "Error"){
+							document.querySelector("#error_modif").textContent = "Les deux mot de passe doivent être identiques"
+							document.querySelector("#error_modif").style.display ="block";
+						}else{
+							document.querySelector("#succes_modif").style.display ="block";
+							document.querySelector("#succes_modif").textContent ="Profil modifié avec succès"
+						}
+						//console.log(message);
+				})
+
+			}
+		
+		</script>
+	</body>
+{% endblock %}

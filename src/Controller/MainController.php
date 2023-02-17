@@ -104,14 +104,14 @@ class MainController extends AbstractController
             $data = array();
 
             forEach($all_activity as $activity){
-                array_push($data, ["user"=>["fullname"=>$user_serv->getFullname(intval($activity["user_id"])),"id"=>$activity["user_id"]],"activity"=>$activity]);
+                array_push($data, ["user"=>["fullname"=>$user_serv->getFullname(intval($activity["user_id"])),"id"=>$activity["user_id"],"profil"=>$user_serv->getProfil($activity["user_id"]),"couverture"=>$user_serv->getCouverture($activity["user_id"])],"activity"=>$activity]);
             }
 
             $post_number =  $activity_serv->getPostNumber($user_tab_activity);
             $follower_number = $user_serv->getFollowerNumber($user_tab_friend);
             $suivi_number = $user_serv->getSuiviNumber($user_tab_friend);
 
-            //dd($post_number);
+            //dd($data);
 
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',

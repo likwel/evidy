@@ -11,7 +11,7 @@ class CarteService extends PDOService{
         
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_carte where isWait = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_carte where status = 0");
 
         $statement->execute();
 

@@ -14,7 +14,7 @@ class MessageService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where isRead = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where is_read = 0");
 
         $statement->execute();
 
@@ -27,7 +27,7 @@ class MessageService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where isShow = 0 and isForMe = 0");
+        $statement = $conn->prepare("SELECT count(*) as nb FROM $table_msg where is_show = 0 and isForMe = 0");
 
         $statement->execute();
 
@@ -41,7 +41,7 @@ class MessageService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $sql = "UPDATE $table_msg SET isRead = 1 where user_id = ?";
+        $sql = "UPDATE $table_msg SET is_read = 1 where user_id = ?";
         $statement = $conn->prepare($sql);
         $statement->execute([$user_id]);
 
@@ -52,7 +52,7 @@ class MessageService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $sql = "UPDATE $table_msg SET isShow = 1 ";
+        $sql = "UPDATE $table_msg SET is_show = 1 ";
         $statement = $conn->prepare($sql);
         $statement->execute();
 

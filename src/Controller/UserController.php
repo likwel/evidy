@@ -17,7 +17,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserController extends AbstractController
 {
@@ -45,7 +49,7 @@ class UserController extends AbstractController
 
         $table_notif = $this->getUser()->getTablenotification();
 
-        $nbr_nonLu = $notification ->getNotRead($table_notif);
+        $nbr_nonLu = $notification ->getNotShow($table_notif);
 
         $response = new StreamedResponse();
         $response->setCallback(function () use (&$nbr_nonLu) {
@@ -193,6 +197,32 @@ class UserController extends AbstractController
         $message ->setIsRead($table_msg,$user_id);
 
         return $this->json("Message lu");
+
+    }
+
+    #[Route('/user/setIsShow_notif', name: 'app_setIsShow_notif')]
+    public function setIsShow_notif()
+    {
+        $message = new NotificationService();
+
+        $table_msg = $this->getUser()->getTablenotification();
+
+        $message ->setIsShow($table_msg);
+
+        return $this->json("Notification vu");
+
+    }
+
+    #[Route('/user/setIsRead_notif/{user_id}', name: 'app_setIsRead_notif')]
+    public function setIsRead_notif($user_id)
+    {
+        $message = new NotificationService();
+
+        $table_msg = $this->getUser()->getTablenotification();
+
+        $message ->setIsRead($table_msg,$user_id);
+
+        return $this->json("Notification lu");
 
     }
 
@@ -376,6 +406,8 @@ class UserController extends AbstractController
         /*$isFollow = 1;
         $isWait = 0;*/
 
+        $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+
         $user_serv = new UserService();
 
         $user_serv->addFriend($my_table_friend,$user_id, 0, 1);
@@ -400,7 +432,7 @@ class UserController extends AbstractController
         
     }
     #[Route('/user/friends', name: 'app_friends')]
-    public function getFriends(Request $request): Response
+    public function getFriends(): Response
     {
         $user = $this->getUser();
 
@@ -440,30 +472,243 @@ class UserController extends AbstractController
     }
 
     #[Route('/user/accept_invitation/{user_id}', name: 'app_accept_invitation')]
-    public function acceptFriend($user_id, Request $request): Response
+    public function acceptFriend($user_id): Response
     {
         $user = $this->getUser();
         $user_serv = new UserService();
-        $user_serv->acceptFriend($user->getTablefriends(), $user_id);
+        $user_serv->acceptFriend($user->getTablefriends(), $user_id, $user->getId());
+        
         //Send notification
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()."  a accepté votre invitation d'amis";
+
+        $type ="Invitation";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
 
         return $this->json("Bien accepté");
     }
     
-    #[Route('/user/delete_invitation/{user_id}', name: 'app_delete_invitation')]
-    public function deleteInvitation($user_id, Request $request): Response
+    #[Route('/user/delete_friend/{user_id}', name: 'app_delete_friend')]
+    public function deleteFriend($user_id): Response
     {
+        $user = $this->getUser();
+        $user_serv = new UserService();
+        $user_serv->deleteFriend($user->getTablefriends(), $user_id, $user->getId());
+
+        return $this->json("Bien supprimé");
     }
 
-    #[Route('/user/retirer_friend/{user_id}', name: 'app_retirer_friend')]
-    public function retirerFriend($user_id, Request $request): Response
+    #[Route('/user/abonnements', name: 'app_abonnements')]
+    public function getSubcription(): Response
     {
-    }
-    #[Route('/user/annuler_demande/{user_id}', name: 'app_annuler_demande')]
-    public function annulerDemande($user_id, Request $request): Response
-    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $friend_list = $user_serv ->getAllFriends($user_table_friend);
+
+        $tab_friend =array();
+
+        foreach($friend_list as $friend){
+            array_push($friend, $this->em->getRepository(User::class)->findOneById($friend["user_id"]));
+            array_push($tab_friend,$friend);
+        }
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/subsciption.html.twig', [
+            'user'=>$user,
+            'friends'=>$tab_friend,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number
+        ]);
+
     }
 
+    #[Route('/user/parametres', name: 'app_parametres')]
+    public function parametres(Request $request, UserRepository $userRepository, 
+    EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordEncoder): Response
+    {
+        $user = $this->getUser();
 
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+
+        $form = $this->createFormBuilder()
+                ->add('email', EmailType::class ,[
+                    'required' => true,
+                ])
+                ->add('pseudo' ,TextType::class,[
+                    'required' => true,
+                ])
+                ->add('firstname' ,TextType::class,[
+                    'required' => true,
+                ])
+                ->add('lastname' ,TextType::class)
+        ->getForm();
+
+        $form2 = $this->createFormBuilder()
+                ->add('new_password', PasswordType::class,[
+                    'required' => true,
+                ])
+                ->add('old_password', PasswordType::class,[
+                    'required' => true,
+                ])
+        ->getForm();
+        
+        //$form = $this->createForm($form, $post[0]);
+
+        $form->handleRequest($request);
+
+        $flash ="";
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            ///data user.
+            $data = $form->getData();
+            $user->setPseudo(trim($data['pseudo']));
+            $user->setFirstname($data['firstname']);
+            $user->setLastname($data['lastname']);
+
+            $entityManager->flush();
+
+            $flash ="Succes";
+        }
+
+        $form2->handleRequest($request);
+
+        if ($form2->isSubmitted() && $form2->isValid()) {
+
+            ///data user.
+            $data2 = $form2->getData();
+            /*$user->setPseudo(trim($data['pseudo']));
+            $user->setFirstname($data['firstname']);
+            $user->setLastname($data['lastname']);*/
+
+            if ($passwordEncoder->isPasswordValid($user, $data2["old_password"])){
+
+                $password = $passwordEncoder->hashPassword($user, $data2["new_password"]);
+
+                $user->setPassword($password);
+
+                $entityManager->flush();
+
+                $flash ="PasswordSucces";
+
+            }else{
+                $flash ="PasswordError";
+            }
+
+        }
+
+        //dd($tab_friend);
+
+        return $this->render('user/parametres.html.twig', [
+            'form'=> $form->createView(),
+            'form2'=> $form2->createView(),
+            'user'=>$user,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number,
+            'flash' => $flash
+        ]);
+
+    }
+
+    #[Route('/user/shop', name: 'app_shop')]
+    public function getAllCartes(): Response
+    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_tab_carte = $user->getTablecarte();
+
+        $user_serv = new UserService();
+
+        $carte_serv = new CarteService();
+
+        $all_carte = $carte_serv ->getAll($user_tab_carte);
+
+        //dd($all_carte );
+
+        $tab_carte =array();
+
+        foreach($all_carte as $carte){
+            array_push($carte, $this->em->getRepository(User::class)->findOneById($carte["user_id"]));
+            array_push($tab_carte,$carte);
+        }
+
+        //dd($tab_carte );
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/cartes.html.twig', [
+            'user'=>$user,
+            'cartes'=>$tab_carte,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number
+        ]);
+
+    }
+    
+    #[Route('/user/get_notifications', name : 'app_get_notifications')]
+    public function get_notifications(Request $request): Response
+    {
+        $user = $this->getUser();
+        $notif_serv = new NotificationService();
+
+        $tab_notif = $user->getTablenotification();
+
+        $res = $notif_serv->getAll($tab_notif);
+
+        if(count($res)>0){
+            return $this->json($res);
+        }else{
+            return $this->json("Null");
+        }
+
+    }
 
 }

@@ -1,11 +1,20 @@
 <div class="col-lg-3">
 	<div class="card overflow-hidden">
 		<div class="couverture-image">
+			{% if user.couverture %}
+			<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="">
+			{% else %}
 			<img src="/images/couverture.jpg" class="img-responsive" alt="">
+			{% endif %}
+			
 		</div>
 
 		<div class="profil-image">
-			<img src="/images/images.jfif" class="img-responsive" alt="">
+			{% if user.profil %}
+			<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="">
+			{% else %}
+			<img src="/images/placeholder.jpg" class="img-responsive" alt="">
+			{% endif %}
 		</div>
 
 		<div class="profil-label text-center">
@@ -50,15 +59,12 @@
 				<a href="/user/friends" class="list-group-item-b ">
 					<i class="bi bi-people"></i>
 					Amis</a>
-				<a href="#" class="list-group-item-b ">
+				<a href="/user/abonnements" class="list-group-item-b ">
 					<i class="bi bi-clipboard-plus"></i>
-					Followers</a>
-				<a href="#" class="list-group-item-b ">
-					<i class="bi bi-clipboard-plus"></i>
-					Suivis</a>
-				<a href="#" class="list-group-item-b ">
+					Abonnements</a>
+				<a href="/user/parametres" class="list-group-item-b ">
 					<i class="bi bi-gear"></i>
-					Paramettre</a>
+					Paramettres</a>
 				<a href="#" class="list-group-item-b ">
 					<i class="bi bi-info-square"></i>
 					Aides</a>

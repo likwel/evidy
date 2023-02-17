@@ -19,19 +19,16 @@
 
 					<div class="col-lg-8 bg-white rounded-3 mb-1"> <ul class="nav nav-tabs mt-2">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="#" onclick="openNav(this,'all_friends')">Tous les amis</a>
+							<a class="nav-link active" aria-current="page" href="#" onclick="openNav(this,'followers')">Followers</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#" onclick="openNav(this,'demandes')">Invitation envoyées</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#" onclick="openNav(this,'invitation')">Invitation réçues</a>
+							<a class="nav-link" href="#" onclick="openNav(this,'suivis')">Suivis</a>
 						</li>
 					</ul>
 
 					{% if friends %}
 
-					<div class="row" id="all_friends" style="overflow-y: auto;">
+					<div class="row" id="followers" style="overflow-y: auto;">
 						<div class="col-md-12">
 							<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
 								<table class="table manage-candidates-top mb-0">
@@ -47,7 +44,7 @@
 
 										{% for friend in friends %}
 
-                                            {% if friend.is_wait == 0 %}
+                                            {% if friend.is_follower == 1 %}
 
 											<tr class="candidates-list">
 												<td class="title">
@@ -73,7 +70,7 @@
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<span class="badge text-bg-success order-1">Active</span>
+													<span class="badge text-bg-success order-1">follower</span>
 												</td>
 												<td>
 													<ul class="list-unstyled mb-0 d-flex justify-content-end">
@@ -104,7 +101,7 @@
 
 					{% if friends %}
 
-                    <div class="row" id="demandes" style="display:none;overflow-y: auto;">
+                    <div class="row" id="suivis" style="display:none;overflow-y: auto;">
 						<div class="col-md-12">
 							<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
 								<table class="table manage-candidates-top mb-0">
@@ -112,7 +109,7 @@
 										<tr>
 											<th>Nom et prenom</th>
 											<th class="text-center">Status</th>
-											<th class="action text-right">Action</th>
+											<th class="action float-end text-center">Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -120,7 +117,7 @@
 
 										{% for friend in friends %}
 
-                                        {% if friend.is_follower == 0 and friend.is_wait == 1 %}
+                                        {% if friend.is_follower == 0 %}
 
 											<tr class="candidates-list">
 												<td class="title">
@@ -146,7 +143,7 @@
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<span class="badge text-bg-success order-1">{% if friend.is_wait == 1 %}En attente {% else %}Confirmé{% endif %}</span>
+													<span class="badge text-bg-success order-1">Suivi</span>
 												</td>
 												<td>
 													{# {% if friend.is_wait == 1 %} #}
@@ -154,7 +151,7 @@
                                                         <ul class="list-unstyled mb-0 d-flex justify-content-end">
                                                             <li>
                                                                 <a href="#" class="text-danger" onclick="deleteFriend({{friend.user_id}})">
-                                                                    <i class="bi bi-trash3"></i> Annuler la demande
+                                                                    <i class="bi bi-trash3"></i> Ne plus suivre
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -173,81 +170,6 @@
 					</div>
 					{% endif %}
 
-					{% if friends %}
-
-                    <div class="row" id="invitation" style="display:none;overflow-y: auto;">
-						<div class="col-md-12">
-							<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
-								<table class="table manage-candidates-top mb-0">
-									<thead>
-										<tr>
-											<th>Nom et prenom</th>
-											<th class="text-center">Status</th>
-											<th class="action text-right">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<!--boucle for-->
-
-										{% for friend in friends %}
-
-                                            {% if friend.is_follower == 1 and friend.is_wait == 1 %}
-
-											<tr class="candidates-list">
-												<td class="title">
-													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-													</div>
-													<div class="candidate-list-details">
-														<div class="candidate-list-info">
-															<div class="candidate-list-title">
-																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
-																		{{friend[0].lastname}}</a>
-																</h5>
-															</div>
-															<div class="candidate-list-option">
-																<ul class="list-unstyled">
-																	<li>
-																		<i class="fas fa-filter pr-1"></i>@{{friend[0].pseudo}}</li>
-
-																</ul>
-															</div>
-														</div>
-													</div>
-												</td>
-												<td class="candidate-list-favourite-time text-center">
-													<span class="badge text-bg-success order-1">{% if friend.is_wait == 1 %}En attente {% else %}Confirmé{% endif %}</span>
-												</td>
-												<td>
-                                                {# {% if friend.is_wait == 1 %} #}
-
-                                                    <ul class="list-unstyled mb-0 d-flex justify-content-end">
-														<li>
-															<a href="#" class="text-primary" onclick="accepterInvitation({{friend.user_id}})">
-																<i class="bi bi-check2-circle"></i> Accepter
-															</a>
-														</li>
-														<li>
-															<a href="#" class="text-danger" onclick="deleteFriend({{friend.user_id}})" >
-																<i class="bi bi-trash3"></i> Supprimer
-															</a>
-														</li>
-													</ul>
-													
-												</td>
-											</tr>
-                                            {% endif %}
-
-										{% endfor %}
-
-									</tbody>
-								</table>
-								
-							</div>
-						</div>
-					</div>
-					{% endif %}
 
 				</div>
 
@@ -259,25 +181,19 @@
 			document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
                 elem.classList.remove("menu-active");
                 })
-                document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(2)").classList.add("menu-active")
+                document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(3)").classList.add("menu-active")
 		
         function openNav(elem, type){
             document.querySelectorAll("body > div.container.contenu > div > div.col-lg-8.bg-white.rounded-3.mb-1 > ul > li >a").forEach(element=>{
                 element.classList.remove("active");
             })
             elem.classList.add("active");
-            if(type=="all_friends"){
-                document.querySelector("#all_friends").style.display="block";
-                document.querySelector("#demandes").style.display="none";
-                document.querySelector("#invitation").style.display="none";
-            }else if(type=="demandes"){
-                document.querySelector("#all_friends").style.display="none";
-                document.querySelector("#demandes").style.display="block";
-                document.querySelector("#invitation").style.display="none";
+            if(type=="followers"){
+                document.querySelector("#followers").style.display="block";
+                document.querySelector("#suivis").style.display="none";
             }else{
-                document.querySelector("#all_friends").style.display="none";
-                document.querySelector("#demandes").style.display="none";
-                document.querySelector("#invitation").style.display="block";
+                document.querySelector("#followers").style.display="none";
+                document.querySelector("#suivis").style.display="block";
             }
             
         }
