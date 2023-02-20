@@ -393,7 +393,50 @@ function previewFile(file) {
 
 	}
 
-	function addToCard(pub_id,user_id){
-		
+	function addToCard(pub_id,user_id, qtte){
 
+		console.log("pub_id : "+pub_id+" , user_id : "+user_id)
+
+		fetch("/user/get_product_by/"+pub_id+"/"+user_id).then(res => res.json())
+		.then(product =>{
+			//add to card
+			let data = {
+				product_id : product.id,
+				user_id : user_id,
+				quantity : qtte
+			}
+			fetch(new Request("/user/add_to_card", {
+				method: "POST",
+				headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+				},
+				body : JSON.stringify(data)
+				})).then(req => req.json()).then(message => {
+					console.log(message);
+			})  
+			//console.log(result.id)
+		})
+
+	}
+
+	function setVendu(id){
+		//console.log(id)
+		fetch(new Request("/user/set_is_vendu/"+id, {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			}
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+		})  
+	}
+	function expandImg(img){
+		var modal = document.getElementById("myModalImage");
+		var modalImg = document.getElementById("img01");
+		var captionText = document.getElementById("caption");
+		modal.style.display = "block";
+		modalImg.src = img.src;
+		captionText.innerHTML = img.alt;
 	}

@@ -14,10 +14,11 @@
 				<!-- Profil-->
 				{% include "main/leftprofil.html.twig" %}
 				<!-- End Profil-->
+				
 
 				<!-- Main Center-->
 
-					<div class="col-lg-8 bg-white rounded-3 mb-1"> <ul class="nav nav-tabs mt-2">
+					<div class="col-lg-8 bg-white rounded-3 mb-1"> <h5 class="mb-3 mt-3">Votre panier</h5><ul class="nav nav-tabs mt-2">
 						<li class="nav-item">
 							<a class="nav-link active" aria-current="page" href="#" onclick="openNav(this,'en_cours')">En cours</a>
 						</li>
@@ -56,13 +57,13 @@
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{carte.product}}</a>
+																	<a href="#">{{carte[1].product}}</a>
 																</h5>
 															</div>
 															<div class="candidate-list-option">
 																<ul class="list-unstyled">
 																	<li>
-																		{{carte.datetime}}</li>
+																		{{carte[1].description}}</li>
 
 																</ul>
 															</div>
@@ -70,15 +71,15 @@
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<input type="number" value="{{carte.quantity}}" style="width:50px;">
+													<input type="number" value="{{carte.quantity}}" style="width:50px;" class="number_product" onmouseup="changeQuantity(this,{{carte.id}})">
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<span>{{carte.price}} Ar</span>
+													<span>{{carte[1].price}} Ar</span>
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<span>{{carte.price * carte.quantity }} Ar</span>
+													<span>{{carte[1].price * carte.quantity }} Ar</span>
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
@@ -95,7 +96,7 @@
 														</li>
 														<vr>
 														<li>
-															<a href="#" class="text-danger" onclick="deleteFriend({{carte.user_id}})">
+															<a href="#" class="text-danger" onclick="removeToCarte({{carte.id}})">
 																<i class="bi bi-trash3"></i> Rétirer
 															</a>
 														</li>
@@ -144,13 +145,13 @@
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{carte.product}}</a>
+																	<a href="#">{{carte[1].product}}</a>
 																</h5>
 															</div>
 															<div class="candidate-list-option">
 																<ul class="list-unstyled">
 																	<li>
-																		{{carte.datetime}}</li>
+																		{{carte[1].description}}</li>
 
 																</ul>
 															</div>
@@ -158,11 +159,15 @@
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<input type="number" value="{{carte.quantity}}" style="width:50px;">
+													<input type="number" value="{{carte.quantity}}" style="width:50px;" class="number_product" disabled>
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<span>{{carte.price}} Ar</span>
+													<span>{{carte[1].price}} Ar</span>
+												</td>
+
+												<td class="candidate-list-favourite-time text-center">
+													<span>{{carte[1].price * carte.quantity}} Ar</span>
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
@@ -173,16 +178,11 @@
 													<ul class="list-unstyled mb-0 d-flex justify-content-end">
 
 														<li>
-															<a href="#" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
-																<i class="bi bi-currency-exchange"></i> Payer
+															<a class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
+																<i class="bi bi-bookmark-check-fill"></i> Payé
 															</a>
 														</li>
-														<vr>
-														<li>
-															<a href="#" class="text-danger" onclick="deleteFriend({{carte.user_id}})">
-																<i class="bi bi-trash3"></i> Rétirer
-															</a>
-														</li>
+														
 													</ul>
 												</td>
 											</tr>
@@ -247,6 +247,37 @@
 				})).then(req => req.json()).then(message => {
 					console.log(message);
 			})
+		}
+
+		function changeQuantity(elem, id){
+			//alert(elem.value +" "+id)
+			let data = {
+				id : id,
+				quantity : elem.value
+			}
+			console.log(data);
+			fetch(new Request("/user/update_card", {
+				method: "POST",
+				headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+				},
+				body : JSON.stringify(data)
+				})).then(req => req.json()).then(message => {
+					console.log(message);
+			})  
+		}
+
+		function removeToCarte(carte_id){
+			fetch(new Request("/user/remove_to_card/"+carte_id, {
+				method: "POST",
+				headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+				}
+				})).then(req => req.json()).then(message => {
+					console.log(message);
+			})  
 		}
 
         </script>

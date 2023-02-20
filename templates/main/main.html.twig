@@ -99,7 +99,8 @@
 							<div>
 								<div class="nav nav-divider">
 									<h6 class="nav-item card-title mb-0">
-										<a href="/user/{{activity.user.id}}" style="text-decoration:none;">
+									{% set user_id = activity.user.id|json_encode() %}
+										<a href="/user/profil/{{user_id}}" style="text-decoration:none;">
 											{{activity.user.fullname}}
 										</a>
 									</h6>
@@ -135,6 +136,10 @@
 								</li>
 								{% if app.user.id == activity.user.id %}
 									<li><hr class="dropdown-divider"></li>
+									<li>
+										<a class="dropdown-item text-danger" href="#" onclick="setVendu({{activity.activity.id}})">
+											<i class="bi bi-slash-circle fa-fw pe-2"></i>Marquer comme vendu</a>
+									</li>
 									<li>
 										<a class="dropdown-item" href="#">
 											<i class="bi bi-pencil fa-fw pe-2"></i>Modifier</a>
@@ -174,9 +179,9 @@
 						</strike>
 					</small><br><br>
 					{% if activity.activity.isSale == 1 %}
-						{% if activity.activity.isWait == 0 %}
+						{% if activity.activity.status == 0 %}
 							<div class="bg-transparent btn-card float-end pannier">
-								<button class="btn btn-outline-primary float-end" onclick="addToCard({{activity.activity.id}},{{activity.activity.user_id}})">
+								<button class="btn btn-outline-primary float-end" onclick="addToCard({{activity.activity.id}},{{activity.activity.user_id}},{{activity.activity.quantity}})">
 									<i class="bi bi-cart2"></i>
 									Ajouter au panier</button>
 							</div>

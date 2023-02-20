@@ -44,10 +44,8 @@ class UserService extends PDOService{
 
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-            `product` varchar(255) NOT NULL,
+            `product_id` int(11) NOT NULL,
             `user_id` int(11) NOT NULL,
-            `price` float NOT NULL,
-            `taxe` float NOT NULL DEFAULT 0,
             `quantity` float NOT NULL,
             `status` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()

@@ -59,6 +59,22 @@ class VenteService extends PDOService{
         return $result;
     }
 
+
+    public function getOneByUser($id, $user_id){
+
+        $conn = $this -> getConnection();
+
+        $table_vente = "tb_activity_".$user_id;
+
+        $statement = $conn->prepare("SELECT * FROM $table_vente where id=$id");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function getOneBy($table_vente, $id){
 
         $conn = $this -> getConnection();
@@ -118,6 +134,16 @@ class VenteService extends PDOService{
         $result = $statement->fetch(PDO::FETCH_ASSOC)["NB"];
 
         return $result;
+    }
+
+    public function setIsVendu($table_vente, $id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "UPDATE $table_vente SET status = 1 where id = ?";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$id]);
+
     }
 
 }

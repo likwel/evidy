@@ -645,7 +645,7 @@ class UserController extends AbstractController
 
     }
 
-    #[Route('/user/shop', name: 'app_shop')]
+    #[Route('/user/panier', name: 'app_panier')]
     public function getAllCartes(): Response
     {
         $user = $this->getUser();
@@ -661,21 +661,21 @@ class UserController extends AbstractController
         $user_serv = new UserService();
 
         $carte_serv = new CarteService();
+        
+        $activity_serv =  new VenteService();
 
         $all_carte = $carte_serv ->getAll($user_tab_carte);
 
-        //dd($all_carte );
+        //dd($user);
 
         $tab_carte =array();
 
         foreach($all_carte as $carte){
-            array_push($carte, $this->em->getRepository(User::class)->findOneById($carte["user_id"]));
+            array_push($carte, $this->em->getRepository(User::class)->findOneById($carte["user_id"]),$activity_serv->getOneByUser($carte["product_id"],$carte["user_id"]));
             array_push($tab_carte,$carte);
         }
 
         //dd($tab_carte );
-
-        $activity_serv =  new VenteService();
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
@@ -709,6 +709,190 @@ class UserController extends AbstractController
             return $this->json("Null");
         }
 
+    }
+
+    #[Route('/user/update_card', name: 'app_update_card')]
+    public function updateCard(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $requestContent = json_decode($request->getContent(), true);
+
+        $id = $requestContent["id"];
+        $quantity = $requestContent["quantity"];
+
+        //$user_serv = new UserService();
+
+        $table_carte = $user->getTablecarte();
+        //$user_serv->deleteFriend($user->getTablefriends(), $user_id, $user->getId());
+
+        $carte_serv =  new CarteService();
+
+        $carte_serv->updateCard($table_carte, $quantity, $id);
+
+        return $this->json("Carte à jours");
+    }
+
+    #[Route('/user/get_product_by/{id}/{user_id}', name : 'app_get_getOneProduct')]
+    public function getOneProduct($id,$user_id): Response
+    {
+        $user = $this->getUser();
+
+        $carte_serv =  new CarteService();
+
+        $res = $carte_serv->getById($id, $user_id);
+
+        return $this->json($res);
+
+    }
+
+    #[Route('/user/add_to_card', name: 'app_add_to_card')]
+    public function addToCard(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $my_table_card = $this->getUser()->getTablecarte();
+
+        $data = json_decode($request->getContent(), true);
+
+        $user_id = $data["user_id"];
+        $product_id = $data["product_id"];
+        $quantity = $data["quantity"];
+
+        $carte_serv = new CarteService();
+
+        $carte_serv->addOneCard($user->getTablecarte(), $product_id, $user_id, $quantity);
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." a commandé votre annonce";
+
+        $type ="Carte";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
+        
+        return  $this->json("Bien ajouter");
+        
+    }
+
+    #[Route('/user/remove_to_card/{id}', name: 'app_remove_to_card')]
+    public function removeToCard(Request $request, $id): Response
+    {
+        $user = $this->getUser();
+
+        $carte_serv = new CarteService();
+
+        $carte_serv->removeToCarte($user->getTablecarte(),$id);
+
+        /*$notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." a commandé votre annonce";
+
+        $type ="Carte";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);*/
+        
+        return  $this->json("Bien supprimer");
+        
+    }
+
+    #[Route('/user/set_is_vendu/{id}', name: 'app_set_is_vendu')]
+    public function setIsVendu($id): Response
+    {
+        $user = $this->getUser();
+
+        $vente_serv = new VenteService();
+
+        $vente_serv->setIsVendu($user->getTableactivity(),$id);
+        
+        return  $this->json("article vendu");
+        
+    }
+
+    #[Route('/user/profil/{id}', name: 'app_profil')]
+    public function profil($id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $carte_serv = new CarteService();
+        
+        $activity_serv =  new VenteService();
+
+        $profil = $this->em->getRepository(User::class)->findOneById($id);
+
+        //dd($profil);
+
+        $user_table_friend = $profil->getTablefriends();
+
+        $user_tab_activity = $profil->getTableactivity();
+
+        $fullname = $profil->getFirstname().' '.$profil->getLastname();
+
+        $all_activity = $activity_serv->getAll($user_tab_activity);
+
+        //dd($all_activity);
+
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        
+        return $this->render('user/profil.html.twig', [
+            'user'=>$profil,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number,
+            'profil'=> $profil,
+            'products'=>$all_activity
+        ]);
+        
+    }
+
+    #[Route('/user/profil/{user_id}/detail/{id}', name: 'app_product_detail')]
+    public function Productdetail($user_id, $id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $carte_serv = new CarteService();
+        
+        $activity_serv =  new VenteService();
+
+        $profil = $this->em->getRepository(User::class)->findOneById($user_id);
+
+        //dd($profil);
+
+        $user_table_friend = $profil->getTablefriends();
+
+        $user_tab_activity = $profil->getTableactivity();
+
+        $fullname = $profil->getFirstname().' '.$profil->getLastname();
+
+        $activity = $activity_serv->getOneByUser($id, $user_id);
+
+        //dd($activity);
+
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        
+        return $this->render('user/productDetail.html.twig', [
+            'user'=>$profil,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number,
+            'profil'=> $profil,
+            'product'=>$activity
+        ]);
+        
     }
 
 }

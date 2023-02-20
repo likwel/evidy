@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div
+				class="row g-4">
+				<!-- Profil-->
+				{% include "user/user.html.twig" %}
+				<!-- End Profil-->
+
+				<!-- Main Center-->
+
+					<div class="col-lg-8 bg-white rounded-3 mb-3"> <div class="container">
+						<h4 class="mt-3 mb-3">Detait de l'article <a class="float-end small" href="/user/profil/{{product.user_id}}"><i class="bi bi-chevron-left"></i> Retour</a></h4>
+						<div class="row">
+							<div class="col-12">
+								<div class="card border-light p-4">
+									<div class="row align-items-center">
+										<div class="col-md-9">
+											<div class="info-main">
+												<a href="#" class="h5 title">
+													{{product.product}}
+												</a>
+												<div class="d-flex my-3">
+													<i class="star fas fa-star text-warning mr-1"></i>
+													<i class="star fas fa-star text-warning mr-1"></i>
+													<i class="star fas fa-star text-warning mr-1"></i>
+													<i class="star fas fa-star text-warning mr-1"></i>
+													<i class="star fas fa-star text-warning"></i>
+													<span class="badge badge-pill badge-gray ml-2">4.7</span>
+													<span class="small text-success ml-3">
+														<i class="fas fa-shopping-cart mr-1"></i>150 commandes</span>
+												</div>
+												<p>{{product.description}}</p>
+											</div>
+										</div>
+										<div class="col-12 col-md-3">
+											<div class="d-flex align-items-center">
+												<span class="h5 mb-0 text-gray text-through mr-2">
+													{{product.price}} {{product.devise|slice(0,2)}}
+												</span>
+												<span class="h6 mb-0 text-danger"></span>
+											</div>
+											<!-- info-price-detail // -->
+											{% if product.isDelivery == 1 %}
+												<span class="text-success small">
+												<i class="fas fa-shipping-fast mr-1"></i> Livraison possible</span>
+												{% else %}
+												<span class="text-danger small">
+												<i class="fas fa-shipping-fast mr-1"></i> Aucune livraison</span>
+											{% endif %}
+											
+											<div class="mt-4">
+												<button class="btn btn-outline-primary btn-sm btn-block mb-3" onclick="addToCard({{product.id}},{{product.user_id}},{{product.quantity}})">
+													Ajouter au panier <i class="bi bi-cart2"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-12" id="imageSlider">
+									{% if product.photos %}
+
+								{% set images = product.photos|split(',') %}
+
+								<div id="carouselExampleIndicators_{{product.datetime|date("Y_m_d_H_i_s")}}" class="carousel slide" data-bs-ride="carousel">
+									<div class="carousel-indicators">
+
+									{% if images|length > 1 %}
+										{% for image in images %}
+											{% if loop.index == 1 %}
+												<button type="button" data-bs-target="#carouselExampleIndicators_{{product.datetime|date("Y_m_d_H_i_s")}}" class="active" aria-current="true" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>
+											{% else %}
+												<button type="button" data-bs-target="#carouselExampleIndicators_{{product.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide-to="{{loop.index - 1}}" aria-label="Slide 2"></button>									
+											{% endif %}
+											
+										{% endfor %}
+									{% endif %}
+									
+
+									</div>
+
+									<div class="carousel-inner">
+										{% for image in images %}
+										{% set name_img = image|replace({'"': "", '[': "", ']': ""}) %}
+											<div class="carousel-item active">
+												<img src="/uploads/post/{{name_img}}" class="card-img" alt="..." onclick="expandImg(this)">
+											</div>
+											
+										{% endfor %}
+										
+										
+									</div>
+
+									{% if images|length > 1 %}
+										<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators_{{product.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											<span class="visually-hidden">Previous</span>
+										</button>
+										<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators_{{product.datetime|date("Y_m_d_H_i_s")}}" data-bs-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true"></span>
+											<span class="visually-hidden">Next</span>
+										</button>
+									{% endif %}
+								</div>
+
+							{% endif %}
+							</div>
+						</div>
+
+					</div>
+
+
+				</div>
+
+
+			</div>
+
+			<div id="myModalImage" class="modal-image">
+			<span class="close">&times;</span>
+			<img class="modal-content-image" id="img01">
+			<div id="caption"></div>
+			</div>
+
+		</div>
+
+
+		<script src="{{asset("js/profil.js")}}"></script>
+		
+		<script>
+		
+		function showImages(list_image){
+			//console.log(list_image.length)
+			if(list_image.length>0){
+				//let newDiv = document.createElement("div");
+				let div = "";
+				for(let img of list_image){
+					div += `<img scr="/uploads/post/${img}" alt="blabla">`
+				}
+				//newDiv.appendChild(div)
+				document.querySelector("#imageSlider").appendChild(div) ;
+			}
+		}
+		</script>
+	</body>
+{% endblock %}

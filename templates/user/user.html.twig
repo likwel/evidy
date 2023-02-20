@@ -1,0 +1,250 @@
+<div class="col-lg-3 mb-3">
+	<div class="card overflow-hidden">
+		<div class="couverture-image">
+			{% if user.couverture %}
+				<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="">
+			{% else %}
+				<img src="/images/couverture.jpg" class="img-responsive" alt="">
+			{% endif %}
+
+		</div>
+
+		<div class="profil-image">
+			{% if user.profil %}
+				<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="">
+			{% else %}
+				<img src="/images/placeholder.jpg" class="img-responsive" alt="">
+			{% endif %}
+		</div>
+
+		<div class="profil-label text-center">
+			<div class="mb-3">
+				<h5>{{lastUsername}}</h5>
+				<small>@{{user.pseudo}}</small>
+
+			</div>
+		</div>
+
+		<div class="profil-button">
+			<div
+				class="hstack gap-2 gap-xl-3 justify-content-center">
+				<!-- User stat item -->
+				<div>
+					<h6 class="mb-0">{{post_number}}</h6>
+					<small>Post</small>
+				</div>
+				<!-- Divider -->
+				<div class="vr"></div>
+				<!-- User nandefa demande-->
+				<div>
+					<h6 class="mb-0">{{follower_number}}</h6>
+					<small>Followers</small>
+				</div>
+				<!-- Divider -->
+				<div class="vr"></div>
+				<!-- User nandefasana demande -->
+				<div>
+					<h6 class="mb-0">{{suivi_number}}</h6>
+					<small>Suivi(e)s</small>
+				</div>
+			</div>
+		</div>
+
+		<div id="filterbar" class="collapse mb-3">
+			<div class="box border-bottom">
+				<div class="row">
+				{% if app.user.id == user.id %}
+					<a class="btn btn-outline-primary btn-sm col m-2" href="/user/parametres">
+						<i class="bi bi-plus"></i>Modifier le profil</a>
+				{% else %}
+					<button class="btn btn-outline-primary btn-sm col m-2" type="button">
+						<i class="bi bi-plus"></i>Suivre</button>
+					<button class="btn btn-outline-primary btn-sm col m-2" type="button" checked>
+						<i class="bi bi-messenger"></i>
+						Message</button>
+				{% endif %}
+					
+				</div>
+				<div>
+					<label class="tick">Nouveaux
+						<input type="checkbox" checked="checked">
+						<span class="check"></span>
+					</label>
+				</div>
+				<div>
+					<label class="tick">Promotions
+						<input type="checkbox">
+						<span class="check"></span>
+					</label>
+				</div>
+			</div>
+			<div class="box border-bottom">
+				<span class="box-label text-uppercase">Catégories</span>
+				<div class="box-label text-uppercase d-flex align-items-center float-end">
+					<button class="btn ml-auto float-end" type="button" data-bs-toggle="collapse" data-bs-target="#inner-box" aria-expanded="true" aria-controls="inner-box" id="out" onclick="outerFilter()">
+						<span class="fas fa-plus"></span>
+					</button>
+				</div>
+				<div id="inner-box" class="collapse mt-2 mr-1">
+					<div class="my-1">
+						<label class="tick">Windbreaker
+							<input type="checkbox" checked="checked">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Jumpsuit
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Jacket
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Coat
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Raincoat
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Handbag
+							<input type="checkbox" checked>
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Warm vest
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Wallets
+							<input type="checkbox" checked>
+							<span class="check"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="box border-bottom">
+				<span class="box-label text-uppercase">Types</span>
+				<div class="box-label text-uppercase d-flex align-items-center float-end">
+					<button class="btn ml-auto float-end" type="button" data-bs-toggle="collapse" data-bs-target="#inner-box2" aria-expanded="false" aria-controls="inner-box2">
+						<span class="fas fa-plus"></span>
+					</button>
+				</div>
+				<div id="inner-box2" class="collapse mt-2 mr-1">
+					<div class="my-1">
+						<label class="tick">Spring
+							<input type="checkbox" checked="checked">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Summer
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Autumn
+							<input type="checkbox" checked>
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Winter
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+					<div class="my-1">
+						<label class="tick">Rainy
+							<input type="checkbox">
+							<span class="check"></span>
+						</label>
+					</div>
+				</div>
+			</div>
+			<div class="box border-bottom">
+				<span class="box-label text-uppercase">Prix</span>
+				<div class="box-label text-uppercase d-flex align-items-center float-end">
+					<button class="btn ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#price" aria-expanded="false" aria-controls="price">
+						<span class="fas fa-plus"></span>
+					</button>
+				</div>
+				<div class="collapse" id="price">
+					<div class="middle">
+						<div class="multi-range-slider">
+							<input type="range" id="input-left" min="0" max="100" value="10">
+							<input type="range" id="input-right" min="0" max="100" value="50">
+							<div class="slider">
+								<div class="track"></div>
+								<div class="range"></div>
+								<div class="thumb left"></div>
+								<div class="thumb right"></div>
+							</div>
+						</div>
+					</div>
+					<div class="d-flex align-items-center justify-content-between mt-2">
+						<div>
+							<span id="amount-left" class="font-weight-bold"></span>
+							uah
+						</div>
+						<div>
+							<span id="amount-right" class="font-weight-bold"></span>
+							uah
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box">
+				<span class="box-label text-uppercase">Poids</span>
+				<div class="box-label text-uppercase d-flex align-items-center float-end">
+					<button class="btn ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#size" aria-expanded="false" aria-controls="size">
+						<span class="fas fa-plus"></span>
+					</button>
+				</div>
+				<div id="size" class="collapse">
+					<div class="btn-group d-flex align-items-center flex-wrap" data-bs-toggle="buttons">
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox">
+							80
+						</label>
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox" checked>
+							92
+						</label>
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox" checked>
+							102
+						</label>
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox" checked>
+							104
+						</label>
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox" checked>
+							106
+						</label>
+						<label class="btn btn-success form-check-label">
+							<input class="form-check-input" type="checkbox" checked>
+							108
+						</label>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
