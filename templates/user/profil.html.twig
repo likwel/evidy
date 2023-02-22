@@ -83,7 +83,7 @@
 																{% for image in images %}
 																	{% set name_img = image|replace({'"': "", '[': "", ']': ""}) %}
 																	<div class="carousel-item active">
-																		<img src="/uploads/post/{{name_img}}" class="card-img" alt="..." >
+																		<img src="/uploads/post/{{name_img}}" class="card-img" alt="aucune photos" >
 																	</div>
 
 																{% endfor %}
@@ -126,7 +126,7 @@
 															{{product.devise|slice(0, 2)}}</div>
 													</div>
                                                     <div class="available_title">Disponible : <span>{{product.quantity}} </span>
-                                                            <a href="/user/profil/{{product.user_id}}/detail/{{product.id}}" class="float-end"> <i>Détail</i></a>
+                                                            <a class="float-end" href="/user/profil/{{product.user_id}}/detail/{{product.id}}"> <i>Détail</i></a>
                                                     </div>
 
                                                     {% if product.status == 0 %}
@@ -134,7 +134,7 @@
                                                             <button class="btn btn-outline-primary w-100 mt-3"onclick="addToCard({{product.id}},{{product.user_id}},{{product.quantity}})"> Ajouter au panier <i class="bi bi-cart2"></i></button>
                                                         {% endif %}
                                                     {% else %}
-                                                        <a href="#" class="btn btn-danger w-100 mt-3" disabled> Vendu <i class="bi bi-cart2"></i></a>
+                                                        <a href="#" class="badge text-bg-danger float-end" disabled> Vendu <i class="bi bi-cart2"></i></a>
                                                         
                                                     {% endif %}
                                                     

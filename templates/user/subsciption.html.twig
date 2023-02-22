@@ -49,13 +49,17 @@
 											<tr class="candidates-list">
 												<td class="title">
 													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+														{% if friend[0].profil %}
+														<img class="img-fluid" src="/uploads/profil/{{friend[0].profil}}" alt="">
+													{% else %}
+														<img class="img-fluid" src="/images/placeholder.jpg" alt="">
+													{% endif %}
 													</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
+																	<a href="/user/profil/{{friend[0].id}}">{{friend[0].firstname}}
 																		{{friend[0].lastname}}</a>
 																</h5>
 															</div>
@@ -122,13 +126,18 @@
 											<tr class="candidates-list">
 												<td class="title">
 													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+													{% if friend[0].profil %}
+														<img class="img-fluid" src="/uploads/profil/{{friend[0].profil}}" alt="">
+													{% else %}
+														<img class="img-fluid" src="/images/placeholder.jpg" alt="">
+													{% endif %}
+														
 													</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
+																	<a href="/user/profil/{{friend[0].id}}">{{friend[0].firstname}}
 																		{{friend[0].lastname}}</a>
 																</h5>
 															</div>
@@ -207,6 +216,11 @@
 				}
 				})).then(req => req.json()).then(message => {
 					console.log(message);
+					if(message=="Success"){
+						showAlert('Succès',"Demande accepté succès!", 'success');
+					}else{
+						showAlert('Erreur',"Une erreur se produite!", 'danger');
+					}
 			})
 		}
 
@@ -219,6 +233,11 @@
 				}
 				})).then(req => req.json()).then(message => {
 					console.log(message);
+					if(message=="Success"){
+						showAlert('Succès',"Désabonnement succès!", 'success');
+					}else{
+						showAlert('Erreur',"Une erreur se produite!", 'danger');
+					}
 			})
 		}
 

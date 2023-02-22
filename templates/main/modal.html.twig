@@ -1,4 +1,4 @@
-<div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-modal="true" role="dialog">
+{# <div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-modal="true" role="dialog">
 	<div class="modal-dialog modal-dialog-centered">
 		<div
 			class="modal-content">
@@ -411,7 +411,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> #}
 
 <div class="modal fade border border-info" id="modalCreateSale" tabindex="-1" aria-labelledby="modalLabelCreateAlbum" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -556,6 +556,12 @@
 			body: JSON.stringify(data)
 			})).then(req => req.json()).then(message => {
 				console.log(message);
+				if(message=="Success"){
+					showAlert('Succès',"L'annonce que vous avez créé a été publié avec succès!", 'success');
+				}else{
+					showAlert('Erreur',"L'annonce que vous avez créé a une erreur", 'danger');
+				}
+				
 		})
 	}
 </script>

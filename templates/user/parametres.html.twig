@@ -15,8 +15,44 @@
 				<!-- End Profil-->
 
 				<!-- Main Center-->
+				<div class="col-lg-8 bg-white rounded-3 mb-3"> 
+
+				<h5 class="m-3">Modifier vos photos</h5>
+				<div class="row m-3 mb-3">
+					<div style="height :250px; width:100%;border-radius:10px; margin-bottom:5px;">
+
+						<label style="width:100%;" for="fileCouveture">
+							{% if user.couverture %}
+								{% set couv = "/uploads/couverture/" ~ user.couverture %}
+							{# <img src="/uploads/couverture/{{user.couverture}}" id="photoCouverture-1" class="img-responsive" alt="" style="height :250px; width:100%;border-radius:10px;"> #}
+							{% else %}
+								{% set couv = "/images/couverture.jpg" %}
+							{% endif %}
+							<img src="{{couv}}" id="photoCouverture" class="img-responsive" alt="" style="height :250px; width:100%;border-radius:10px;">
+							
+							<input type="file" name="fileCouveture" id="fileCouveture" style="display:none;visibility:none;"  accept="image/*">
+					
+						</label>
+						
+						
+					</div>
+
+					<label class="text-center" style="width:100%;margin-top:-50px;" for="fileProfil">
+						{% if user.profil %}
+						{% set pdp = "/uploads/profil/" ~ user.profil %}
+						{# <img src="/uploads/profil/{{user.profil}}" class="" id="photoProfil-1" alt="" style="height :200px; width:200px;border-radius:50%;"> #}
+						{% else %}
+						{% set pdp = "/images/placeholder.jpg" %}
+						{% endif %}
+						<img src="{{pdp}}" class="" id="photoProfil" alt="" style="height :200px; width:200px;border-radius:50%;">
+						
+						<input type="file" name="fileProfil" id="fileProfil" style="display:none;visibility:none;"  accept="image/*">
 				
-				<div class="col-lg-8 bg-white rounded-3 mb-3"> <h5 class="m-3">Modifier votre information</h5>
+					</label>
+					
+				</div>
+				
+				<h5 class="m-3">Modifier votre information</h5>
 					<div class="row m-3 mb-3">
 					{{ form_start(form) }}
 						<div class="col">
@@ -144,6 +180,86 @@
 				})
 
 			}
+
+			let couvert = document.querySelector("#photoCouverture");
+			let avatar =""
+
+			document.querySelector("#fileCouveture").addEventListener("change", (e) => {
+
+				const reader = new FileReader();
+
+				reader.addEventListener("load", () => {
+					avatar = reader.result;
+					//console.log(avatar);
+					couvert.src = avatar
+
+					let data = {
+						image : avatar
+					}
+
+					fetch(new Request("/user/update_couverture", {
+						method: "POST",
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(data)
+					})).then(res => res.json())
+					.then(message => {
+							if(message == "Success"){
+								showAlert('Succès',"Photo de couverture à jour!", 'success');
+							}else{
+								showAlert('Erreur',"Une erreur se produite!", 'danger');
+							}
+						}
+					);
+
+				});
+
+				reader.readAsDataURL(e.target.files[0]);
+
+			}
+		)
+
+			let profil = document.querySelector("#photoProfil");
+			let avatarP =""
+
+			document.querySelector("#fileProfil").addEventListener("change", (e) => {
+
+				const reader = new FileReader();
+
+				reader.addEventListener("load", () => {
+					avatarP = reader.result;
+					//console.log(avatarP);
+					profil.src = avatarP
+
+					let data = {
+						image : avatarP
+					}
+
+					fetch(new Request("/user/update_profil", {
+						method: "POST",
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'application/json'
+						},
+						body: JSON.stringify(data)
+					})).then(x => x.json()).then(message => {
+							if(message == "Success"){
+								showAlert('Succès',"Photo de profil à jour!", 'success');
+							}else{
+								showAlert('Erreur',"Une erreur se produite!", 'danger');
+							}
+						}
+					);
+
+				});
+
+				reader.readAsDataURL(e.target.files[0]);
+
+			}
+		)
+
 		
 		</script>
 	</body>

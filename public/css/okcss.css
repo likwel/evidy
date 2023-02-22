@@ -167,7 +167,7 @@ li {
   margin-left: 20px;
   color: rgb(148, 157, 178);
   cursor: pointer;
-  border: 1px solid rgb(232, 236, 236);
+  /* border: 1px solid rgb(232, 236, 236); */
   border-radius: 10px;
 }
 /*.profil-show:hover{
@@ -526,4 +526,18 @@ p {
 .list-group-item-b:hover{
   background-color:#e2eaef;
   color:#0d6efd;
+ }
+
+ .alert{
+  animation: show_left 1s ease forwards;
+ }
+
+ @keyframes show_left {
+  0%{
+    transform: translateX(100%);
+  }
+  100%{
+    transform: translateX(-5px);
+  }
+  
  }

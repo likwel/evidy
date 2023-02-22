@@ -87,7 +87,7 @@ class UserService extends PDOService{
             `photos` longtext NULL COMMENT '(DC2Type:json)',
             `isSale` tinyint(1) NOT NULL DEFAULT 1,
             `isDelivery` tinyint(1) NOT NULL DEFAULT 0,
-            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `status` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -156,22 +156,46 @@ class UserService extends PDOService{
 
     }
 
+    public function getNumberFriends($table){
+        
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT count(*) as NB FROM $table where is_wait = 0");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC)["NB"];
+
+        return $result;
+
+    }
+
+    public function getAllFriendsId($table){
+        
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT user.id, profil,firstname,lastname FROM user INNER JOIN $table ON user.id = $table.user_id ");
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
     
     public function isFriend($table, $user_id){
         
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT count(*) as Nb FROM $table where user_id = '$user_id' ");
+        $statement = $conn->prepare("SELECT count(*) as Nb FROM $table where user_id = $user_id and is_wait= 0 ");
 
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_ASSOC)["Nb"];
         
-        if($result > 0){
-            return true;
-        }else{
-            return false;
-        }
+        return $result;
     }
 
     public function addFriend($table,$user_id, $isFollow, $isWait){
@@ -303,6 +327,57 @@ class UserService extends PDOService{
             return true;
         }
         
+    }
+    public function getSumUser()
+    {
+        $conn = $this -> getConnection(); 
+
+        $statement = $conn->prepare("SELECT count(id) as somme, SUBSTR(datetime, 1, 7) as datetime FROM user group by SUBSTR(datetime, 1, 7)");
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function terminatedSponsor($id, $user_id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "UPDATE admin_sponsored SET is_active = 0 where id = ? and user_id =?";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$id,$user_id]);
+
+    }
+    public function addSponsor($user_id, $id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT into admin_sponsored (user_id, post_id, lasted) VALUES (?,?,?)";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$user_id, $id, 1]);
+
+    }
+
+    public function updateProfil($photo, $id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "UPDATE user SET profil = ? where id = ?";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$photo, $id]);
+
+    }
+
+    public function updateCouverture($photo, $id){
+
+        $conn = $this -> getConnection();
+
+        $sql = "UPDATE user SET couverture = ? where id = ?";
+        $statement = $conn->prepare($sql);
+        $statement->execute([$photo, $id]);
+
     }
 
 }

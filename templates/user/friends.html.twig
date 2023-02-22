@@ -52,13 +52,17 @@
 											<tr class="candidates-list">
 												<td class="title">
 													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
+														{% if friend[0].profil %}
+															<img class="img-fluid" src="/uploads/profil/{{friend[0].profil}}" alt="">
+														{% else %}
+															<img class="img-fluid" src="/images/placeholder.jpg" alt="">
+														{% endif %}
 													</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
+																	<a href="/user/profil/{{friend[0].id}}">{{friend[0].firstname}}
 																		{{friend[0].lastname}}</a>
 																</h5>
 															</div>
@@ -78,7 +82,7 @@
 												<td>
 													<ul class="list-unstyled mb-0 d-flex justify-content-end">
 														<li>
-															<a href="#" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
+															<a href="/user/profil/{{friend[0].id}}" class="text-primary" data-toggle="tooltip" title="" data-original-title="view">
 																<i class="far fa-eye"></i> Voir profil
 															</a>
 														</li>
@@ -125,13 +129,17 @@
 											<tr class="candidates-list">
 												<td class="title">
 													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-													</div>
+														{% if friend[0].profil %}
+															<img class="img-fluid" src="/uploads/profil/{{friend[0].profil}}" alt="">
+														{% else %}
+															<img class="img-fluid" src="/images/placeholder.jpg" alt="">
+														{% endif %}
+														</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
+																	<a href="/user/profil/{{friend[0].id}}">{{friend[0].firstname}}
 																		{{friend[0].lastname}}</a>
 																</h5>
 															</div>
@@ -196,13 +204,17 @@
 											<tr class="candidates-list">
 												<td class="title">
 													<div class="thumb">
-														<img class="img-fluid" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="">
-													</div>
+														{% if friend[0].profil %}
+															<img class="img-fluid" src="/uploads/profil/{{friend[0].profil}}" alt="">
+														{% else %}
+															<img class="img-fluid" src="/images/placeholder.jpg" alt="">
+														{% endif %}
+														</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{friend[0].firstname}}
+																	<a href="/user/profil/{{friend[0].id}}">{{friend[0].firstname}}
 																		{{friend[0].lastname}}</a>
 																</h5>
 															</div>
@@ -281,30 +293,6 @@
             }
             
         }
-
-		function accepterInvitation(user_id){
-			fetch(new Request("/user/accept_invitation/"+user_id, {
-				method: "POST",
-				headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-				}
-				})).then(req => req.json()).then(message => {
-					console.log(message);
-			})
-		}
-
-		function deleteFriend(user_id){
-			fetch(new Request("/user/delete_friend/"+user_id, {
-				method: "POST",
-				headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-				}
-				})).then(req => req.json()).then(message => {
-					console.log(message);
-			})
-		}
 
         </script>
 	</body>

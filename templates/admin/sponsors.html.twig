@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!
+{% endblock %}
+
+{% block body %}
+	<style>
+		.text-gray-300 {
+			color: #adb5bd;
+		}
+		.border-left-primary {
+			border-left: 3px solid #4e73df;
+		}
+		.border-left-success {
+			border-left: 3px solid #198754;
+		}
+		.border-left-warning {
+			border-left: 3px solid #f6c23e;
+		}
+	</style>
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div
+				class="row">
+				<!-- Profil-->
+				{% include "admin/user.html.twig" %}
+				<!-- End Profil-->
+				<div class="col-lg-8 bg-white rounded-3 mb-3">
+					<div class="container mt-3 m-0">
+						<div class="col-lg-12 col-md-12 mb-md-0 mb-4">
+							<div class="">
+								<div class="card-header pb-0">
+									<div class="row">
+										<div class="col-lg-6 col-7">
+											<h6 class="mb-3"><i class="fa fa-check text-info" aria-hidden="true"></i> Liste des sponsorisés</h6>
+											
+										</div>
+										<div class="col-lg-6 col-5 my-auto text-end">
+											<div class="dropdown float-lg-end pe-4">
+												<a class="cursor-pointer" id="dropdownTable" data-bs-toggle="dropdown" aria-expanded="false">
+													<i class="fa fa-ellipsis-v text-secondary" aria-hidden="true"></i>
+												</a>
+												<ul class="dropdown-menu px-2 py-3 ms-sm-n4 ms-n5" aria-labelledby="dropdownTable">
+													<li>
+														<a class="dropdown-item border-radius-md" href="javascript:;">Télecharger</a>
+													</li>
+													<li>
+														<a class="dropdown-item border-radius-md" href="javascript:;">Another action</a>
+													</li>
+													<li>
+														<a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								{# <div class="card-body px-0 pb-2"> #}
+									<div class="table-responsive">
+										<table class="table align-items-center mb-0">
+											<thead>
+												<tr>
+													<th class=" text-secondary text-xxs font-weight-bolder opacity-7">Fournisseur</th>
+													<th class= "text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Articles</th>
+													<th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">Prix</th>
+													<th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">Quantité</th>
+													<th class="text-center text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+												</tr>
+											</thead>
+											<tbody>
+                                             {% for spons in sponsors %}
+												<tr>
+													<td>
+														<div class="d-flex px-2 py-1">
+															
+															<div class="d-flex flex-column justify-content-center">
+																<h6 class="mb-0 text-sm"><a href="/user/profil/{{spons.user_id}}"> Voir le fournisseur</a></h6>
+															</div>
+														</div>
+													</td>
+													<td>
+														<div class="avatar-group mt-2">
+																{{spons.product}} <i>{{spons.description}}</i>
+															
+														</div>
+													</td>
+													<td class="align-middle text-center text-sm">
+														<span class="text-xs font-weight-bold">
+															{{spons.price}} {{spons.devise|slice(0,2)}}
+														</span>
+													</td>
+													<td class="align-middle">
+														<span class="text-xs font-weight-bold">
+															{{spons.quantity}}
+														</span>
+													</td>
+													<td class="align-middle">
+														<span class="btn btn-warning small" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" onclick="terminer({{spons.id}},{{spons.user_id}})">
+															Terminer
+														</span>
+													</td>
+                                                    
+												</tr>
+                                                {% endfor %}
+												
+											</tbody>
+										</table>
+									</div>
+								{# </div> #}
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<script>
+        document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
+			elem.classList.remove("menu-active");
+			})
+			document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(3)").classList.add("menu-active")
+			
+			function terminer(id, user_id){
+				fetch("/admin/terminer_sponsor/"+id+"/"+user_id).then(res=>res.json()).then(message=>{
+					console.log(message);
+					if(message=="Success"){
+						showAlert('Succès',"Sponsor bien términé avec succès!", 'success');
+					}else{
+						showAlert('Erreur',"Une erreur se produite!", 'danger');
+					}
+				})
+			}
+        </script>
+	</body>
+{% endblock %}

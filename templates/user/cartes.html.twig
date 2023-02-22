@@ -57,7 +57,7 @@
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{carte[1].product}}</a>
+																	<a href="/user/profil/{{carte[0].id}}/detail/{{carte[1].id}}">{{carte[1].product}}</a>
 																</h5>
 															</div>
 															<div class="candidate-list-option">
@@ -71,7 +71,7 @@
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<input type="number" value="{{carte.quantity}}" style="width:50px;" class="number_product" onmouseup="changeQuantity(this,{{carte.id}})">
+													<input type="number" value="{{carte.quantity}}" min="1" max="{{carte.quantity}}" style="width:50px;" class="number_product" onmouseup="changeQuantity(this,{{carte.id}})">
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
@@ -83,7 +83,7 @@
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<a href="#">{{carte[0].firstname}} {{carte[0].lastname}}</a>
+													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}} {{carte[0].lastname}}</a>
 												</td>
 
 												<td>
@@ -103,16 +103,20 @@
 													</ul>
 												</td>
 											</tr>
+
+											
                                         {% endif %}
 
 										{% endfor %}
 
 									</tbody>
+									
 								</table>
 								
 							</div>
 						</div>
 					</div>
+					<button class="btn btn-primary float-end mb-3">Paiement</button>
 					{% endif %}
 
 					{% if cartes %}
@@ -145,7 +149,7 @@
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="#">{{carte[1].product}}</a>
+																	<a href="/user/profil/{{carte[0].id}}/detail/{{carte[1].id}}">{{carte[1].product}}</a>
 																</h5>
 															</div>
 															<div class="candidate-list-option">
@@ -171,7 +175,7 @@
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<a href="#">{{carte[0].firstname}} {{carte[0].lastname}}</a>
+													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}} {{carte[0].lastname}}</a>
 												</td>
 
 												<td>
@@ -209,45 +213,7 @@
 			document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
                 elem.classList.remove("menu-active");
                 })
-		
-        function openNav(elem, type){
-            document.querySelectorAll("body > div.container.contenu > div > div.col-lg-8.bg-white.rounded-3.mb-1 > ul > li >a").forEach(element=>{
-                element.classList.remove("active");
-            })
-            elem.classList.add("active");
-            if(type=="en_cours"){
-                document.querySelector("#en_cours").style.display="block";
-                document.querySelector("#termine").style.display="none";
-            }else{
-                document.querySelector("#en_cours").style.display="none";
-                document.querySelector("#termine").style.display="block";
-            }
-            
-        }
 
-		function accepterInvitation(user_id){
-			fetch(new Request("/user/accept_invitation/"+user_id, {
-				method: "POST",
-				headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-				}
-				})).then(req => req.json()).then(message => {
-					console.log(message);
-			})
-		}
-
-		function deleteFriend(user_id){
-			fetch(new Request("/user/delete_friend/"+user_id, {
-				method: "POST",
-				headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-				}
-				})).then(req => req.json()).then(message => {
-					console.log(message);
-			})
-		}
 
 		function changeQuantity(elem, id){
 			//alert(elem.value +" "+id)
@@ -276,7 +242,11 @@
 				'Content-Type': 'application/json'
 				}
 				})).then(req => req.json()).then(message => {
-					console.log(message);
+					if(message=="Success"){
+						showAlert('Succès',"Article bien retiré dans votre panier!", 'success');
+					}else{
+						showAlert('Erreur',"Une erreur se produite!", 'danger');
+					}
 			})  
 		}
 

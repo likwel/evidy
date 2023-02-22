@@ -46,17 +46,6 @@
 									</span>
 								</div>
 							</a>
-
-							{# <div class="dropdown-menu" style="width:300px;">
-														<div class="dropdown-item">
-															<i class="bi bi-messenger m-2"></i>
-															<strong class="me-auto">
-																Messages</strong>
-														</div>
-														<hr class="dropdown-divider">
-														<div class="m-2 mb-3 overflow-auto h-50" id="message_body">
-															Contenu des messages</div>
-													</div> #}
 						</div>
 
 					</li>
@@ -112,6 +101,15 @@
 									</a>
 								</li>
 								<li><hr class="dropdown-divider"></li>
+								
+								{% if app.user.roles[0] == "ROLE_GODMODE"%}
+									<li>
+										<a class="dropdown-item mb-2" href="/admin">
+											<i class="bi bi-shield-fill-check"></i>
+											Admin</a>
+									</li>
+								{% endif %}
+								
 								<li>
 									<a class="dropdown-item mb-2" href="#">
 										<i class="bi bi-shield-fill-check"></i>

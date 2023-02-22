@@ -334,9 +334,6 @@ class UserController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         
-
-        //extract($data); /// $from , $to , $message , $images
-        
         $path = $this->getParameter('kernel.project_dir') . '/public/uploads/post/'; 
 
         $product = $data["product"];
@@ -369,9 +366,8 @@ class UserController extends AbstractController
         }
 
         $vente_serv->publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait);
-        
         //return new RedirectResponse($this->urlGenerator->generate('app_main'));
-        return  $this->json("Publication succès");
+        return  $this->json("Success");
         
     }
 
@@ -428,7 +424,7 @@ class UserController extends AbstractController
 
         $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
         
-        return  $this->json("Bien ajouter");
+        return  $this->json("Success");
         
     }
     #[Route('/user/friends', name: 'app_friends')]
@@ -490,7 +486,7 @@ class UserController extends AbstractController
 
         $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
 
-        return $this->json("Bien accepté");
+        return $this->json("Success");
     }
     
     #[Route('/user/delete_friend/{user_id}', name: 'app_delete_friend')]
@@ -500,7 +496,7 @@ class UserController extends AbstractController
         $user_serv = new UserService();
         $user_serv->deleteFriend($user->getTablefriends(), $user_id, $user->getId());
 
-        return $this->json("Bien supprimé");
+        return $this->json("Success");
     }
 
     #[Route('/user/abonnements', name: 'app_abonnements')]
@@ -773,7 +769,7 @@ class UserController extends AbstractController
 
         $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);
         
-        return  $this->json("Bien ajouter");
+        return  $this->json("Success");
         
     }
 
@@ -785,18 +781,8 @@ class UserController extends AbstractController
         $carte_serv = new CarteService();
 
         $carte_serv->removeToCarte($user->getTablecarte(),$id);
-
-        /*$notif_serv = new NotificationService();
-
-        $content = $user->getFirstname()." ".$user->getLastname()." a commandé votre annonce";
-
-        $type ="Carte";
-
-        $tb_notif = 'tb_notification_'.$user_id;
-
-        $notif_serv->sendOneNotification($tb_notif, $content,$user->getId(), $type);*/
         
-        return  $this->json("Bien supprimer");
+        return  $this->json("Success");
         
     }
 
@@ -809,7 +795,7 @@ class UserController extends AbstractController
 
         $vente_serv->setIsVendu($user->getTableactivity(),$id);
         
-        return  $this->json("article vendu");
+        return  $this->json("Success");
         
     }
 
@@ -838,6 +824,12 @@ class UserController extends AbstractController
 
         //dd($all_activity);
 
+        $isFriend = $user_serv->isFriend($user->getTablefriends(), $id);
+
+        //dd($isFriend);
+
+        $number_friend = $user_serv->getNumberFriends($user_table_friend);
+
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
@@ -849,7 +841,9 @@ class UserController extends AbstractController
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
             'profil'=> $profil,
-            'products'=>$all_activity
+            'products'=>$all_activity,
+            'isFriend'=>$isFriend,
+            'nb_friend'=>$number_friend
         ]);
         
     }
@@ -877,7 +871,10 @@ class UserController extends AbstractController
 
         $activity = $activity_serv->getOneByUser($id, $user_id);
 
+        $isFriend = $user_serv->isFriend($user->getTablefriends(), $user_id);
+
         //dd($activity);
+        $number_friend = $user_serv->getNumberFriends($user_table_friend);
 
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
@@ -890,9 +887,73 @@ class UserController extends AbstractController
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
             'profil'=> $profil,
-            'product'=>$activity
+            'product'=>$activity,
+            'isFriend'=>$isFriend,
+            'nb_friend'=>$number_friend
         ]);
         
+    }
+
+    #[Route('/user/update_profil', name: 'app_update_profil')]
+
+    public function updateProfil(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $data = json_decode($request->getContent(), true);
+
+        extract($data);
+
+        $path = $this->getParameter('kernel.project_dir') . '/public/uploads/profil/';
+
+        $user_serv = new UserService();
+
+        if($image != "" ){
+
+                $temp = explode(";", $image );
+
+                $extension = explode("/", $temp[0])[1];
+
+                $imagename = 'pdp_' . uniqid() . "." . $extension;
+
+                file_put_contents($path . $imagename, file_get_contents($image));
+
+                $user_serv->updateProfil($imagename, $user->getId());
+        }
+
+        return $this->json("Success");
+
+    }
+
+    #[Route('/user/update_couverture', name: 'app_update_couverture')]
+
+    public function updateCouverture(Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $data = json_decode($request->getContent(), true);
+
+        extract($data);
+
+        $path = $this->getParameter('kernel.project_dir') . '/public/uploads/couverture/';
+
+        $user_serv = new UserService();
+
+        if($image != "" ){
+
+                $temp = explode(";", $image );
+
+                $extension = explode("/", $temp[0])[1];
+
+                $imagename = 'pdc_' . uniqid() . "." . $extension;
+
+                file_put_contents($path . $imagename, file_get_contents($image));
+
+                $user_serv->updateCouverture($imagename, $user->getId());
+        }
+
+        return $this->json("Success");
+
     }
 
 }

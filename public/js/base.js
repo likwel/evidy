@@ -355,6 +355,11 @@ function previewFile(file) {
 		.then(res=>res.json())
 		.then(message=>{
 			console.log(message);
+			if(message=="Success"){
+				showAlert('Succès',"Votre demande d'amis est envoyée avec succès!", 'success');
+			}else{
+				showAlert('Erreur',"Une erreur se produite!", 'danger');
+			}
 		})
 	}
 
@@ -413,7 +418,11 @@ function previewFile(file) {
 				},
 				body : JSON.stringify(data)
 				})).then(req => req.json()).then(message => {
-					console.log(message);
+					if(message=="Success"){
+						showAlert('Succès',"Article bien enregistré dans votre panier!", 'success');
+					}else{
+						showAlert('Erreur',"Une erreur se produite!", 'danger');
+					}
 			})  
 			//console.log(result.id)
 		})
@@ -430,6 +439,11 @@ function previewFile(file) {
 			}
 			})).then(req => req.json()).then(message => {
 				console.log(message);
+				if(message=="Success"){
+					showAlert('Succès',"Article bien marqué comme vendu!", 'success');
+				}else{
+					showAlert('Erreur',"Une erreur se produite!", 'danger');
+				}
 		})  
 	}
 	function expandImg(img){
@@ -440,3 +454,69 @@ function previewFile(file) {
 		modalImg.src = img.src;
 		captionText.innerHTML = img.alt;
 	}
+
+	function sponsoriser(id, user_id){
+		fetch("/admin/add_sponsor/"+id+"/"+user_id).then(res=>res.json()).then(message=>{
+			console.log(message);
+			if(message=="Success"){
+				showAlert('Succès',"Article bien sponsorisé avec succès!", 'success');
+			}else{
+				showAlert('Erreur',"Une erreur se produite!", 'danger');
+			}
+		})
+	}
+
+	function accepterInvitation(user_id){
+		fetch(new Request("/user/accept_invitation/"+user_id, {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			}
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+				if(message=="Success"){
+					showAlert('Succès',"Demande d'amis bien accepté!", 'success');
+				}else{
+					showAlert('Erreur',"Une erreur se produite!", 'danger');
+				}
+		})
+	}
+
+	function deleteFriend(user_id){
+		fetch(new Request("/user/delete_friend/"+user_id, {
+			method: "POST",
+			headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+			}
+			})).then(req => req.json()).then(message => {
+				console.log(message);
+				if(message=="Success"){
+					showAlert('Succès',"Amis bien retiré avec succès!", 'success');
+				}else{
+					showAlert('Erreur',"Une erreur se produite!", 'danger');
+				}
+		})
+	}
+
+
+	const alertPlaceholder = document.getElementById('divAlert')
+
+	function showAlert (titre, message, type){
+		let wrapper = document.createElement('div')
+		wrapper.innerHTML = [
+			`<div class="alert alert-${type} alert-dismissible position-fixed end-0 bottom-0 me-2 mb-2 border border-2 border-${type}" role="alert"  style="z-index:9;box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">`,
+			`   <div><strong><i class="bi bi-check2-all"></i> ${titre}</strong></div>`,
+			'   <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert" aria-label="Close"></button>',
+			`  <hr><p class="h-100">${message}</p> `,
+			'</div>'
+		].join('')
+
+		alertPlaceholder.append(wrapper)
+
+		setTimeout(function reset() {
+			wrapper.innerHTML="";
+		},5000)
+	}
+

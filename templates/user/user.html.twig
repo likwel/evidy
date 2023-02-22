@@ -2,7 +2,7 @@
 	<div class="card overflow-hidden">
 		<div class="couverture-image">
 			{% if user.couverture %}
-				<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="">
+				<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="" onclick="expandImg(this)">
 			{% else %}
 				<img src="/images/couverture.jpg" class="img-responsive" alt="">
 			{% endif %}
@@ -11,7 +11,7 @@
 
 		<div class="profil-image">
 			{% if user.profil %}
-				<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="">
+				<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="" onclick="expandImg(this)">
 			{% else %}
 				<img src="/images/placeholder.jpg" class="img-responsive" alt="">
 			{% endif %}
@@ -20,7 +20,8 @@
 		<div class="profil-label text-center">
 			<div class="mb-3">
 				<h5>{{lastUsername}}</h5>
-				<small>@{{user.pseudo}}</small>
+				<small>@{{user.pseudo}}</small><br>
+				<a href="mailto:{{user.email}}?subject=FeedBack for E-vidy">{{user.email}}</a>
 
 			</div>
 		</div>
@@ -50,29 +51,67 @@
 			</div>
 		</div>
 
-		<div id="filterbar" class="collapse mb-3">
-			<div class="box border-bottom">
-				<div class="row">
+		<div class="col-lg-12">
+			<div class="row m-2">
 				{% if app.user.id == user.id %}
 					<a class="btn btn-outline-primary btn-sm col m-2" href="/user/parametres">
 						<i class="bi bi-plus"></i>Modifier le profil</a>
 				{% else %}
-					<button class="btn btn-outline-primary btn-sm col m-2" type="button">
-						<i class="bi bi-plus"></i>Suivre</button>
+
+				{% if isFriend == 0 %}
+					<button class="btn btn-outline-primary btn-sm col m-2" type="button" onclick="addFriend(this, {{user.id}})">
+						<i class="bi bi-plus"></i> Suivre</button>
+
+				{% else %}
+					<button class="btn btn-outline-danger btn-sm col m-2" type="button" onclick="deleteFriend({{user.id}})">
+						<i class="bi bi-x"></i> Quitter</button>
+				{% endif %}
+					
 					<button class="btn btn-outline-primary btn-sm col m-2" type="button" checked>
 						<i class="bi bi-messenger"></i>
 						Message</button>
 				{% endif %}
 					
 				</div>
+			</div>
+
+		<div class="col-lg-12 bg-white rounded-3 mb-1"> 
+			<ul class="nav nav-tabs mt-2">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="#" onclick="openNav(this,'filterbar')">Activités</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#" onclick="openNav(this,'profil')">Profil</a>
+				</li>
+			</ul>
+		</div>
+
+		<div id="profil" class="mb-3" style="display:none;">
+			<div class="">
+				<div class="list-group list-group-flush">
+					<a href="#" class="list-group-item list-group-item-action" aria-current="true">
+						Nom : {{user.firstname}}
+					</a>
+					<a href="#" class="list-group-item list-group-item-action">Prénom : {{user.lastname}}</a>
+					<a href="#" class="list-group-item list-group-item-action">E-mail : {{user.email}}</a>
+					<a href="#" class="list-group-item list-group-item-action">Pseudo : {{user.pseudo}}</a>
+					<a class="list-group-item list-group-item-action disabled">Amis   : {{nb_friend}}</a>
+					</div>
+									
+			</div>
+		</div>
+
+		<div id="filterbar" class="collapse mb-3">
+			<div class="box border-bottom">
+				
 				<div>
-					<label class="tick">Nouveaux
+					<label class="tick">Ventes
 						<input type="checkbox" checked="checked">
 						<span class="check"></span>
 					</label>
 				</div>
 				<div>
-					<label class="tick">Promotions
+					<label class="tick">Achats
 						<input type="checkbox">
 						<span class="check"></span>
 					</label>
@@ -248,3 +287,30 @@
 
 	</div>
 </div>
+
+<div id="myModalImage" class="modal-image">
+  <button class="close btn btn-outline-primary" onclick="close()">x</button>
+  <img class="modal-content-image" id="img01">
+  <div id="caption"></div>
+</div>
+<script>
+	function close(){
+		console.log("closed")
+		document.querySelector("#myModalImage").style.display ="none"
+	}
+
+	function openNav(elem, type){
+		document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3.mb-3 > div > div.col-lg-12.bg-white.rounded-3.mb-1 > ul > li > a").forEach(element=>{
+			element.classList.remove("active");
+		})
+		elem.classList.add("active");
+		if(type=="filterbar"){
+			document.querySelector("#filterbar").style.display="block";
+			document.querySelector("#profil").style.display="none";
+		}else{
+			document.querySelector("#filterbar").style.display="none";
+			document.querySelector("#profil").style.display="block";
+		}
+		
+	}
+</script>

@@ -1,25 +1,25 @@
-<div class="col-lg-3">
+<div class="col-lg-3 mb-3">
 	<div class="card overflow-hidden">
 		<div class="couverture-image">
 			{% if user.couverture %}
-			<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="" onclick="expandImg(this)">
+				<img src="/uploads/couverture/{{user.couverture}}" class="img-responsive" alt="">
 			{% else %}
-			<img src="/images/couverture.jpg" class="img-responsive" alt="">
+				<img src="/images/couverture.jpg" class="img-responsive" alt="">
 			{% endif %}
-			
+
 		</div>
 
 		<div class="profil-image">
 			{% if user.profil %}
-			<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="" onclick="expandImg(this)">
+				<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="">
 			{% else %}
-			<img src="/images/placeholder.jpg" class="img-responsive" alt="">
+				<img src="/images/placeholder.jpg" class="img-responsive" alt="">
 			{% endif %}
 		</div>
 
 		<div class="profil-label text-center">
 			<div class="mb-3">
-				<h5><a href="/user/profil/{{user.id}}">{{lastUsername}}</a></h5>
+				<h5>{{lastUsername}}</h5>
 				<small>@{{user.pseudo}}</small>
 
 			</div>
@@ -50,19 +50,21 @@
 			</div>
 		</div>
 
+		<hr>
+
 		<div class="profil-menu">
 			<div class="list-group-b" style="">
-				<a href="/" class="list-group-item-b menu-active" aria-current="true">
+				<a href="/admin" class="list-group-item-b menu-active" aria-current="true">
 					<i class="bi bi-houses"></i>
-					Actualités
+					Dashboard
 				</a>
-				<a href="/user/friends" class="list-group-item-b ">
+				<a href="/admin/users" class="list-group-item-b ">
 					<i class="bi bi-people"></i>
-					Amis</a>
-				<a href="/user/abonnements" class="list-group-item-b ">
+					Utilisateurs</a>
+				<a href="/admin/sponsors" class="list-group-item-b ">
 					<i class="bi bi-clipboard-plus"></i>
-					Abonnements</a>
-				<a href="/user/parametres" class="list-group-item-b ">
+					Sponsorisés</a>
+				<a href="/admin/parametres" class="list-group-item-b ">
 					<i class="bi bi-gear"></i>
 					Paramettres</a>
 				<a href="#" class="list-group-item-b ">
@@ -72,5 +74,7 @@
 
 		</div>
 
+
 	</div>
+
 </div>

@@ -11,7 +11,7 @@ class VenteService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $sql = "INSERT INTO $table_vente (product, description, devise, location, user_id, price, quantity, photos, isDelivery, isWait) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO $table_vente (product, description, devise, location, user_id, price, quantity, photos, isDelivery, status) VALUES (?,?,?,?,?,?,?,?,?,?)";
 
         $statement = $conn->prepare($sql);
 
@@ -51,6 +51,32 @@ class VenteService extends PDOService{
         $conn = $this -> getConnection();
 
         $statement = $conn->prepare("SELECT * FROM $table_vente order by id DESC");
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getAllSale($table_vente){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM $table_vente where isSale = 1 order by id DESC");
+
+        $statement->execute();
+
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function getAllNotSale($table_vente){
+
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM $table_vente where isSale = 0 order by id DESC");
 
         $statement->execute();
 

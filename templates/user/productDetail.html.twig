@@ -3,7 +3,8 @@
 {% block title %}{% endblock %}
 
 {% block body %}
-	<style></style>
+	<style>
+	</style>
 
 	<body class="body">
 		{% include "main/navbar.html.twig" %}
@@ -55,12 +56,24 @@
 												<span class="text-danger small">
 												<i class="fas fa-shipping-fast mr-1"></i> Aucune livraison</span>
 											{% endif %}
-											
+
+											{% if product.status == 0 %}
 											<div class="mt-4">
 												<button class="btn btn-outline-primary btn-sm btn-block mb-3" onclick="addToCard({{product.id}},{{product.user_id}},{{product.quantity}})">
 													Ajouter au panier <i class="bi bi-cart2"></i>
 												</button>
 											</div>
+
+											{% else %}
+											<div class="mt-4">
+												<button class="btn btn-outline-danger btn-sm btn-block mb-3" disabled>
+													Vendu <i class="bi bi-cart2"></i>
+												</button>
+											</div>
+											
+											{% endif %}
+											
+											
 										</div>
 									</div>
 								</div>
@@ -123,12 +136,12 @@
 
 			</div>
 
-			<div id="myModalImage" class="modal-image">
-			<span class="close">&times;</span>
+		</div>
+
+		<div id="myModalImage" class="modal-image">
+			<span class="close" onclick="closed()">&times;</span>
 			<img class="modal-content-image" id="img01">
 			<div id="caption"></div>
-			</div>
-
 		</div>
 
 
@@ -148,6 +161,22 @@
 				document.querySelector("#imageSlider").appendChild(div) ;
 			}
 		}
+
+		function expandImg(img){
+			var modal = document.getElementById("myModalImage");
+			var modalImg = document.getElementById("img01");
+			var captionText = document.getElementById("caption");
+			modal.style.display = "block";
+			modalImg.src = img.src;
+			captionText.innerHTML = img.alt;
+		}
+
+		function closed(){
+			//console.log("dzadazdazdza")
+			document.querySelector("#myModalImage").style.display = "none";
+		}
+
 		</script>
 	</body>
+	
 {% endblock %}
