@@ -76,13 +76,8 @@ class MainController extends AbstractController
 
             }
 
-            //dd($tab_sponsors);
-
-            forEach($user_list as $user_o){
-                if($user_serv ->isFriend($user_tab_friend,$user_o->getId()) == false && $user_o->getId() != $user->getId()){
-                    array_push($tab_not_friend, $user_o);
-                }
-                
+            foreach($user_list as $users){
+                array_push($tab_not_friend, ["user"=>$users,"position"=>$user_serv->positionFriend($user_tab_friend, $users->getId())]);
             }
 
             forEach($all_friends as $friend){
@@ -107,11 +102,20 @@ class MainController extends AbstractController
                 array_push($data, ["user"=>["fullname"=>$user_serv->getFullname(intval($activity["user_id"])),"id"=>$activity["user_id"],"profil"=>$user_serv->getProfil($activity["user_id"]),"couverture"=>$user_serv->getCouverture($activity["user_id"])],"activity"=>$activity]);
             }
 
+            $data_journal = array();
+
+            $list_journal = $user_serv->getJournal("admin_journal");
+
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+           
+
             $post_number =  $activity_serv->getPostNumber($user_tab_activity);
             $follower_number = $user_serv->getFollowerNumber($user_tab_friend);
             $suivi_number = $user_serv->getSuiviNumber($user_tab_friend);
 
-            //dd($data);
+            //dd($list_journal);
 
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
@@ -124,7 +128,8 @@ class MainController extends AbstractController
                 'sponsors' => $tab_sponsors,
                 'post_number' => $post_number,
                 'follower_number' => $follower_number,
-                'suivi_number' => $suivi_number
+                'suivi_number' => $suivi_number,
+                'list_journal'=>$data_journal
             ]);
         }
         //dd($user);

@@ -142,6 +142,20 @@ class UserService extends PDOService{
 
     }
 
+    public function getUserById($user_id){
+        
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM user where id = $user_id");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
     public function getAllFriends($table){
         
         $conn = $this -> getConnection();
@@ -194,6 +208,19 @@ class UserService extends PDOService{
         $statement->execute();
 
         $result = $statement->fetch(PDO::FETCH_ASSOC)["Nb"];
+        
+        return $result;
+    }
+
+    public function positionFriend($table, $user_id){
+        
+        $conn = $this -> getConnection();
+
+        $statement = $conn->prepare("SELECT * FROM $table where user_id = $user_id ");
+
+        $statement->execute();
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
         
         return $result;
     }
@@ -377,6 +404,32 @@ class UserService extends PDOService{
         $sql = "UPDATE user SET couverture = ? where id = ?";
         $statement = $conn->prepare($sql);
         $statement->execute([$photo, $id]);
+
+    }
+
+    public function addJournal($user_id, $content){
+        
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO admin_journal (user_id, content) VALUES (?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$user_id, $content]);
+
+    }
+    
+    public function getJournal($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab order by id DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
 
     }
 

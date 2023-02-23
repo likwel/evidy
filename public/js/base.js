@@ -332,13 +332,26 @@ function previewFile(file) {
 			diff.textContent = diff4humans(data);
 			//console.log("data date : "+ data)
 
-	})
+			})
+			document.querySelectorAll("#journal > div > small").forEach(diff=>{
+				let data = diff.getAttribute("data-journal");
+				diff.textContent = diff4humans(data);
+				console.log("data date : "+ data)
+
+		})
+	
 	}
 
+
 	function addFriend(elem, user_id){
-		elem.classList = "btn btn-primary rounded-circle icon-md ms-auto";
-		elem.innerHTML ="<i class='bi bi-person-check-fill'></i>";
-		//console.log(user_id + " added...")
+		if(elem.textContent.trim()==""){
+			elem.classList = "btn btn-primary rounded-circle icon-md ms-auto";
+			elem.innerHTML ="<i class='bi bi-person-check-fill'></i>";
+		}else{
+			elem.innerHTML ="<i class='bi bi-person-check-fill'></i> Suivi";
+		}
+		
+		//console.log(elem.textContent)
 
 		let data = {
 			user_id : user_id,
@@ -519,4 +532,26 @@ function previewFile(file) {
 			wrapper.innerHTML="";
 		},5000)
 	}
+
+	var modal = document.getElementById("myModalImage");
+
+var modalImg = document.getElementById("img01");
+var captionText = document.getElementById("caption");
+
+
+document.querySelectorAll(".img-fluid").forEach(img=>{
+	img.onclick = function(){
+	modal.style.display = "block";
+	modalImg.src = this.src;
+	captionText.innerHTML = this.alt;
+	}
+})
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() { 
+  modal.style.display = "none";
+}
 

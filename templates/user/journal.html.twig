@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div
+				class="row g-4">
+				<!-- Profil-->
+				{% include "main/leftprofil.html.twig" %}
+				<!-- End Profil-->
+
+				<!-- Main Center-->
+
+					<div class="col-lg-8 bg-white rounded-3 mb-1"> <ul class="nav nav-tabs mt-2">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#" >Journal plus recent</a>
+						</li>
+					</ul>
+
+					{% if user_list %}
+
+					<div class="row" id="all_users" style="overflow-y: auto;">
+						<div class="col-md-12">
+							<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+								<div
+									class="">
+									<div
+										class="card-body" id="journal">
+										<!-- News item -->
+										<ul class="list-group list-group-flush">
+										{% if list_journal %}
+											{% for journal in list_journal %}
+											<li class="list-group-item">
+												<div class="mb-3 ">
+												<h6 class="mb-0">
+													<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.user.lastname}} a {{journal.jour.content}}</a>
+												</h6>
+												<small class="journal_right" data-journal="{{journal.jour.datetime}}">2hr</small>
+											</div>
+											</li>
+											{% endfor %}
+										{% endif %}
+										</ul>
+									</div>
+									<!-- Card body END -->
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endif %}
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<script>
+			document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
+                elem.classList.remove("menu-active");
+                })
+                //document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(2)").classList.add("menu-active")
+
+        </script>
+	</body>
+{% endblock %}

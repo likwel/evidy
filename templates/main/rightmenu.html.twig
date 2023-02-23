@@ -18,13 +18,16 @@
 
 					{% if suggestions %}
 						{% for sugg in suggestions %}
+
+							{% if sugg.user.id != app.user.id %}
+
 							<div
 								class="hstack gap-2 mb-3">
 								<!-- Avatar -->
 								<div class="avatar">
 									<a href="#!">
-										{% if sugg.profil %}
-											<img class="avatar-img rounded-circle" src="/uploads/profil/{{sugg.profil}}" alt="">
+										{% if sugg.user.profil %}
+											<img class="avatar-img rounded-circle" src="/uploads/profil/{{sugg.user.profil}}" alt="">
 										{% else %}
 											<img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt="">
 										{% endif %}
@@ -32,17 +35,26 @@
 								</div>
 								<!-- Title -->
 								<div class="overflow-hidden">
-									<a class="h6 mb-0" href="/user/{{sugg.id}}">{{sugg.firstname}}
-										{{sugg.lastname}}</a>
+									<a class="h6 mb-0" href="/user/profil/{{sugg.user.id}}">{{sugg.user.firstname}}
+										{{sugg.user.lastname}}</a>
 									<p class="mb-0 small text-truncate">
-										<i>@{{sugg.pseudo}}</i>
+										<i>@{{sugg.user.pseudo}}</i>
 									</p>
 								</div>
 								<!-- Button -->
-								<button class="btn btn-outline-primary rounded-circle icon-md ms-auto" onclick="addFriend(this,{{sugg.id}})">
-									<i class="fa-solid fa-plus"></i>
-								</button>
+								{% if sugg.position == false %}
+									<button class="btn btn-outline-primary rounded-circle icon-md ms-auto" onclick="addFriend(this,{{sugg.user.id}})">
+										<i class="fa-solid fa-plus"></i>
+									</button>
+								{% else %}
+									<button class="btn btn-primary rounded-circle icon-md ms-auto disabled" onclick="deleteFriend({{sugg.user.id}})">
+										<i class="bi bi-person-check-fill"></i>
+									</button>
+								{% endif %}
+								
 							</div>
+
+							{% endif %}
 
 						{% endfor %}
 
@@ -53,7 +65,7 @@
 
 					<!-- View more button -->
 					<div class="d-grid mt-3">
-						<a class="btn btn-sm btn-outline-primary" href="#">Voir plus</a>
+						<a class="btn btn-sm btn-outline-primary" href="/user/all">Voir plus</a>
 					</div>
 				</div>
 				<!-- Card body END -->
@@ -66,95 +78,84 @@
 			<div
 				class="card">
 				<!-- Card header START -->
-				<div class="card-header pb-0 border-0">
-					<h5 class="card-title mb-0">Today’s news</h5>
+				<div class="card-header pb-0 border-0 bg-white">
+					<h5 class="card-title mb-0">Nouvelles</h5>
 				</div>
 				<!-- Card header END -->
 				<!-- Card body START -->
 				<div
-					class="card-body">
+					class="card-body" id="journal">
 					<!-- News item -->
-					<div class="mb-3">
-						<h6 class="mb-0">
-							<a href="blog-details.html">Ten questions you should answer truthfully</a>
-						</h6>
-						<small>2hr</small>
-					</div>
-					<!-- News item -->
-					<div class="mb-3">
-						<h6 class="mb-0">
-							<a href="blog-details.html">Five unbelievable facts about money</a>
-						</h6>
-						<small>3hr</small>
-					</div>
-					<!-- News item -->
-					<div class="mb-3">
-						<h6 class="mb-0">
-							<a href="blog-details.html">Best Pinterest Boards for learning about business</a>
-						</h6>
-						<small>4hr</small>
-					</div>
-					<!-- News item -->
-					<div class="mb-3">
-						<h6 class="mb-0">
-							<a href="blog-details.html">Skills that you can learn from business</a>
-						</h6>
-						<small>6hr</small>
-					</div>
-					<!-- Load more comments -->
-					<a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-						<div class="spinner-dots me-2">
-							<span class="spinner-dot"></span>
-							<span class="spinner-dot"></span>
-							<span class="spinner-dot"></span>
+					{% if list_journal %}
+						{% for journal in list_journal %}
+							<div class="mb-3">
+							<h6 class="mb-0">
+								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.user.lastname}} a {{journal.jour.content}}</a>
+							</h6>
+							<small class="journal_right" data-journal="{{journal.jour.datetime}}">2hr</small>
 						</div>
-						View all latest news
+						{% endfor %}
+					{% endif %}
+					
+					<!-- Load more comments -->
+					<a href="/user/journal" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center">
+						Voir tous les journaux
 					</a>
 				</div>
 				<!-- Card body END -->
 			</div>
 		</div>
 		<!-- Card News END -->
-	</div>
-	<h5 class="sponsors">
-		<i class="bi bi-bar-chart-line-fill"></i>
-		Publicités</h5>
-	<div class="thumb-wrapper mb-5">
-		<span class="wish-icon">
-			<i class="fa fa-heart-o"></i>
-		</span>
-		<div class="img-box">
-			<img src="/images/img.jpg" class="img-fluid" alt="Pixel">
-		</div>
-		<div class="thumb-content">
-			<h4>Google Pixel</h4>
-			<p class="item-price">
-				<strike>Ar 45 000</strike>
-				<span>Ar 41 800</span>
-			</p>
-			<div class="star-rating">
-				<ul class="list-inline">
-					<li class="list-inline-item">
-						<i class="fa fa-star"></i>
-					</li>
-					<li class="list-inline-item">
-						<i class="fa fa-star"></i>
-					</li>
-					<li class="list-inline-item">
-						<i class="fa fa-star"></i>
-					</li>
-					<li class="list-inline-item">
-						<i class="fa fa-star"></i>
-					</li>
-					<li class="list-inline-item">
-						<i class="fa fa-star-half-o"></i>
-					</li>
-				</ul>
+
+		<div class="col-sm-6 col-lg-12">
+			<div
+				class="card">
+				<!-- Card header START -->
+				<div class="card-header pb-0 border-0 bg-white">
+					<h5 class="card-title mb-0"><i class="bi bi-bar-chart-line-fill"></i> Publicités</h5>
+				</div>
+				<!-- Card body START -->
+				<div class="thumb-wrapper mb-5">
+					<span class="wish-icon">
+						<i class="fa fa-heart-o"></i>
+					</span>
+					<div class="img-box">
+						<img src="/images/img.jpg" class="" alt="Pixel">
+					</div>
+					<div class="thumb-content">
+						<h4>Google Pixel</h4>
+						<p class="item-price">
+							<strike>Ar 45 000</strike>
+							<span>Ar 41 800</span>
+						</p>
+						<div class="star-rating">
+							<ul class="list-inline">
+								<li class="list-inline-item">
+									<i class="fa fa-star"></i>
+								</li>
+								<li class="list-inline-item">
+									<i class="fa fa-star"></i>
+								</li>
+								<li class="list-inline-item">
+									<i class="fa fa-star"></i>
+								</li>
+								<li class="list-inline-item">
+									<i class="fa fa-star"></i>
+								</li>
+								<li class="list-inline-item">
+									<i class="fa fa-star-half-o"></i>
+								</li>
+							</ul>
+						</div>
+						<a href="#" class="btn btn-primary">
+							<i class="bi bi-cart2"></i>
+							Ajouter au panier</a>
+					</div>
+				</div>
+				<!-- Card body END -->
 			</div>
-			<a href="#" class="btn btn-primary">
-				<i class="bi bi-cart2"></i>
-				Ajouter au panier</a>
 		</div>
+		
 	</div>
 
 

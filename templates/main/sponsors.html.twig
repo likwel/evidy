@@ -44,42 +44,8 @@
     {# <div class="mt-3"></div> #}
 {% endif %}
 
-<div id="myModalImage" class="modal-image">
-  <span class="close">&times;</span>
-  <img class="modal-content-image" id="img01">
-  <div id="caption"></div>
-</div>
 
 <script>
-
-var modal = document.getElementById("myModalImage");
-
-// Get the image and insert it inside the modal - use its "alt" text as a caption
-//var img = document.getElementById("myImg");
-var modalImg = document.getElementById("img01");
-var captionText = document.getElementById("caption");
-
-
-document.querySelectorAll(".img-fluid").forEach(img=>{
-	img.onclick = function(){
-	modal.style.display = "block";
-	modalImg.src = this.src;
-	captionText.innerHTML = this.alt;
-	}
-})
-/*img.onclick = function(){
-  modal.style.display = "block";
-  modalImg.src = this.src;
-  captionText.innerHTML = this.alt;
-}*/
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() { 
-  modal.style.display = "none";
-}
 
 $(document).ready(function () {
     var itemsMainDiv = ('.MultiCarousel');
@@ -95,9 +61,6 @@ $(document).ready(function () {
     });
 
     ResCarouselSize();
-
-
-
 
     $(window).resize(function () {
         ResCarouselSize();
@@ -150,8 +113,6 @@ $(document).ready(function () {
         });
     }
 
-
-    //this function used to move the items
     function ResCarousel(e, el, s) {
         var leftBtn = ('.leftLst');
         var rightBtn = ('.rightLst');

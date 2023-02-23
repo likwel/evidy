@@ -55,21 +55,27 @@
 			<div class="row m-2">
 				{% if app.user.id == user.id %}
 					<a class="btn btn-outline-primary btn-sm col m-2" href="/user/parametres">
-						<i class="bi bi-plus"></i>Modifier le profil</a>
+						<i class="bi bi-gear"></i> Modifier le profil</a>
 				{% else %}
 
-				{% if isFriend == 0 %}
-					<button class="btn btn-outline-primary btn-sm col m-2" type="button" onclick="addFriend(this, {{user.id}})">
-						<i class="bi bi-plus"></i> Suivre</button>
+					{% if isFriend == 0 %}
 
-				{% else %}
-					<button class="btn btn-outline-danger btn-sm col m-2" type="button" onclick="deleteFriend({{user.id}})">
-						<i class="bi bi-x"></i> Quitter</button>
-				{% endif %}
-					
-					<button class="btn btn-outline-primary btn-sm col m-2" type="button" checked>
-						<i class="bi bi-messenger"></i>
-						Message</button>
+						{% if position_friend == false %}
+							<button class="btn btn-outline-primary btn-sm col m-2" type="button" onclick="addFriend(this, {{user.id}})">
+							<i class="bi bi-plus"></i> Suivre</button>
+						{% else %}
+							<button class="btn btn-primary btn-sm col m-2" type="button" onclick="deleteFriend({{user.id}})">
+							<i class="bi bi-person-check-fill"></i> Suivi</button>
+						{% endif %}
+						
+					{% else %}
+						<button class="btn btn-outline-danger btn-sm col m-2" type="button" onclick="deleteFriend({{user.id}})">
+							<i class="bi bi-x"></i> Quitter</button>
+					{% endif %}
+						
+						<button class="btn btn-outline-primary btn-sm col m-2" type="button">
+							<i class="bi bi-messenger"></i>
+							Message</button>
 				{% endif %}
 					
 				</div>
@@ -288,16 +294,7 @@
 	</div>
 </div>
 
-<div id="myModalImage" class="modal-image">
-  <button class="close btn btn-outline-primary" onclick="close()">x</button>
-  <img class="modal-content-image" id="img01">
-  <div id="caption"></div>
-</div>
 <script>
-	function close(){
-		console.log("closed")
-		document.querySelector("#myModalImage").style.display ="none"
-	}
 
 	function openNav(elem, type){
 		document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3.mb-3 > div > div.col-lg-12.bg-white.rounded-3.mb-1 > ul > li > a").forEach(element=>{

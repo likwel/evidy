@@ -275,13 +275,19 @@ class UserController extends AbstractController
             $other_user = $this->em->getRepository(User::class)->findOneById($last_msg["user_id"]);
         }
 
+        $table_msg = array();
+
+        foreach($all_message as $message){
+            array_push($table_msg, ["message"=>$message,"user"=>$this->em->getRepository(User::class)->findOneById($message["user_id"])]);
+        }
+
+        //dd( $table_msg);
 
         return $this->render('user/message.html.twig', [
-            'controller_name' => 'UserController',
             'user'=>$user,
             'user_list' =>$user_list,
             'last_message' =>$last_msg,
-            'all_message' => $all_message,
+            'all_message' => $table_msg,
             'other_user' => $other_user,
         ]);
     }
@@ -295,17 +301,26 @@ class UserController extends AbstractController
 
         $msg_serv = new MessageService();
 
+        $user_serv = new UserService();
+
         //$all_message =$msg_serv->getMessageById($table_msg,$user_id);
         $all_message = $msg_serv->getAll($table_msg);
+
+        $table_msg = array();
+
+        foreach($all_message as $message){
+            array_push($table_msg, ["message"=>$message,"user"=>$user_serv-> getUserById($message["user_id"])]);
+        }
 
         $response = new StreamedResponse();
         
         //return $response;
+        //dd($table_msg);
 
-        if(count($all_message)>0){
-            $response->setCallback(function () use (&$all_message) {
+        if(count($table_msg)>0){
+            $response->setCallback(function () use (&$table_msg) {
 
-                echo "data:" . json_encode($all_message) .  "\n\n";
+                echo "data:" . json_encode($table_msg) .  "\n\n";
                 ob_end_flush();
                 flush();
             });
@@ -826,6 +841,8 @@ class UserController extends AbstractController
 
         $isFriend = $user_serv->isFriend($user->getTablefriends(), $id);
 
+        $positionFriend = $user_serv->positionFriend($user->getTablefriends(), $id);
+
         //dd($isFriend);
 
         $number_friend = $user_serv->getNumberFriends($user_table_friend);
@@ -843,6 +860,7 @@ class UserController extends AbstractController
             'profil'=> $profil,
             'products'=>$all_activity,
             'isFriend'=>$isFriend,
+            'position_friend'=>$positionFriend,
             'nb_friend'=>$number_friend
         ]);
         
@@ -953,6 +971,105 @@ class UserController extends AbstractController
         }
 
         return $this->json("Success");
+
+    }
+    #[Route('/user/all', name: 'app_all_user')]
+    public function getUsers(): Response
+    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $user_list = $this->em->getRepository(User::class)->findAll();
+
+        $friend_list = $user_serv ->getAllFriends($user_table_friend);
+
+        $tab_user =array();
+
+        //$isFriend = $user_serv->isFriend($user->getTablefriends(), $id);
+
+        foreach($user_list as $users){
+            array_push($tab_user, ["user"=>$users,"position"=>$user_serv->positionFriend($user_table_friend, $users->getId())]);
+            //array_push($tab_user,$users);
+        }
+
+        //dd($tab_user);
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/all_user.html.twig', [
+            'user'=>$user,
+            'user_list'=>$tab_user,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number
+        ]);
+
+    }
+
+    #[Route('/user/journal', name: 'app_all_journaux')]
+    public function getJournaux(): Response
+    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $user_list = $this->em->getRepository(User::class)->findAll();
+
+        $friend_list = $user_serv ->getAllFriends($user_table_friend);
+
+        $tab_user =array();
+
+        //$isFriend = $user_serv->isFriend($user->getTablefriends(), $id);
+
+        foreach($user_list as $users){
+            array_push($tab_user, ["user"=>$users,"position"=>$user_serv->positionFriend($user_table_friend, $users->getId())]);
+            //array_push($tab_user,$users);
+        }
+
+        //dd($tab_user);
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+
+        forEach($list_journal as $journal){
+            array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+        }
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/journal.html.twig', [
+            'user'=>$user,
+            'user_list'=>$tab_user,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number,
+            'list_journal'=>$data_journal
+        ]);
 
     }
 

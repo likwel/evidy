@@ -12,7 +12,7 @@
 	<body class="body">
 		{% include "main/navbar.html.twig" %}
 		<div class="container contenu">
-			<div class="messaging">
+			<div class="messaging bg-white rounded">
 				<div class="inbox_msg">
 					<div class="inbox_people">
 						<div class="headind_srch">
@@ -36,7 +36,12 @@
 									<div class="chat_list active_chat" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
 										<div class="chat_people">
 											<div class="chat_img">
-												<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+												{% if user.profil %}
+													<img src="/uploads/profil/{{user.profil}}" class="img-responsive" alt="" style="border-radius:50%;width:40px;height:40px;">
+												{% else %}
+													<img src="/images/placeholder.jpg" class="img-responsive" alt="" style="border-radius:50%;">
+												{% endif %}
+												{# <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> #}
 											</div>
 											<div class="chat_ib">
 												<h5>{{user.firstname}}
@@ -60,13 +65,15 @@
 						<div class="msg_history">
 							<div class="incoming_msg">
 								<div class="incoming_msg_img">
-									<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+									<img src="/images/placeholder.jpg" class="img-responsive" alt="" style="border-radius:50%;border:1px solid #676a79;">
+										
+									{# <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> #}
 								</div>
 								<div class="received_msg">
 									<div class="received_withd_msg">
 										{% if other_user %}
 											<input type="hidden" data-userid="{{other_user.id}}" value="" id="message_user_id">
-											<a href="#" style="text-decoration: none;">
+											<a href="/user/profil/{{other_user.id}}" style="text-decoration: none;">
 												<h5 id="message_fullname">{{other_user.firstname}}
 													{{other_user.lastname}}</h5>
 												<span class="time_date" id="message_pseudo">@{{other_user.pseudo}}</span>
@@ -88,23 +95,28 @@
 								{% if all_message %}
 
 									{% for message in all_message %}
-										{% if message.isForMe == 0 %}
+										{% if message.message.isForMe == 0 %}
 											<div class="incoming_msg">
 												<div class="incoming_msg_img">
-													<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+													{% if message.user.profil %}
+														<img src="/uploads/profil/{{message.user.profil}}" class="img-responsive" alt="">
+													{% else %}
+														<img src="/images/placeholder.jpg" class="img-responsive" alt="">
+													{% endif %}
+													{# <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> #}
 												</div>
 												<div class="received_msg">
 													<div class="received_withd_msg">
-														<p>{{message.content}}</p>
-														<span class="time_date">{{message.datetime}}</span>
+														<p>{{message.message.content}}</p>
+														<span class="time_date">{{message.message.datetime}}</span>
 													</div>
 												</div>
 											</div>
 										{% else %}
 											<div class="outgoing_msg">
 												<div class="sent_msg">
-													<p>{{message.content}}</p>
-													<span class="time_date">{{message.datetime}}</span>
+													<p>{{message.message.content}}</p>
+													<span class="time_date">{{message.message.datetime}}</span>
 												</div>
 											</div>
 
@@ -119,7 +131,7 @@
 
 						<div class="type_msg">
 							<div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-								<img class="m-2" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp" alt="avatar 3" style="width: 40px; height: 100%;">
+								<img class="m-2" src="/uploads/profil/{{app.user.profil}}" alt="avatar 3" style="width: 40px; height: 40px;border-radius:50%;border:1px solid #676a79;">
 								<input type="text" class="form-control" placeholder="Ecrire votre message" id="message_content_user">
 								<a class="ms-1 text-muted" href="#!">
 									<i class="fas fa-paperclip"></i>
@@ -157,19 +169,21 @@
 				if (msg != "Aucun message") {
 				let res = ""
 				for (let message of msg) {
-				if (message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")) {
-				if (message.isForMe == 0) {
+				if (message.message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")) {
+				if (message.message.isForMe == 0) {
+					console.log(message)
+					let profil = message.user.profil != "" ? "/uploads/profil/"+message.user.profil : "/images/placeholder.jpg";
 				res += `<div class="incoming_msg">
 									<div class="incoming_msg_img">
-										<img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
+										<img src=${profil} alt="sunil" style="width:40px; height:40px;border:1px solid #676a79;border-radius:50%;">
 									</div>
 									<div class="received_msg">
 										<div class="received_withd_msg">
 											<p>${
-											message.content
+											message.message.content
 											}</p>
 																						<span class="time_date">${
-											message.datetime
+											message.message.datetime
 											}</span>
 																					</div>
 																				</div>
@@ -178,10 +192,10 @@
 											res += `<div class="outgoing_msg">
 																				<div class="sent_msg">
 																					<p>${
-											message.content
+											message.message.content
 											}</p>
 																					<span class="time_date">${
-											message.datetime
+											message.message.datetime
 											}</span>
 																				</div>
 																			</div>`
