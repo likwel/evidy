@@ -436,18 +436,48 @@
             <label class="form-label">Déscription</label>
             <textarea class="form-control" rows="2" placeholder="Ex: taille, poids, etc." id="qwq_description"></textarea>
           </div>
+
+		  <!-- Famille -->
+          <div class="col-sm-6">
+            <label class="form-label">Famille</label>
+			<div class="btn-group">
+				<input type="text" class="form-control dropdown-toggle" id="qwq_famille" placeholder="Famille" data-bs-toggle="dropdown" aria-expanded="false">
+				{% if list_famille %}
+					<ul class="dropdown-menu" id="qwq_li_famille">
+						{% for famille in list_famille %}
+							<li><button type="button" class="dropdown-item">{{famille.famille}}</button></li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+            
+          </div>
+
+		   <!-- Categorie -->
+          <div class="col-sm-6">
+            <label class="form-label">Catégorie</label>
+			<div class="btn-group">
+				<input type="text" class="form-control dropdown-toggle" id="qwq_category" placeholder="Catégorie" data-bs-toggle="dropdown" aria-expanded="false">
+
+				{% if list_category %}
+					<ul class="dropdown-menu" id="qwq_li_category">
+						{% for cat in list_category %}
+							<li><button type="button" class="dropdown-item">{{cat.category}}</button></li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+          </div>
+
           <!-- Date -->
           <div class="col-sm-5">
             <label class="form-label">Prix</label>
             <input type="text" class="form-control flatpickr flatpickr-input" placeholder="Prix" id="qwq_price">
           </div>
 
-         <div class="col-sm-4">
-            <label class="form-label">Quantité</label>
-            <input type="number" class="form-control flatpickr flatpickr-input" placeholder="Disponible" id="qwq_quantity">
-          </div>
-          <!-- Time -->
+			<!-- Devise -->
           <div class="col-sm-3">
+
             <label class="form-label">Devise</label>
             <select class="form-control flatpickr flatpickr-input" id="qwq_devise">
                 <option value="Ariary">Ariary</option>
@@ -455,6 +485,13 @@
                 <option value="Dollar">Dollar</option>
             </select>
           </div>
+
+          <!-- Quantité -->
+		  <div class="col-sm-4">
+            <label class="form-label">Quantité</label>
+            <input type="number" class="form-control flatpickr flatpickr-input" placeholder="Disponible" id="qwq_quantity">
+          </div>
+
           <!-- Duration -->
           <div class="col-12">
             
@@ -468,7 +505,7 @@
           </div>
 
           <div class="col-12">
-            <button type="button" class="btn btn-light">Ajouter un map</button>
+            <button type="button" class="btn btn-light"><i class="bi bi-geo-alt-fill"></i> Ajouter un map</button>
           </div>
           
           <!-- Upload Photos or Videos -->
@@ -495,7 +532,7 @@
       <!-- Button -->
       <div class="modal-footer">
         <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal"> Annuler</button>
-        <button type="button" class="btn btn-success" onclick="sendActivity()" data-bs-dismiss="modal">Publier</button>
+        <button type="button" id="btn_send_activity" class="btn btn-success" data-bs-dismiss="modal">Publier</button>
       </div>
     </div>
   </div>
@@ -519,7 +556,7 @@
     }
     
 
-	function sendActivity(){
+	function sendActivity(type){
 
 		let user_id = {{app.user.id}}
 
@@ -543,11 +580,14 @@
 			"quantity" : document.querySelector("#qwq_quantity").value,
 			"isDelivery" : document.querySelector("#qwq_isDelivery").checked == true ? 1 : 0,
 			"isWait" : 0,
+			"type" : type,
+			"famille" : document.querySelector("#qwq_famille").value,
+			"category" : document.querySelector("#qwq_category").value,
 		};
 
 		console.log(data);
 
-		fetch(new Request("/user/post_sale", {
+		fetch(new Request("/user/post_activity", {
 			method: "POST",
 			headers: {
 			'Accept': 'application/json',
@@ -564,4 +604,20 @@
 				
 		})
 	}
+
+	document.querySelectorAll("#qwq_li_famille > li").forEach(item=>{
+		item.addEventListener("click", function(){
+			document.querySelector("#qwq_famille").value = this.textContent;
+			//console.log(this.textContent)
+		})
+		
+	})
+
+	document.querySelectorAll("#qwq_li_category > li").forEach(item=>{
+		item.addEventListener("click", function(){
+			document.querySelector("#qwq_category").value = this.textContent;
+			//console.log(this.textContent)
+		})
+		
+	})
 </script>

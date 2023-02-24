@@ -337,8 +337,8 @@ class UserController extends AbstractController
         }
 
     }
-    #[Route('/user/post_sale', name: 'app_post_sale')]
-    public function postVente(Request $request): Response
+    #[Route('/user/post_activity', name: 'app_post_activity')]
+    public function postActivity(Request $request): Response
     {
         $user = $this->getUser();
 
@@ -361,6 +361,9 @@ class UserController extends AbstractController
         $photos= $data["photos"];
         $isDelivery= $data["isDelivery"];
         $isWait = $data["isWait"];
+        $type= $data["type"];
+        $famille= $data["famille"];
+        $category = $data["category"];
 
         $photos_name = array();
 
@@ -380,8 +383,20 @@ class UserController extends AbstractController
             }
         }
 
-        $vente_serv->publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait);
+        $vente_serv->publierActivity($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait, $type,$famille, $category);
         //return new RedirectResponse($this->urlGenerator->generate('app_main'));
+        $user_serv = new UserService();
+
+        $content = "";
+
+        if($type=="Vente"){
+            $content = "vend une article";
+        }else if($type == "Achat"){
+            $content = "cherche une article à achêter";
+        }
+
+        //$content = "publie une article";
+        $user_serv->addJournal($user->getId(), $content);
         return  $this->json("Success");
         
     }
@@ -850,6 +865,10 @@ class UserController extends AbstractController
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
+        $list_category =  $activity_serv->getListeCategory($user_tab_activity);
+
         
         return $this->render('user/profil.html.twig', [
             'user'=>$profil,
@@ -861,7 +880,9 @@ class UserController extends AbstractController
             'products'=>$all_activity,
             'isFriend'=>$isFriend,
             'position_friend'=>$positionFriend,
-            'nb_friend'=>$number_friend
+            'nb_friend'=>$number_friend,
+            'list_famille'=>$list_famille,
+            'list_category'=>$list_category
         ]);
         
     }
@@ -897,6 +918,9 @@ class UserController extends AbstractController
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+
+        $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
+        $list_category =  $activity_serv->getListeCategory($user_tab_activity);
         
         return $this->render('user/productDetail.html.twig', [
             'user'=>$profil,
@@ -907,7 +931,9 @@ class UserController extends AbstractController
             'profil'=> $profil,
             'product'=>$activity,
             'isFriend'=>$isFriend,
-            'nb_friend'=>$number_friend
+            'nb_friend'=>$number_friend,
+            'list_famille'=>$list_famille,
+            'list_category'=>$list_category
         ]);
         
     }
@@ -1071,6 +1097,110 @@ class UserController extends AbstractController
             'list_journal'=>$data_journal
         ]);
 
+    }
+
+    #[Route('/user/reagir/{id}/{user_id}', name: 'app_reagir')]
+    public function reagir($id, $user_id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+
+        $user_serv->reagir($user->getTablereaction(),$id,$user->getId());
+
+        $user_serv->reagir($other_user->getTablereaction(),$id,$user->getId());
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." a réagi votre activité";
+
+        $type ="Réaction";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        $notif_serv->sendOneNotification($tb_notif, $content, $user->getId(), $type);
+
+        return $this->json("Reaction OK");
+    }
+
+    #[Route('/user/partager/{id}/{user_id}', name: 'app_partager')]
+    public function partager($id, $user_id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+
+        //$user_serv->partager($user->getTablepartage(),$id,$user->getId());
+
+        $user_serv->partager($other_user->getTablepartage(),$id,$user->getId());
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." a partagé votre activité";
+
+        $type ="Partage";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        if($user != $other_user){
+            $notif_serv->sendOneNotification($tb_notif, $content, $user->getId(), $type);
+        }
+
+        return $this->json("Success");
+    }
+
+    #[Route('/user/commenter/{id}/{user_id}', name: 'app_commenter')]
+    public function commenter($id, $user_id, Request $request): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $data = json_decode($request->getContent(), true);
+
+        $comment = $data["comment"];
+
+        $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+
+        //$user_serv->commenter($user->getTablecommentaire(), $id, $user->getId(), $comment);
+
+        $user_serv->commenter($other_user->getTablecommentaire(), $id,  $user->getId(), $comment);
+
+        $notif_serv = new NotificationService();
+
+        $content = $user->getFirstname()." ".$user->getLastname()." a commenté votre activité";
+
+        $type ="Commentaire";
+
+        $tb_notif = 'tb_notification_'.$user_id;
+
+        if($user != $other_user){
+            $notif_serv->sendOneNotification($tb_notif, $content, $user->getId(), $type);
+        }
+
+        return $this->json("Success");
+    }
+    #[Route('/user/get_comment/{table}/{id}', name: 'app_get_comment')]
+    public function getComment($table, $id): Response
+    {
+        //$other_user = $this->em->getRepository(User::class)->findOneById($user_id);
+        $user_serv = new UserService();
+
+        $commentaire = $user_serv->getCommentaire($table, $id);
+
+        $data_comment = array();
+
+        foreach ($commentaire as $com) {
+            array_push($data_comment,["comment"=>$com,"user"=> $this->em->getRepository(User::class)->findOneById($com["user_id"])]);
+        }
+
+        //dd($commentaire);
+
+        return $this->json($data_comment);
     }
 
 }

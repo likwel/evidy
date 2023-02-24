@@ -31,12 +31,12 @@
 		</div>
 		<!-- Share feed toolbar START -->
 		<ul class="nav nav-pills nav-stack small fw-normal">
-			<li class="nav-item">
+			<li class="nav-item" onclick="openModal('Vente')">
 				<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateSale">
 					<i class="bi bi-image-fill text-success pe-2"></i>Vendre article</a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo">
+			<li class="nav-item" onclick="openModal('Achat')">
+				<a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateSale">
 					<i class="bi bi-camera-reels-fill text-info pe-2"></i>Cherher article</a>
 			</li>
 			<li class="nav-item">
@@ -169,9 +169,9 @@
 				<!-- Card header END -->
 				<!-- Card body START -->
 				<div class="card-body">
-					<b>{% if activity.activity.isSale == 1 %} A vendre{% else %}Cherche à achêter{% endif %}<br>{{activity.activity.product}}</b>
+					<b>{% if activity.activity.type == "Vente" %} A vendre{% else %}Cherche à achêter{% endif %}<br>{{activity.activity.product}}</b>
 					<p>{{activity.activity.description}}</p>
-					<p>Récuper à {{activity.activity.location}}</p>
+					<p>Récuper à {{activity.activity.localisation}}</p>
 					{% if activity.activity.isDelivery == 1%}
 						<span class="badge text-bg-warning">Possible à livrer</span><br>
 					{% endif %}
@@ -186,7 +186,7 @@
 						
 						</strike>
 					</small><br><br>
-					{% if activity.activity.isSale == 1 %}
+					{% if activity.activity.type == "Vente" %}
 						{% if activity.activity.status == 0 %}
 							<div class="bg-transparent btn-card float-end pannier">
 								<button class="btn btn-outline-primary float-end" onclick="addToCard({{activity.activity.id}},{{activity.activity.user_id}},{{activity.activity.quantity}})">
@@ -258,18 +258,18 @@
 					class="card-img" src="/images/01.jpg" alt="Post"> #}
 					<!-- Feed react START -->
 					<ul class="nav nav-stack py-3 small">
-						<li class="nav-item">
-							<a class="nav-link" href="#!">
-								<i class="bi bi-hand-thumbs-up-fill pe-1"></i>J'aime (56)</a>
+						<li class="nav-item" onclick="setReaction({{activity.activity.id}},{{activity.activity.user_id}})">
+							<a class="nav-link" href="#">
+								<i class="bi bi-hand-thumbs-up-fill pe-1"></i>J'aime (0)</a>
 						</li>
-						<li class="nav-item" data-bs-toggle="collapse" href="#collapseCommentaire_{{activity.activity.id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
+						<li class="nav-item" data-bs-toggle="collapse" onclick="openComment({{activity.activity.id}},{{activity.activity.user_id}})" href="#collapseCommentaire_{{activity.activity.id}}_{{activity.activity.user_id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
 							<a class="nav-link" href="#!">
-								<i class="bi bi-chat-fill pe-1"></i>Commentaires (12)</a>
+								<i class="bi bi-chat-fill pe-1"></i>Commentaires <span id="nb_comment_{{activity.activity.id}}_{{activity.activity.user_id}}">(0)</span></a>
 						</li>
 						<!-- Card share action START -->
 						<li class="nav-item dropdown ms-sm-auto">
 							<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
-								<i class="bi bi-reply-fill flip-horizontal ps-1"></i>Partager (3)
+								<i class="bi bi-reply-fill flip-horizontal ps-1"></i>Partager (0)
 							</a>
 							<!-- Card share action dropdown menu -->
 							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction" style="">
@@ -302,7 +302,7 @@
 					<!-- Feed react END -->
 
 					<!-- Add comment -->
-					<div class="collapse" id="collapseCommentaire_{{activity.activity.id}}">
+					<div class="collapse" id="collapseCommentaire_{{activity.activity.id}}_{{activity.activity.user_id}}">
 						<div
 							class="d-flex mb-3 collapse">
 							<!-- Avatar -->
@@ -312,15 +312,20 @@
 								</a>
 							</div>
 							<!-- Comment box  -->
-							<form class="w-100">
-								<textarea data-autoresize="" class="form-control pe-4 bg-light" rows="1" placeholder="Votre commentaire..."></textarea>
-							</form>
+							<div class="row">
+								<div class="col-11"><textarea data-autoresize="" id="comment_{{activity.activity.id}}_{{activity.activity.user_id}}" class="form-control bg-light"rows="1" placeholder="Votre commentaire..." ></textarea></div>
+								<div class="col-1"><input type="button" class="btn btn-primary" value="Envoyer" onclick="sendCommentaire({{activity.activity.id}},{{activity.activity.user_id}})" ></div>
+							</div>
+							{# <form class="row row-cols-lg-auto g-2 align-items-center">
+								<textarea data-autoresize="" id="comment_{{activity.activity.id}}_{{activity.activity.user_id}}" class="form-control pe-4 bg-light"rows="1" placeholder="Votre commentaire..." ></textarea>
+								<input type="button" class="btn btn-primary" value="Envoyer" onclick="sendCommentaire({{activity.activity.id}},{{activity.activity.user_id}})" >
+							</form> #}
 						</div>
 						<!-- Comment wrap START -->
 						<ul
-							class="comment-wrap list-unstyled">
+							class="comment-wrap list-unstyled" id="content_comment_{{activity.activity.id}}_{{activity.activity.user_id}}">
 							<!-- Comment item START -->
-							<li class="comment-item">
+							{# <li class="comment-item">
 								<div
 									class="d-flex position-relative">
 									<!-- Avatar -->
@@ -355,43 +360,7 @@
 									</div>
 								</div>
 							</li>
-							<!-- Comment item END -->
-							<!-- Comment item START -->
-							<li class="comment-item">
-								<div
-									class="d-flex">
-									<!-- Avatar -->
-									<div class="avatar avatar-xs">
-										<a href="#!"><img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt=""></a>
-									</div>
-									<!-- Comment by -->
-									<div class="ms-2">
-										<div class="bg-light p-3 rounded">
-											<div class="d-flex justify-content-between">
-												<h6 class="mb-1">
-													<a href="#!">
-														Frances Guerrero
-													</a>
-												</h6>
-												<small class="ms-2">4min</small>
-											</div>
-											<p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
-										</div>
-										<!-- Comment react -->
-										<ul class="nav nav-divider pt-2 small">
-											<li class="nav-item">
-												<a class="nav-link" href="#!">
-													Modifier</a>
-											</li>
-											<li class="nav-item">
-												<a class="nav-link" href="#!">
-													Supprimer</a>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</li>
-							<!-- Comment item END -->
+							<!-- Comment item END --> #}
 						</ul>
 						<!-- Comment wrap END -->
 					</div>

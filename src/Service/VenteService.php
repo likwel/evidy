@@ -7,15 +7,15 @@ use App\Service\PDOService;
 
 class VenteService extends PDOService{
 
-    public function publierVente($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, $photos, $isDelivery, $isWait){
+    public function publierActivity($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, $photos, $isDelivery, $isWait, $type,$famille, $category){
 
         $conn = $this -> getConnection();
 
-        $sql = "INSERT INTO $table_vente (product, description, devise, location, user_id, price, quantity, photos, isDelivery, status) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO $table_vente (product, description, devise, localisation, user_id, price, quantity, photos, isDelivery, status, type, famille, category) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         $statement = $conn->prepare($sql);
 
-        $statement->execute([$product, $description, $devise, $location, $user_id, $price, $quantity, $photos, $isDelivery, $isWait]);
+        $statement->execute([$product, $description, $devise, $location, $user_id, $price, $quantity, $photos, $isDelivery, $isWait, $type,$famille, $category]);
 
     }
 
@@ -63,7 +63,7 @@ class VenteService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM $table_vente where isSale = 1 order by id DESC");
+        $statement = $conn->prepare("SELECT * FROM $table_vente where type = 'Vente' order by id DESC");
 
         $statement->execute();
 
@@ -76,7 +76,7 @@ class VenteService extends PDOService{
 
         $conn = $this -> getConnection();
 
-        $statement = $conn->prepare("SELECT * FROM $table_vente where isSale = 0 order by id DESC");
+        $statement = $conn->prepare("SELECT * FROM $table_vente where type != 'Vente' order by id DESC");
 
         $statement->execute();
 
@@ -169,6 +169,33 @@ class VenteService extends PDOService{
         $sql = "UPDATE $table_vente SET status = 1 where id = ?";
         $statement = $conn->prepare($sql);
         $statement->execute([$id]);
+
+    }
+
+    public function getListeFamille($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT distinct famille FROM $tab order by famille ASC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+    public function getListeCategory($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT distinct category FROM $tab order by famille ASC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
 
     }
 

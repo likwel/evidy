@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -59,7 +60,19 @@ class SecurityController extends AbstractController
                 ->add('firstname' ,TextType::class,[
                     'required' => true,
                 ])
-                ->add('lastname' ,TextType::class)
+                ->add('lastname' ,TextType::class,[
+                    'required' => false,
+                ])
+                ->add('telephone' ,TextType::class,[
+                    'required' => false,
+                ])
+                ->add('type' ,ChoiceType::class,[
+                    'placeholder' => 'Choisissez un type',
+                    'choices'  => [
+                        'Consomateur' => "Consomateur",
+                        'Fournisseur' => "Fournisseur",
+                    ],
+                ])
                 ->add('password', PasswordType::class,[
                     'required' => true,
                 ])
@@ -95,6 +108,8 @@ class SecurityController extends AbstractController
                 $user->setPassword($data['password']);
                 $user->setFirstname($data['firstname']);
                 $user->setLastname($data['lastname']);
+                $user->setType($data['type']);
+                $user->setTelephone($data['telephone']);
 
                 ////setting roles for user admin.
                 if( count($userRepository->findAll()) === 0 ){
@@ -132,9 +147,9 @@ class SecurityController extends AbstractController
 
                 $user_service ->createTablecarte("tb_carte_".$user_id);
 
-                $user->setTablepublication("tb_publication_".$user_id);
+                $user->setTablecommentaire("tb_commentaire_".$user_id);
 
-                $user_service ->createTablepublication("tb_publication_".$user_id);
+                $user_service ->createTablecommentaire("tb_commentaire_".$user_id);
 
                 $user->setTableactivity("tb_activity_".$user_id);
 
@@ -143,6 +158,14 @@ class SecurityController extends AbstractController
                 $user->setTablefriends("tb_friends_".$user_id);
 
                 $user_service ->createTablefriends("tb_friends_".$user_id);
+
+                $user->setTablereaction("tb_reaction_".$user_id);
+
+                $user_service ->createTablereaction("tb_reaction_".$user_id);
+
+                $user_service ->createTablepartage("tb_partage_".$user_id);
+
+                $user->setTablepartage("tb_partage_".$user_id);
 
                 $entityManager->flush();
 

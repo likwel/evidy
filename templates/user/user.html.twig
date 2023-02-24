@@ -73,9 +73,9 @@
 							<i class="bi bi-x"></i> Quitter</button>
 					{% endif %}
 						
-						<button class="btn btn-outline-primary btn-sm col m-2" type="button">
+						<a class="btn btn-outline-primary btn-sm col m-2" href="/user/all_messages">
 							<i class="bi bi-messenger"></i>
-							Message</button>
+							Message</a>
 				{% endif %}
 					
 				</div>
@@ -95,13 +95,13 @@
 		<div id="profil" class="mb-3" style="display:none;">
 			<div class="">
 				<div class="list-group list-group-flush">
-					<a href="#" class="list-group-item list-group-item-action" aria-current="true">
-						Nom : {{user.firstname}}
+					<a href="#" class="list-group-item list-group-item-action">
+						<i class="bi bi-person-vcard me-2 text-primary"></i> {{user.firstname}} {{user.lastname}}
 					</a>
-					<a href="#" class="list-group-item list-group-item-action">Prénom : {{user.lastname}}</a>
-					<a href="#" class="list-group-item list-group-item-action">E-mail : {{user.email}}</a>
-					<a href="#" class="list-group-item list-group-item-action">Pseudo : {{user.pseudo}}</a>
-					<a class="list-group-item list-group-item-action disabled">Amis   : {{nb_friend}}</a>
+					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-envelope-at me-2 text-danger"></i> {{user.email}}</a>
+					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-person-circle me-2 text-info"></i> {{user.pseudo}}</a>
+					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-telephone-inbound me-2 text-warning"></i> {{user.telephone}}</a>
+					<a class="list-group-item list-group-item-action"><i class="bi bi-people me-2 text-info"></i> {{nb_friend}}</a>
 					</div>
 									
 			</div>
@@ -124,101 +124,41 @@
 				</div>
 			</div>
 			<div class="box border-bottom">
-				<span class="box-label text-uppercase">Catégories</span>
+				<span class="box-label text-uppercase">Familles</span>
 				<div class="box-label text-uppercase d-flex align-items-center float-end">
 					<button class="btn ml-auto float-end" type="button" data-bs-toggle="collapse" data-bs-target="#inner-box" aria-expanded="true" aria-controls="inner-box" id="out" onclick="outerFilter()">
 						<span class="fas fa-plus"></span>
 					</button>
 				</div>
 				<div id="inner-box" class="collapse mt-2 mr-1">
-					<div class="my-1">
-						<label class="tick">Windbreaker
-							<input type="checkbox" checked="checked">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Jumpsuit
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Jacket
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Coat
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Raincoat
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Handbag
-							<input type="checkbox" checked>
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Warm vest
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Wallets
-							<input type="checkbox" checked>
-							<span class="check"></span>
-						</label>
-					</div>
+					{% for fam in list_famille %}
+						<div class="my-1">
+							<label class="tick">{{fam.famille}}
+								<input type="checkbox" checked="checked">
+								<span class="check"></span>
+							</label>
+						</div>
+					{% endfor %}
+					
 				</div>
 			</div>
 			<div class="box border-bottom">
-				<span class="box-label text-uppercase">Types</span>
+				<span class="box-label text-uppercase">Catégories</span>
 				<div class="box-label text-uppercase d-flex align-items-center float-end">
 					<button class="btn ml-auto float-end" type="button" data-bs-toggle="collapse" data-bs-target="#inner-box2" aria-expanded="false" aria-controls="inner-box2">
 						<span class="fas fa-plus"></span>
 					</button>
 				</div>
-				<div id="inner-box2" class="collapse mt-2 mr-1">
-					<div class="my-1">
-						<label class="tick">Spring
-							<input type="checkbox" checked="checked">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Summer
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Autumn
-							<input type="checkbox" checked>
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Winter
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
-					<div class="my-1">
-						<label class="tick">Rainy
-							<input type="checkbox">
-							<span class="check"></span>
-						</label>
-					</div>
+				<div id="inner-box2" class="collapse mt-2 mr-1" style="max-height:200px;">
+					{% for cat in list_category %}
+						<div class="my-1">
+							<label class="tick">{{cat.category}}
+								<input type="checkbox" checked="checked">
+								<span class="check"></span>
+							</label>
+						</div>
+					{% endfor %}
+					
 				</div>
 			</div>
 			<div class="box border-bottom">
@@ -244,11 +184,11 @@
 					<div class="d-flex align-items-center justify-content-between mt-2">
 						<div>
 							<span id="amount-left" class="font-weight-bold"></span>
-							uah
+							Ar
 						</div>
 						<div>
 							<span id="amount-right" class="font-weight-bold"></span>
-							uah
+							Ar
 						</div>
 					</div>
 				</div>

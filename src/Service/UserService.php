@@ -55,14 +55,41 @@ class UserService extends PDOService{
 
     }
 
-    public function createTablepublication($table){
+    public function createTablecommentaire($table){
 
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-            `publication` varchar(255) NOT NULL,
-            `confidentiality` text NOT NULL,
-            `photos` longtext NULL COMMENT '(DC2Type:json)',
-            `isWait` tinyint(1) NOT NULL DEFAULT 0,
+            `user_id` int(11) NOT NULL,
+            `activity_id` int(11) NOT NULL,
+            `content` text NOT NULL,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+        $conn = $this->getConnection();
+        $conn->exec($rqt);
+
+    }
+
+    public function createTablereaction($table){
+
+        $rqt ="CREATE TABLE ".$table." (
+            `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+            `user_id` int(11) NOT NULL,
+            `activity_id` int(11) NOT NULL,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+        $conn = $this->getConnection();
+        $conn->exec($rqt);
+
+    }
+
+    public function createTablepartage($table){
+
+        $rqt ="CREATE TABLE ".$table." (
+            `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+            `user_id` int(11) NOT NULL,
+            `activity_id` int(11) NOT NULL,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
@@ -78,14 +105,16 @@ class UserService extends PDOService{
             `product` varchar(255) NOT NULL,
             `description` text NOT NULL,
             `devise` varchar(255) NOT NULL,
-            `location` varchar(255) NOT NULL,
+            `localisation` varchar(255) NOT NULL,
             `user_id` int(11) NOT NULL,
             `price` float NOT NULL,
             `notPrice` float NOT NULL,
             `taxe` float NOT NULL DEFAULT 0,
             `quantity` float NOT NULL,
             `photos` longtext NULL COMMENT '(DC2Type:json)',
-            `isSale` tinyint(1) NOT NULL DEFAULT 1,
+            `type` varchar(25) NOT NULL,
+            `famille` varchar(25) NOT NULL,
+            `category` varchar(25) NOT NULL,
             `isDelivery` tinyint(1) NOT NULL DEFAULT 0,
             `status` tinyint(1) NOT NULL DEFAULT 0,
             `datetime` datetime NOT NULL DEFAULT current_timestamp()
@@ -432,5 +461,56 @@ class UserService extends PDOService{
         return $result;
 
     }
+
+    public function reagir($table, $id, $user_id){
+        
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table (activity_id, user_id) VALUES (?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$id, $user_id]);
+
+    }
+
+    public function commenter($table, $id, $user_id, $content){
+        
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table (activity_id, user_id, content) VALUES (?,?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$id, $user_id, $content]);
+
+    }
+
+    public function partger($table, $id, $user_id){
+        
+        $conn = $this -> getConnection();
+
+        $sql = "INSERT INTO $table (activity_id, user_id) VALUES (?,?)";
+
+        $statement = $conn->prepare($sql);
+
+        $statement->execute([$id, $user_id]);
+
+    }
+
+    public function getCommentaire($tab, $id){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab where activity_id = $id order by id DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
 
 }

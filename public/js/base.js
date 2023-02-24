@@ -336,7 +336,7 @@ function previewFile(file) {
 			document.querySelectorAll("#journal > div > small").forEach(diff=>{
 				let data = diff.getAttribute("data-journal");
 				diff.textContent = diff4humans(data);
-				console.log("data date : "+ data)
+				//console.log("data date : "+ data)
 
 		})
 	
@@ -553,5 +553,114 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() { 
   modal.style.display = "none";
+}
+
+function openModal(type){
+	if(type=='Vente'){
+		document.querySelector("#modalLabelCreateAlbum").textContent="Vendre un article"
+		document.querySelector("#btn_send_activity").setAttribute("onclick", "sendActivity('Vente')")
+	}else if(type=='Achat'){
+		document.querySelector("#modalLabelCreateAlbum").textContent="Rechercher un article"
+		document.querySelector("#btn_send_activity").setAttribute("onclick", "sendActivity('Achat')")
+	}
+}
+
+function setReaction(id, user_id){
+	fetch("/user/reagir/"+id+"/"+user_id)
+	.then(resp=>resp.json())
+	.then(message=>{
+		console.log(message)
+
+	})
+}
+
+function sendCommentaire(id,user_id, elem){
+	let content = document.querySelector("#comment_"+id+"_"+user_id).value
+
+	let data ={comment : content}
+
+	fetch("/user/commenter/"+id+"/"+user_id, {
+		method: "POST",
+		headers: {
+		'Accept': 'application/json',
+		'Content-Type': 'application/json'
+		},
+		body : JSON.stringify(data)
+		})
+		.then(resp=>resp.json())
+		.then(message=>{
+			if(message=="Success"){
+				showAlert('Succès',"Commentaire bien envoyé avec succès!", 'success');
+				document.querySelector("#comment_"+id+"_"+user_id).value =""
+			}else{
+				showAlert('Erreur',"Une erreur se produite!", 'danger');
+			}
+		})
+}
+function sendPartage(id,user_id){
+	fetch("/user/partager/"+id+"/"+user_id)
+	.then(resp=>resp.json())
+	.then(message=>{
+		if(message=="Success"){
+			showAlert('Succès',"L'activité a été bien partagée avec succès!", 'success');
+		}else{
+			showAlert('Erreur',"Une erreur se produite!", 'danger');
+		}
+	})
+}
+
+
+function openComment(id, user_id){
+	let table = "tb_commentaire_"+user_id
+	fetch("/user/get_comment/"+table+"/"+id)
+	.then(response=>response.json())
+	.then(data=>{
+		let res =""
+		document.querySelector("#nb_comment_"+id+"_"+user_id).textContent ="("+data.length+")"
+		for(let com of data){
+			let dff= diff4humans(com.comment.datetime)
+			console.log(com.comment.content);
+			let profil = com.user.profil != null? "/uploads/profil/"+com.user.profil : "/images/placeholder.jpg";
+
+			res+=`<li class="comment-item">
+					<div
+						class="d-flex position-relative">
+						<!-- Avatar -->
+						<div class="avatar avatar-xs">
+							<a href="#!"><img class="avatar-img rounded-circle" src=${profil} alt=""></a>
+						</div>
+						<div
+							class="ms-2">
+							<!-- Comment by -->
+							<div class="bg-light rounded-start-top-0 p-3 rounded">
+								<div class="d-flex justify-content-between">
+									<h6 class="mb-1">
+										<a href="/user/profil/${com.user.id}">
+											${com.user.firstname +" "+com.user.lastname}
+										</a>
+									</h6>
+									<small class="ms-2">${dff}</small>
+								</div>
+								<p class="small mb-0">${com.comment.content}.</p>
+							</div>
+							<!-- Comment react -->
+							<ul class="nav nav-divider py-1 small">
+								<li class="nav-item">
+									<a class="nav-link" href="#!">
+										Modifier</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#!">
+										Supprimer</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</li>`
+			
+		}
+		document.querySelector("#content_comment_"+id+"_"+user_id).innerHTML = res;
+		
+	})
 }
 

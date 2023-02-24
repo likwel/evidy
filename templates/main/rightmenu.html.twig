@@ -90,7 +90,7 @@
 						{% for journal in list_journal %}
 							<div class="mb-3">
 							<h6 class="mb-0">
-								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.user.lastname}} a {{journal.jour.content}}</a>
+								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.user.lastname}} {{journal.jour.content}}</a>
 							</h6>
 							<small class="journal_right" data-journal="{{journal.jour.datetime}}">2hr</small>
 						</div>

@@ -250,6 +250,21 @@
 			})  
 		}
 
+		function openNav(elem, type){
+            document.querySelectorAll("body > div.container.contenu > div > div.col-lg-8.bg-white.rounded-3.mb-1 > ul > li >a").forEach(element=>{
+                element.classList.remove("active");
+            })
+            elem.classList.add("active");
+            if(type=="en_cours"){
+                document.querySelector("#en_cours").style.display="block";
+                document.querySelector("#termine").style.display="none";
+            }else {
+                document.querySelector("#en_cours").style.display="none";
+                document.querySelector("#termine").style.display="block";
+            }
+            
+        }
+
         </script>
 	</body>
 {% endblock %}

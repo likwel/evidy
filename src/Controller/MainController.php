@@ -115,7 +115,10 @@ class MainController extends AbstractController
             $follower_number = $user_serv->getFollowerNumber($user_tab_friend);
             $suivi_number = $user_serv->getSuiviNumber($user_tab_friend);
 
-            //dd($list_journal);
+            $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
+            $list_category =  $activity_serv->getListeCategory($user_tab_activity);
+
+            //dd($data);
 
             return $this->render('main/index.html.twig', [
                 'controller_name' => 'MainController',
@@ -129,7 +132,9 @@ class MainController extends AbstractController
                 'post_number' => $post_number,
                 'follower_number' => $follower_number,
                 'suivi_number' => $suivi_number,
-                'list_journal'=>$data_journal
+                'list_journal'=>$data_journal,
+                'list_famille'=>$list_famille,
+                'list_category'=>$list_category
             ]);
         }
         //dd($user);

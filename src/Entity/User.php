@@ -40,9 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $tablecarte = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $tablepublication= null;
-
-    #[ORM\Column(length: 255)]
     private ?string $tableactivity= null;
 
     #[ORM\Column(length: 255)]
@@ -65,6 +62,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\Column(length: 50)]
+    private ?string $type= null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $telephone= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablecommentaire= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablepartage= null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tablereaction= null;
 
     public function getId(): ?int
     {
@@ -269,25 +281,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Get the value of tablepublication
-     */ 
-    public function getTablepublication()
-    {
-        return $this->tablepublication;
-    }
-
-    /**
-     * Set the value of tablepublication
-     *
-     * @return  self
-     */ 
-    public function setTablepublication($tablepublication)
-    {
-        $this->tablepublication = $tablepublication;
-
-        return $this;
-    }
 
     /**
      * Get the value of tableactivity
@@ -370,4 +363,103 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
+    /**
+     * Get the value of type
+     */ 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set the value of type
+     *
+     * @return  self
+     */ 
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of telephone
+     */ 
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+    /**
+     * Set the value of telephone
+     *
+     * @return  self
+     */ 
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablecommentaire
+     */ 
+    public function getTablecommentaire()
+    {
+        return $this->tablecommentaire;
+    }
+
+    /**
+     * Set the value of tablecommentaire
+     *
+     * @return  self
+     */ 
+    public function setTablecommentaire($tablecommentaire)
+    {
+        $this->tablecommentaire = $tablecommentaire;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablepartage
+     */ 
+    public function getTablepartage()
+    {
+        return $this->tablepartage;
+    }
+
+    /**
+     * Set the value of tablepartage
+     *
+     * @return  self
+     */ 
+    public function setTablepartage($tablepartage)
+    {
+        $this->tablepartage = $tablepartage;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tablereaction
+     */ 
+    public function getTablereaction()
+    {
+        return $this->tablereaction;
+    }
+
+    /**
+     * Set the value of tablereaction
+     *
+     * @return  self
+     */ 
+    public function setTablereaction($tablereaction)
+    {
+        $this->tablereaction = $tablereaction;
+
+        return $this;
+    }
 }

@@ -8,72 +8,100 @@
 			{{ form_start(form) }}
 				
 				<div class="row d-flex justify-content-center align-items-center h-100">
-					<div class="col-md-9 col-lg-6 col-xl-5">
+					<div class="col-md-9 col-lg-6 col-xl-4">
 						<img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image">
 					</div>
 					<div
-						class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+						class="col-md-8 col-lg-6 col-xl-6 offset-xl-1">
 						<!-- Email input -->
                         <h1 class="">Inscription</h1><hr>
-						<div class="form-outline mb-4">
-							<label class="form-label" for="inputEmail">Email</label>
-							{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder' : 'Votre adresse e-mail'}}) }}
-							{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
-							
+
+						<div class="row">
+							<div class="col-6">
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Nom</label>
+									{{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'placeholder' : 'Votre nom'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre nom" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Email</label>
+									{{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder' : 'Votre adresse e-mail'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+								{% if email_error %}
+									<div class="alert alert-danger">{{email_error}}</div>
+								{% endif %}
+
+
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Type</label>
+									{{ form_widget(form.type, {'attr': {'class': 'form-control', 'placeholder' : 'Votre pseudo'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+								
+								<!-- Password input -->
+								<div class="form-outline mb-3">
+								<label class="form-label" for="inputPassword">Mot de passe</label>
+								{{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder' : 'Mot de passe'}}) }}
+									{# <input type="password" id="inputPassword" class="form-control form-control" placeholder="Mot de passe" name="password" autocomplete="current-password" required/> #}
+									
+								</div>
+
+								
+							</div>
+							<div class="col-6">
+
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Prénom (* facultatif)</label>
+									{{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'placeholder' : 'Votre prénom'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre prénom" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Pseudo</label>
+									{{ form_widget(form.pseudo, {'attr': {'class': 'form-control', 'placeholder' : 'Votre pseudo'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+								<div class="form-outline mb-4">
+									<label class="form-label" for="inputEmail">Téléphone</label>
+									{{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder' : 'Votre téléphone'}}) }}
+									{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
+									
+								</div>
+
+								<!-- Password input -->
+								<div class="form-outline mb-3">
+									<label class="form-label" for="inputPassword2">Confirmer le mot de passe</label>
+									{{ form_widget(form.confirmpassword, {'attr': {'class': 'form-control', 'placeholder' : 'Mot de passe'}}) }}
+									{# <input type="password" id="inputPassword2" class="form-control form-control" placeholder="Mot de passe" name="password" autocomplete="current-password" required/> #}
+									
+								</div>
+
+								{% if pwd_error %}
+									<div class="alert alert-danger">{{pwd_error}}</div>
+								{% endif %}
+
+
+
+							</div>
 						</div>
-
-						{% if email_error %}
-                            <div class="alert alert-danger">{{email_error}}</div>
-                        {% endif %}
-
-						<div class="form-outline mb-4">
-							<label class="form-label" for="inputEmail">Pseudo</label>
-							{{ form_widget(form.pseudo, {'attr': {'class': 'form-control', 'placeholder' : 'Votre pseudo'}}) }}
-							{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre adresse e-mail" value="" autocomplete="email" required autofocus/> #}
-							
-						</div>
-
-						<div class="form-outline mb-4">
-							<label class="form-label" for="inputEmail">Nom</label>
-							{{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'placeholder' : 'Votre nom'}}) }}
-							{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre nom" value="" autocomplete="email" required autofocus/> #}
-							
-						</div>
-
-						<div class="form-outline mb-4">
-							<label class="form-label" for="inputEmail">Prénom</label>
-							{{ form_widget(form.lastname, {'attr': {'class': 'form-control', 'placeholder' : 'Votre prénom'}}) }}
-							{# <input type="email" id="inputEmail" class="form-control form-control" name="email" placeholder="Votre prénom" value="" autocomplete="email" required autofocus/> #}
-							
-						</div>
-
-						<!-- Password input -->
-						<div class="form-outline mb-3">
-                           <label class="form-label" for="inputPassword">Mot de passe</label>
-						   {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder' : 'Mot de passe'}}) }}
-							{# <input type="password" id="inputPassword" class="form-control form-control" placeholder="Mot de passe" name="password" autocomplete="current-password" required/> #}
-							
-						</div>
-
-
-                        <!-- Password input -->
-						<div class="form-outline mb-3">
-                            <label class="form-label" for="inputPassword2">Confirmer le mot de passe</label>
-							{{ form_widget(form.confirmpassword, {'attr': {'class': 'form-control', 'placeholder' : 'Mot de passe'}}) }}
-							{# <input type="password" id="inputPassword2" class="form-control form-control" placeholder="Mot de passe" name="password" autocomplete="current-password" required/> #}
-							
-							
-						</div>
-
-						{% if pwd_error %}
-                            <div class="alert alert-danger">{{pwd_error}}</div>
-                        {% endif %}
-
+						
 						<div class="text-center text-lg-start mt-4 pt-2 mb-4">
-							<button type="submit" class="btn btn-primary btn" style="padding-left: 2.5rem; padding-right: 2.5rem;">S'inscrire</button>
-							<p class="small fw-bold mt-2 pt-1 mb-0">Vous avez déjà un compte?
+							<button type="submit" class="btn btn-primary btn w-50" style="padding-left: 2.5rem; padding-right: 2.5rem;">S'inscrire</button>
+							<span class="small fw-bold mt-2 pt-1 mb-4"> Vous avez déjà un compte?
 								<a href="{{path("app_login")}}" class="link-danger">Login</a>
-							</p>
+							</span>
 						</div>
 
 					</div>
