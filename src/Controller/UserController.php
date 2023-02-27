@@ -277,10 +277,13 @@ class UserController extends AbstractController
 
         $table_msg = array();
 
-        foreach($all_message as $message){
-            array_push($table_msg, ["message"=>$message,"user"=>$this->em->getRepository(User::class)->findOneById($message["user_id"])]);
-        }
+        if($all_message != null){
+            foreach($all_message as $message){
+                array_push($table_msg, ["message"=>$message,"user"=>$this->em->getRepository(User::class)->findOneById($message["user_id"])]);
+            }
 
+        }
+        
         //dd( $table_msg);
 
         return $this->render('user/message.html.twig', [
@@ -1108,7 +1111,7 @@ class UserController extends AbstractController
 
         $other_user = $this->em->getRepository(User::class)->findOneById($user_id);
 
-        $user_serv->reagir($user->getTablereaction(),$id,$user->getId());
+        //$user_serv->reagir($user->getTablereaction(),$id,$user->getId());
 
         $user_serv->reagir($other_user->getTablereaction(),$id,$user->getId());
 
@@ -1120,7 +1123,9 @@ class UserController extends AbstractController
 
         $tb_notif = 'tb_notification_'.$user_id;
 
-        $notif_serv->sendOneNotification($tb_notif, $content, $user->getId(), $type);
+        if($user != $other_user){
+            $notif_serv->sendOneNotification($tb_notif, $content, $user->getId(), $type);
+        }
 
         return $this->json("Reaction OK");
     }
@@ -1187,7 +1192,6 @@ class UserController extends AbstractController
     #[Route('/user/get_comment/{table}/{id}', name: 'app_get_comment')]
     public function getComment($table, $id): Response
     {
-        //$other_user = $this->em->getRepository(User::class)->findOneById($user_id);
         $user_serv = new UserService();
 
         $commentaire = $user_serv->getCommentaire($table, $id);
@@ -1198,9 +1202,37 @@ class UserController extends AbstractController
             array_push($data_comment,["comment"=>$com,"user"=> $this->em->getRepository(User::class)->findOneById($com["user_id"])]);
         }
 
-        //dd($commentaire);
-
         return $this->json($data_comment);
+    }
+
+    #[Route('/user/get_reaction/{table}/{id}', name: 'app_get_reaction')]
+    public function getReaction($table, $id): Response
+    {
+        $user_serv = new UserService();
+
+        $reactions = $user_serv->getReaction($table, $id);
+
+        $data_react = array();
+
+        foreach ($reactions as $com) {
+            array_push($data_react,["reaction"=>$com,"user"=> $this->em->getRepository(User::class)->findOneById($com["user_id"])]);
+        }
+
+        return $this->json($data_react);
+    }
+
+    #[Route('/user/get_my_reaction/{table}/{id}', name: 'app_get_my_reaction')]
+    public function getMyReaction($table, $id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $data_react = array();
+
+        $my_reaction = $user_serv->getMyReaction($table, $id, $user->getId());
+
+        return $this->json($my_reaction);
     }
 
 }

@@ -466,11 +466,28 @@ class UserService extends PDOService{
         
         $conn = $this -> getConnection();
 
-        $sql = "INSERT INTO $table (activity_id, user_id) VALUES (?,?)";
+        $sql_count = "SELECT count(*) as NB FROM $table where activity_id = $id and user_id =$user_id";
 
-        $statement = $conn->prepare($sql);
+        $statement = $conn->prepare($sql_count);
 
-        $statement->execute([$id, $user_id]);
+        $statement->execute();
+
+        $result = $statement->fetch();
+
+        $count = $result["NB"];
+
+        $sql_insert = "INSERT INTO $table (activity_id, user_id) VALUES (?,?)";
+
+        $sql_update = "DELETE from $table where activity_id = $id and user_id =$user_id ";
+
+        if($count == 0){
+            $statement2 = $conn->prepare($sql_insert);
+            $statement2->execute([$id, $user_id]);
+        }else{
+            $statement3 = $conn->prepare($sql_update);
+            $statement3->execute();
+        }
+        
 
     }
 
@@ -509,6 +526,33 @@ class UserService extends PDOService{
         $result = $stm->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
+
+    }
+    public function getReaction($tab, $id){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab where activity_id = $id order by id DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
+    public function getMyReaction($tab, $id, $my_id){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT count(*) as NB FROM $tab where activity_id = $id and user_id =$my_id");
+
+        $stm->execute();
+
+        $result = $stm->fetch(PDO::FETCH_ASSOC);
+
+        return $result["NB"];
 
     }
 

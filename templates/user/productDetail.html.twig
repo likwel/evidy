@@ -126,9 +126,81 @@
 
 							{% endif %}
 							</div>
+							
 						</div>
 
 					</div>
+
+					<div class="col-12 h-10">
+								<ul class="nav nav-stack py-3 small">
+									<li class="nav-item" onclick="setReaction({{product.id}},{{product.user_id}})">
+										<span class="nav-link">
+											<i class="bi bi-hand-thumbs-up-fill pe-1"></i>J'aime <span class="active_reaction" data-rea-us="{{product.user_id}}" data-rea-actid="{{product.id}}" id="nb_comment_{{product.id}}_{{product.user_id}}">(0)</span></span>
+									</li>
+									<li class="nav-item" data-bs-toggle="collapse" onclick="openComment({{product.id}},{{product.user_id}})" href="#collapseCommentaire_{{product.id}}_{{product.user_id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
+										<a class="nav-link" href="#!">
+											<i class="bi bi-chat-fill pe-1"></i>Commentaires <span class="active_commentaire" data-com-us="{{product.user_id}}" data-com-actid="{{product.id}}" id="nb_comment_{{product.id}}_{{product.user_id}}">(0)</span></a>
+									</li>
+									<!-- Card share action START -->
+									<li class="nav-item dropdown ms-sm-auto">
+										<a class="nav-link mb-0" href="#" id="cardShareAction" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-reply-fill flip-horizontal ps-1"></i>Partager (0)
+										</a>
+										<!-- Card share action dropdown menu -->
+										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction" style="">
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark
+												</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a>
+											</li>
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="bi bi-share fa-fw pe-2"></i>Share post via …</a>
+											</li>
+											<li><hr class="dropdown-divider"></li>
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a>
+											</li>
+										</ul>
+									</li>
+									<!-- Card share action END -->
+								</ul>
+
+								<!-- Feed react END -->
+
+								<!-- Add comment -->
+								<div class="collapse" id="collapseCommentaire_{{product.id}}_{{product.user_id}}">
+									<div
+										class="d-flex mb-3 collapse">
+										<!-- Avatar -->
+										<div class="avatar avatar-xs me-2">
+											<a href="#!">
+												<img class="avatar-img rounded-circle" src="/images/img.jpg" alt="">
+											</a>
+										</div>
+										<!-- Comment box  -->
+										<div class="row">
+											<div class="col-11"><textarea data-autoresize="" id="comment_{{product.id}}_{{product.user_id}}" class="form-control bg-light"rows="1" placeholder="Votre commentaire..." ></textarea></div>
+											<div class="col-1"><input type="button" class="btn btn-primary" value="Envoyer" onclick="sendCommentaire({{product.id}},{{product.user_id}})" ></div>
+										</div>
+									</div>
+									<!-- Comment wrap START -->
+									<ul
+										class="comment-wrap list-unstyled" id="content_comment_{{product.id}}_{{product.user_id}}">
+										
+									</ul>
+									<!-- Comment wrap END -->
+								</div>
+							</div>
 
 
 				</div>

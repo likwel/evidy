@@ -339,6 +339,49 @@ function previewFile(file) {
 				//console.log("data date : "+ data)
 
 		})
+
+		document.querySelectorAll(".active_commentaire").forEach(item=>{
+			let id = item.getAttribute("data-com-actid")
+			let user_id = item.getAttribute("data-com-us")
+			let table = "tb_commentaire_"+user_id
+		
+			fetch("/user/get_comment/"+table+"/"+id)
+			.then(response=>response.json())
+			.then(data=>{
+				item.textContent ="("+data.length+")"
+				//console.log("id : "+data.length)
+			})
+		
+			//console.log("id : "+id)
+		})
+
+		document.querySelectorAll(".active_reaction").forEach(item=>{
+			let id = item.getAttribute("data-rea-actid")
+			let user_id = item.getAttribute("data-rea-us")
+			let table = "tb_reaction_"+user_id
+		
+			fetch("/user/get_reaction/"+table+"/"+id)
+			.then(response=>response.json())
+			.then(data=>{
+				item.textContent ="("+data.length+")"
+				//console.log("id : "+data.length)
+				
+			})
+
+			fetch("/user/get_my_reaction/"+table+"/"+id)
+				.then(response=>response.json())
+				.then(my_reaction=>{
+					if(my_reaction == 0){
+						item.parentElement.classList ="nav-link";
+					}else{
+						item.parentElement.classList.add("text-primary");
+						//console.log("Déjà reagi")
+					}
+				})
+		
+			//console.log("id : "+id)
+		})
+
 	
 	}
 
@@ -641,7 +684,7 @@ function openComment(id, user_id){
 									</h6>
 									<small class="ms-2">${dff}</small>
 								</div>
-								<p class="small mb-0">${com.comment.content}.</p>
+								<p class="small mb-0">${com.comment.content}</p>
 							</div>
 							<!-- Comment react -->
 							<ul class="nav nav-divider py-1 small">
@@ -663,4 +706,3 @@ function openComment(id, user_id){
 		
 	})
 }
-

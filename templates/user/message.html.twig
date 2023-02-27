@@ -33,7 +33,7 @@
 						<div class="inbox_chat">
 							{% for user in user_list %}
 								{% if user.id != app.user.id %}
-									<div class="chat_list active_chat" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
+									<div class="chat_list" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
 										<div class="chat_people">
 											<div class="chat_img">
 												{% if user.profil %}
@@ -46,7 +46,7 @@
 											<div class="chat_ib">
 												<h5>{{user.firstname}}
 													{{user.lastname}}
-													<span class="chat_date" style="text-align:center;border-radius:50%;width:15px; color:white;background:red;">2</span>
+													<span class="chat_date" style="text-align:center;border-radius:50%;width:15px; color:white;background:green;"><i class="bi bi-plus"></i></span>
 												</h5>
 												<small>@{{user.pseudo}}</small>
 
@@ -81,8 +81,8 @@
 										{% else %}
 											<input type="hidden" value="1" id="message_user_id">
 											<a href="#" style="text-decoration: none;">
-												<h5 id="message_fullname">Votre profil</h5>
-												<span class="time_date" id="message_pseudo">@votre_pseudo</span>
+												<h5 id="message_fullname">{{app.user.firstname}} {{app.user.lastname}}</h5>
+												<span class="time_date" id="message_pseudo">@{{app.user.pseudo}}</span>
 											</a>
 										{% endif %}
 
@@ -123,6 +123,10 @@
 										{% endif %}
 
 									{% endfor %}
+
+								{% else %}
+								<span class="text-muted">Dite bonjour à vos amis!</span>
+
 								{% endif %}
 
 							</div>
@@ -131,7 +135,11 @@
 
 						<div class="type_msg">
 							<div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-								<img class="m-2" src="/uploads/profil/{{app.user.profil}}" alt="avatar 3" style="width: 40px; height: 40px;border-radius:50%;border:1px solid #676a79;">
+								{% if app.user.profil %}
+									<img class="m-2" src="/uploads/profil/{{app.user.profil}}" alt="avatar 3" style="width: 40px; height: 40px;border-radius:50%;border:1px solid #676a79;">
+								{% else %}
+									<img class="m-2" src="/images/placeholder.jpg" alt="avatar 3" style="width: 40px; height: 40px;border-radius:50%;border:1px solid #676a79;">
+								{% endif %}
 								<input type="text" class="form-control" placeholder="Ecrire votre message" id="message_content_user">
 								<a class="ms-1 text-muted" href="#!">
 									<i class="fas fa-paperclip"></i>
@@ -172,7 +180,8 @@
 				if (message.message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")) {
 				if (message.message.isForMe == 0) {
 					console.log(message)
-					let profil = message.user.profil != "" ? "/uploads/profil/"+message.user.profil : "/images/placeholder.jpg";
+					let profil = message.user.profil ? "/uploads/profil/"+message.user.profil : "/images/placeholder.jpg";
+					//let dateHumans = diff4humans(message.message.datetime)
 				res += `<div class="incoming_msg">
 									<div class="incoming_msg_img">
 										<img src=${profil} alt="sunil" style="width:40px; height:40px;border:1px solid #676a79;border-radius:50%;">
@@ -194,9 +203,7 @@
 																					<p>${
 											message.message.content
 											}</p>
-																					<span class="time_date">${
-											message.message.datetime
-											}</span>
+																					<span class="time_date">${message.message.datetime}</span>
 																				</div>
 																			</div>`
 											}
