@@ -308,7 +308,11 @@
 							<!-- Avatar -->
 							<div class="avatar avatar-xs me-2">
 								<a href="#!">
-									<img class="avatar-img rounded-circle" src="/images/img.jpg" alt="">
+									{% if app.user.profil %}
+									<img class="avatar-img rounded-circle" src="/uploads/profil/{{app.user.profil}}" alt="">
+									{% else %}
+									<img class="avatar-img rounded-circle" src="/images/placeholder.jpg" alt="">
+									{% endif %}
 								</a>
 							</div>
 							<!-- Comment box  -->
