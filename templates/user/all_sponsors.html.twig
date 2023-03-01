@@ -1,0 +1,116 @@
+use App\Service\VenteService;
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello UserController!
+{% endblock %}
+
+{% block body %}
+	<style></style>
+
+	<body class="body">
+		{% include "main/navbar.html.twig" %}
+		<div class="container contenu">
+			<div
+				class="row g-4">
+				<!-- Profil-->
+				{% include "main/leftprofil.html.twig" %}
+				<!-- End Profil-->
+
+				<!-- Main Center-->
+
+					<div class="col-lg-8 bg-white rounded-3 mb-1"> <ul class="nav nav-tabs mt-2">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#" >Articles sponsorisés</a>
+						</li>
+					</ul>
+
+					{% if user_list %}
+
+					<div class="row" id="all_users" style="overflow-y: auto;">
+						<div class="col-md-12">
+							<div class="user-dashboard-info-box table-responsive mb-0 bg-white p-4 shadow-sm">
+								<table class="table manage-candidates-top mb-0">
+									<thead>
+										<tr>
+											<th>Nom et déscription</th>
+											<th class="text-center">Prix</th>
+											<th class="action text-right">Quantité</th>
+											<th class="action text-right">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!--boucle for-->
+
+										{% for spons in spons_list %}
+
+											{% if friend.user.id != app.user.id %}
+											<tr class="candidates-list">
+												<td class="title">
+													<div class="thumb">
+														{% if friend.user.profil %}
+															<img class="" src="/uploads/profil/{{friend.user.profil}}" alt="">
+														{% else %}
+															<img class="" src="/images/placeholder.jpg" alt="">
+														{% endif %}
+													</div>
+													<div class="candidate-list-details">
+														<div class="candidate-list-info">
+															<div class="candidate-list-title">
+																<h5 class="mb-0">
+																	<a href="/user/profil/{{friend.user.id}}">{{friend.user.firstname}}
+																		</a>
+																</h5>
+															</div>
+															<div class="candidate-list-option">
+																<ul class="list-unstyled">
+																	<li>
+																		<i class="fas fa-filter pr-1 me-2"></i>{{friend.user.lastname}}</li>
+
+																</ul>
+															</div>
+														</div>
+													</div>
+												</td>
+												<td class="candidate-list-favourite-time text-center">
+													<span class="badge text-bg-success order-1">80000 Ar</span>
+												</td>
+												<td class="candidate-list-favourite-time text-center">
+													<span class="badge text-bg-success order-1">8</span>
+												</td>
+												<td>
+													<ul class="list-unstyled mb-0 d-flex justify-content-end">
+														<li>
+															<a href="/user/profil/{{friend.user.id}}" class="btn btn-outline-primary">
+																<i class="bi bi-cart2"></i> Ajouter au panier
+															</a>
+														</li>
+														
+													</ul>
+												</td>
+											</tr>
+											{% endif %}
+										{% endfor %}
+
+									</tbody>
+								</table>
+								
+							</div>
+						</div>
+					</div>
+					{% endif %}
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<script>
+			document.querySelectorAll("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a.list-group-item-b").forEach(elem => {
+                elem.classList.remove("menu-active");
+                })
+                //document.querySelector("body > div.container.contenu > div > div.col-lg-3 > div > div.profil-menu > div > a:nth-child(2)").classList.add("menu-active")
+
+        </script>
+	</body>
+{% endblock %}

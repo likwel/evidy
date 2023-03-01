@@ -59,7 +59,7 @@
 				</a>
 				<a href="/user/friends" class="list-group-item-b ">
 					<i class="bi bi-people"></i>
-					Amis ({{user_wait}})</a>
+					Amis <span class="float-end badge text-bg-danger">{% if user_wait != 0 %}{{user_wait}}{% endif %}</span></a>
 				<a href="/user/abonnements" class="list-group-item-b ">
 					<i class="bi bi-clipboard-plus"></i>
 					Abonnements</a>

@@ -1066,6 +1066,56 @@ class UserController extends AbstractController
 
     }
 
+    #[Route('/user/sponsors', name: 'app_all_spons')]
+    public function getSpons(): Response
+    {
+        $user = $this->getUser();
+
+        $fullname = $user->getFirstname().' '.$user->getLastname();
+
+        $user_table_friend = $user->getTablefriends();
+
+        $user_tab_activity = $user->getTableactivity();
+
+        $user_serv = new UserService();
+
+        $act_serv = new VenteService();
+
+        $tab_spons = "admin_sponsored";
+
+        $spons_list = $act_serv->getAllSponsors($tab_spons);
+
+        $friend_list = $user_serv ->getAllFriends($user_table_friend);
+
+        $tab_spons =array();
+
+        foreach($spons_list as $spons){
+            array_push($tab_spons, ["sponsor"=>$spons,"user"=>$this->em->getRepository(User::class)->findOneById($spons["user_id"])]);
+            
+        }
+
+        //dd($tab_spons);
+
+        $activity_serv =  new VenteService();
+        $post_number =  $activity_serv->getPostNumber($user_tab_activity);
+        $follower_number = $user_serv->getFollowerNumber($user_table_friend);
+        $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
+        //dd($tab_friend);
+
+        return $this->render('user/all_sponsors.html.twig', [
+            'user'=>$user,
+            'spons_list'=>$tab_spons,
+            'lastUsername' => $fullname,
+            'post_number' => $post_number,
+            'follower_number' => $follower_number,
+            'suivi_number' => $suivi_number,
+            'user_wait'=>$user_wait
+        ]);
+
+    }
+
     #[Route('/user/journal', name: 'app_all_journaux')]
     public function getJournaux(): Response
     {

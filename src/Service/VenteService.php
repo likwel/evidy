@@ -199,4 +199,18 @@ class VenteService extends PDOService{
 
     }
 
+    public function getAllSponsors($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab order by datetime DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
 }
