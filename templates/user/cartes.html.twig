@@ -63,7 +63,13 @@
 															<div class="candidate-list-option">
 																<ul class="list-unstyled">
 																	<li>
-																		{{carte[1].description}}</li>
+																	{% if carte[1].description|length > 30 %}
+																		{{carte[1].description|slice(0, 30)}} ...
+																	{% else %}
+																		{{carte[1].description}}
+																	
+																	{% endif %}
+																	</li>
 
 																</ul>
 															</div>
@@ -83,7 +89,7 @@
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}} {{carte[0].lastname}}</a>
+													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}}</a>
 												</td>
 
 												<td>
@@ -115,8 +121,10 @@
 								
 							</div>
 						</div>
+						<button class="btn btn-primary float-end m-3 w-50">Proceder le payement</button>
 					</div>
-					<button class="btn btn-primary float-end mb-3">Paiement</button>
+					
+					
 					{% endif %}
 
 					{% if cartes %}
@@ -155,7 +163,13 @@
 															<div class="candidate-list-option">
 																<ul class="list-unstyled">
 																	<li>
-																		{{carte[1].description}}</li>
+																		{% if carte[1].description|length > 30 %}
+																			{{carte[1].description|slice(0, 30)}} ...
+																		{% else %}
+																			{{carte[1].description}}
+																		
+																		{% endif %}
+																	</li>
 
 																</ul>
 															</div>
@@ -175,7 +189,7 @@
 												</td>
 
 												<td class="candidate-list-favourite-time text-center">
-													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}} {{carte[0].lastname}}</a>
+													<a href="/user/profil/{{carte[0].id}}">{{carte[0].firstname}}</a>
 												</td>
 
 												<td>

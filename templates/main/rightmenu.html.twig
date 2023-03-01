@@ -36,9 +36,9 @@
 								<!-- Title -->
 								<div class="overflow-hidden">
 									<a class="h6 mb-0" href="/user/profil/{{sugg.user.id}}">{{sugg.user.firstname}}
-										{{sugg.user.lastname}}</a>
+										</a>
 									<p class="mb-0 small text-truncate">
-										<i>@{{sugg.user.pseudo}}</i>
+										<i>{{sugg.user.lastname}}</i>
 									</p>
 								</div>
 								<!-- Button -->
@@ -90,7 +90,7 @@
 						{% for journal in list_journal %}
 							<div class="mb-3">
 							<h6 class="mb-0">
-								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.user.lastname}} {{journal.jour.content}}</a>
+								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.jour.content}}</a>
 							</h6>
 							<small class="journal_right" data-journal="{{journal.jour.datetime}}">2hr</small>
 						</div>

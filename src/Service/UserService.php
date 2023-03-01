@@ -556,5 +556,19 @@ class UserService extends PDOService{
 
     }
 
+    public function getNbFriendWait($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT count(*) as NB FROM $tab where is_wait = 1");
+
+        $stm->execute();
+
+        $result = $stm->fetch(PDO::FETCH_ASSOC);
+
+        return $result["NB"];
+
+    }
+
 
 }

@@ -45,10 +45,9 @@
 											</div>
 											<div class="chat_ib">
 												<h5>{{user.firstname}}
-													{{user.lastname}}
 													<span class="chat_date" style="text-align:center;border-radius:50%;width:15px; color:white;background:green;"><i class="bi bi-plus"></i></span>
 												</h5>
-												<small>@{{user.pseudo}}</small>
+												<small>{{app.user.lastname}}</small>
 
 											</div>
 										</div>
@@ -74,15 +73,14 @@
 										{% if other_user %}
 											<input type="hidden" data-userid="{{other_user.id}}" value="" id="message_user_id">
 											<a href="/user/profil/{{other_user.id}}" style="text-decoration: none;">
-												<h5 id="message_fullname">{{other_user.firstname}}
-													{{other_user.lastname}}</h5>
-												<span class="time_date" id="message_pseudo">@{{other_user.pseudo}}</span>
+												<h5 id="message_fullname">{{other_user.firstname}}</h5>
+												<span class="time_date" id="message_pseudo">{{other_user.lastname}}</span>
 											</a>
 										{% else %}
 											<input type="hidden" value="1" id="message_user_id">
 											<a href="#" style="text-decoration: none;">
-												<h5 id="message_fullname">{{app.user.firstname}} {{app.user.lastname}}</h5>
-												<span class="time_date" id="message_pseudo">@{{app.user.pseudo}}</span>
+												<h5 id="message_fullname">{{app.user.firstname}}</h5>
+												<span class="time_date" id="message_pseudo">{{app.user.lastname}}</span>
 											</a>
 										{% endif %}
 
@@ -179,7 +177,7 @@
 				for (let message of msg) {
 				if (message.message.user_id == document.querySelector("#message_user_id").getAttribute("data-userId")) {
 				if (message.message.isForMe == 0) {
-					console.log(message)
+					//console.log(message)
 					let profil = message.user.profil ? "/uploads/profil/"+message.user.profil : "/images/placeholder.jpg";
 					//let dateHumans = diff4humans(message.message.datetime)
 				res += `<div class="incoming_msg">
@@ -241,7 +239,7 @@ headers: {
 },
 body: JSON.stringify(data)
 })).then(req => req.json()).then(message => {
-console.log(message);
+//console.log(message);
 });
 }
 

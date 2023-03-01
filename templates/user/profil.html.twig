@@ -58,6 +58,7 @@
 																		{% endif %}
 
 																	{% endfor %}
+													
 																{% endif %}
 
 
@@ -67,7 +68,12 @@
 																{% for image in images %}
 																	{% set name_img = image|replace({'"': "", '[': "", ']': ""}) %}
 																	<div class="carousel-item active">
+																		{% if name_img %}
 																		<img src="/uploads/post/{{name_img}}" class="card-img" alt="aucune photos" onclick="expandImg(this)">
+																		{% else %}
+																		<img src="/images/placeholder_product.jpg" class="card-img" alt="aucune photos" onclick="expandImg(this)">
+																		{% endif %}
+																		
 																	</div>
 
 																{% endfor %}
@@ -86,7 +92,6 @@
 																</button>
 															{% endif %}
 														</div>
-
 													{% endif %}
 												</div>
 												<div class="pt-1">

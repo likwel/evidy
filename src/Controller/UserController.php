@@ -486,6 +486,7 @@ class UserController extends AbstractController
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
 
         //dd($tab_friend);
 
@@ -495,7 +496,8 @@ class UserController extends AbstractController
             'lastUsername' => $fullname,
             'post_number' => $post_number,
             'follower_number' => $follower_number,
-            'suivi_number' => $suivi_number
+            'suivi_number' => $suivi_number,
+            'user_wait'=> $user_wait
         ]);
 
     }
@@ -559,6 +561,8 @@ class UserController extends AbstractController
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
 
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
         //dd($tab_friend);
 
         return $this->render('user/subsciption.html.twig', [
@@ -567,7 +571,8 @@ class UserController extends AbstractController
             'lastUsername' => $fullname,
             'post_number' => $post_number,
             'follower_number' => $follower_number,
-            'suivi_number' => $suivi_number
+            'suivi_number' => $suivi_number,
+            'user_wait'=> $user_wait
         ]);
 
     }
@@ -590,6 +595,7 @@ class UserController extends AbstractController
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
 
 
         $form = $this->createFormBuilder()
@@ -669,7 +675,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'flash' => $flash
+            'flash' => $flash,
+            'user_wait' => $user_wait
         ]);
 
     }
@@ -709,6 +716,8 @@ class UserController extends AbstractController
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
 
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
         //dd($tab_friend);
 
         return $this->render('user/cartes.html.twig', [
@@ -717,7 +726,8 @@ class UserController extends AbstractController
             'lastUsername' => $fullname,
             'post_number' => $post_number,
             'follower_number' => $follower_number,
-            'suivi_number' => $suivi_number
+            'suivi_number' => $suivi_number,
+            'user_wait' => $user_wait
         ]);
 
     }
@@ -872,6 +882,8 @@ class UserController extends AbstractController
         $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
         $list_category =  $activity_serv->getListeCategory($user_tab_activity);
 
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
         
         return $this->render('user/profil.html.twig', [
             'user'=>$profil,
@@ -885,7 +897,8 @@ class UserController extends AbstractController
             'position_friend'=>$positionFriend,
             'nb_friend'=>$number_friend,
             'list_famille'=>$list_famille,
-            'list_category'=>$list_category
+            'list_category'=>$list_category,
+            'user_wait'=>$user_wait
         ]);
         
     }
@@ -924,6 +937,8 @@ class UserController extends AbstractController
 
         $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
         $list_category =  $activity_serv->getListeCategory($user_tab_activity);
+
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
         
         return $this->render('user/productDetail.html.twig', [
             'user'=>$profil,
@@ -936,7 +951,8 @@ class UserController extends AbstractController
             'isFriend'=>$isFriend,
             'nb_friend'=>$number_friend,
             'list_famille'=>$list_famille,
-            'list_category'=>$list_category
+            'list_category'=>$list_category,
+            'user_wait'=>$user_wait
         ]);
         
     }
@@ -1034,6 +1050,7 @@ class UserController extends AbstractController
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
 
         //dd($tab_friend);
 
@@ -1043,7 +1060,8 @@ class UserController extends AbstractController
             'lastUsername' => $fullname,
             'post_number' => $post_number,
             'follower_number' => $follower_number,
-            'suivi_number' => $suivi_number
+            'suivi_number' => $suivi_number,
+            'user_wait'=>$user_wait
         ]);
 
     }
@@ -1088,6 +1106,8 @@ class UserController extends AbstractController
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
 
+        $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
         //dd($tab_friend);
 
         return $this->render('user/journal.html.twig', [
@@ -1097,7 +1117,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'list_journal'=>$data_journal
+            'list_journal'=>$data_journal,
+            'user_wait'=>$user_wait
         ]);
 
     }

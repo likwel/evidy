@@ -19,7 +19,9 @@
 
 		<div class="profil-label text-center">
 			<div class="mb-3">
-				<h5>{{lastUsername}}</h5>
+				<h5>{{user.firstname}}</h5>
+				<span><i>{{user.lastname}}</i></span>
+				<hr>
 				<small>@{{user.pseudo}}</small><br>
 				<a href="mailto:{{user.email}}?subject=FeedBack for E-vidy">{{user.email}}</a>
 
@@ -96,12 +98,13 @@
 			<div class="">
 				<div class="list-group list-group-flush">
 					<a href="#" class="list-group-item list-group-item-action">
-						<i class="bi bi-person-vcard me-2 text-primary"></i> {{user.firstname}} {{user.lastname}}
+						<i class="bi bi-person-vcard me-2 text-primary"></i> {{user.firstname}}
 					</a>
+					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-sliders me-2 text-warning"></i> {{user.lastname}}</a>
 					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-envelope-at me-2 text-danger"></i> {{user.email}}</a>
 					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-person-circle me-2 text-info"></i> {{user.pseudo}}</a>
 					<a href="#" class="list-group-item list-group-item-action"><i class="bi bi-telephone-inbound me-2 text-warning"></i> {{user.telephone}}</a>
-					<a class="list-group-item list-group-item-action"><i class="bi bi-people me-2 text-info"></i> {{nb_friend}}</a>
+					<a class="list-group-item list-group-item-action"><i class="bi bi-people me-2 text-primary"></i> {{nb_friend}} (amis)</a>
 					</div>
 									
 			</div>

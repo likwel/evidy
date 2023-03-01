@@ -98,10 +98,11 @@ class MainController extends AbstractController
 
             $data = array();
 
+            //dd($all_activity);
             forEach($all_activity as $activity){
-                array_push($data, ["user"=>["fullname"=>$user_serv->getFullname(intval($activity["user_id"])),"id"=>$activity["user_id"],"profil"=>$user_serv->getProfil($activity["user_id"]),"couverture"=>$user_serv->getCouverture($activity["user_id"])],"activity"=>$activity]);
+                array_push($data, ["user"=>$this->em->getRepository(User::class)->findOneById($activity["user_id"]),"activity"=>$activity]);
             }
-
+            //dd($data);
             $data_journal = array();
 
             $list_journal = $user_serv->getJournal("admin_journal");
@@ -117,6 +118,8 @@ class MainController extends AbstractController
 
             $list_famille =  $activity_serv->getListeFamille($user_tab_activity);
             $list_category =  $activity_serv->getListeCategory($user_tab_activity);
+
+            $user_wait = $user_serv->getNbFriendWait($user_tab_friend);
 
             //dd($data);
 
@@ -134,10 +137,10 @@ class MainController extends AbstractController
                 'suivi_number' => $suivi_number,
                 'list_journal'=>$data_journal,
                 'list_famille'=>$list_famille,
-                'list_category'=>$list_category
+                'list_category'=>$list_category,
+                'user_wait' => $user_wait
             ]);
         }
-        //dd($user);
         
     }
 }

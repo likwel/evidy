@@ -103,13 +103,13 @@
 									<h6 class="nav-item card-title mb-0">
 									{% set user_id = activity.user.id|json_encode() %}
 										<a href="/user/profil/{{user_id}}" style="text-decoration:none;">
-											{{activity.user.fullname}}
+											{{activity.user.firstname}}
 										</a>
 									</h6>
 									<span class="point-separateur"></span>
 									<small class="text-muted diff4humans" data-date="{{activity.activity.datetime}}"></small>
 								</div>
-								<small href="" class="mb-0 smallTitle">Annonce</small>
+								<small href="" class="mb-0 smallTitle">{{activity.user.lastname}}</small>
 							</div>
 						</div>
 						<!-- Card feed action dropdown START -->

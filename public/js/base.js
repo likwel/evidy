@@ -662,7 +662,7 @@ function openComment(id, user_id){
 		document.querySelector("#nb_comment_"+id+"_"+user_id).textContent ="("+data.length+")"
 		for(let com of data){
 			let dff= diff4humans(com.comment.datetime)
-			console.log(com.comment.content);
+			//console.log(com.comment.content);
 			let profil = com.user.profil != null? "/uploads/profil/"+com.user.profil : "/images/placeholder.jpg";
 
 			res+=`<li class="comment-item">

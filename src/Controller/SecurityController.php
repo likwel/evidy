@@ -61,10 +61,10 @@ class SecurityController extends AbstractController
                     'required' => true,
                 ])
                 ->add('lastname' ,TextType::class,[
-                    'required' => false,
+                    'required' => true,
                 ])
                 ->add('telephone' ,TextType::class,[
-                    'required' => false,
+                    'required' => true,
                 ])
                 ->add('type' ,ChoiceType::class,[
                     'placeholder' => 'Choisissez un type',
@@ -107,7 +107,12 @@ class SecurityController extends AbstractController
                 $user->setEmail(trim($data['email']));
                 $user->setPassword($data['password']);
                 $user->setFirstname($data['firstname']);
-                $user->setLastname($data['lastname']);
+                if($data['lastname'] == ""){
+                    $user->setLastname("");
+                }else{
+                    $user->setLastname($data['lastname']);
+                }
+                
                 $user->setType($data['type']);
                 $user->setTelephone($data['telephone']);
 
