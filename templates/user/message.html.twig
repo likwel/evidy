@@ -33,7 +33,7 @@
 						<div class="inbox_chat">
 							{% for user in user_list %}
 								{% if user.id != app.user.id %}
-									<div class="chat_list" onclick="clickOneMessage({{user.id}},'{{user.firstname}} {{user.lastname}}','{{user.pseudo}}')">
+									<div class="chat_list" onclick="clickOneMessage({{user.id}},'{{user.firstname}}','{{user.lastname}}')">
 										<div class="chat_people">
 											<div class="chat_img">
 												{% if user.profil %}
@@ -164,7 +164,7 @@
 				function clickOneMessage(user_id, fullname, pseudo) { // document.querySelector("#message_user_id").value = user_id
 				document.querySelector("#message_user_id").setAttribute("data-userId", user_id)
 				document.querySelector("#message_fullname").textContent = fullname
-				document.querySelector("#message_pseudo").textContent = "@" + pseudo
+				document.querySelector("#message_pseudo").textContent = pseudo
 				document.querySelector("#discussion").innerHTML = "";
 
 				}

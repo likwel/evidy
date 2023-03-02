@@ -74,4 +74,38 @@
 		</div>
 
 	</div>
+
+	<!-- Card News START -->
+		<div class="col-sm-6 col-lg-12 mt-3">
+			<div
+				class="card">
+				<!-- Card header START -->
+				<div class="card-header pb-0 border-0 bg-white">
+					<h5 class="card-title mb-0">#HASTAG</h5>
+				</div>
+				<!-- Card header END -->
+				<!-- Card body START -->
+				<div
+					class="card-body" id="journal">
+					<!-- News item -->
+					{% if list_journal %}
+						{% for journal in list_journal %}
+							<div class="mb-3">
+							<h6 class="mb-0">
+								<a href="/user/profil/{{journal.user.id}}">{{journal.user.firstname}} {{journal.jour.content}}</a>
+							</h6>
+							<small class="journal_right" data-journal="{{journal.jour.datetime}}">2hr</small>
+						</div>
+						{% endfor %}
+					{% endif %}
+					
+					<!-- Load more comments -->
+					<a href="/user/journal" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center">
+						Voir tous les journaux
+					</a>
+				</div>
+				<!-- Card body END -->
+			</div>
+		</div>
+		<!-- Card News END -->
 </div>

@@ -280,6 +280,20 @@ class UserService extends PDOService{
 
     }
 
+    public function getMoreSpons($tab){
+        
+        $conn = $this -> getConnection();
+
+        $stm = $conn->prepare("SELECT * FROM $tab order by id DESC");
+
+        $stm->execute();
+
+        $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
     public function getFollowerNumber($table){
 
         $conn = $this -> getConnection();

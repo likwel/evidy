@@ -75,30 +75,36 @@
 														<div class="d-flex px-2 py-1">
 															
 															<div class="d-flex flex-column justify-content-center">
-																<h6 class="mb-0 text-sm"><a href="/user/profil/{{spons.user_id}}"> Voir le fournisseur</a></h6>
+																<h6 class="mb-0 text-sm"><a href="/user/profil/{{spons.article.user_id}}"> Voir le fournisseur</a></h6>
 															</div>
 														</div>
 													</td>
 													<td>
 														<div class="avatar-group mt-2">
-																{{spons.product}} <i>{{spons.description}}</i>
+																<a href="/user/profil/{{spons.article.user_id}}/detail/{{spons.article.id}}">{{spons.article.product}}</a><br> <i>{% if spons.article.description|length > 80 %}{{spons.article.description|slice(0, 80)}}...{% else %}{{spons.article.description}}{% endif %}</i>
 															
 														</div>
 													</td>
 													<td class="align-middle text-center text-sm">
 														<span class="text-xs font-weight-bold">
-															{{spons.price}} {{spons.devise|slice(0,2)}}
+															{{spons.article.price}} {{spons.article.devise|slice(0,2)}}
 														</span>
 													</td>
 													<td class="align-middle">
 														<span class="text-xs font-weight-bold">
-															{{spons.quantity}}
+															{{spons.article.quantity}}
 														</span>
 													</td>
 													<td class="align-middle">
-														<span class="btn btn-warning small" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" onclick="terminer({{spons.id}},{{spons.user_id}})">
+														{% if spons.spons.is_active == 1 %}
+														<span class="btn btn-outline-primary small" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;" onclick="terminer({{spons.spons.id}},{{spons.spons.user_id}})">
 															Terminer
 														</span>
+														{% else %}
+															<span class="btn btn-warning small text-primary" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+															Terminé
+														</span>
+														{% endif %}
 													</td>
                                                     
 												</tr>

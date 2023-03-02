@@ -129,7 +129,7 @@ class AdminController extends AbstractController
 
             $tab_users = array();
 
-            $all_sponsored = $user_serv->getAllSponsored("admin_sponsored");
+            $all_sponsored = $user_serv->getMoreSpons("admin_sponsored");
 
             $tab_sponsors = array();
 
@@ -142,7 +142,7 @@ class AdminController extends AbstractController
 
                 foreach ($all_post_activity as $post_activity) {
                     if($post_activity["id"]==$sponsor["post_id"]){
-                        array_push($tab_sponsors,$activity_serv->getOneBy($table_user_post, $sponsor["post_id"]));
+                        array_push($tab_sponsors,["spons"=>$sponsor,"article"=>$activity_serv->getOneBy($table_user_post, $sponsor["post_id"])]);
                     }
                 }
 
