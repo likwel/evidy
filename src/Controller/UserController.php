@@ -384,9 +384,12 @@ class UserController extends AbstractController
                 array_push($photos_name,$image_name);
 
             }
+            $photos_name = json_encode($photos_name);
+        }else{
+            $photos_name = null;
         }
 
-        $vente_serv->publierActivity($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, json_encode($photos_name), $isDelivery, $isWait, $type,$famille, $category);
+        $vente_serv->publierActivity($table_vente, $product, $description, $devise, $location, $user_id, $price, $quantity, $photos_name, $isDelivery, $isWait, $type,$famille, $category);
         //return new RedirectResponse($this->urlGenerator->generate('app_main'));
         $user_serv = new UserService();
 
@@ -1079,24 +1082,40 @@ class UserController extends AbstractController
 
         $user_serv = new UserService();
 
-        $act_serv = new VenteService();
+        $activity_serv =  new VenteService();
 
         $tab_spons = "admin_sponsored";
 
-        $spons_list = $act_serv->getAllSponsors($tab_spons);
+        $spons_list = $user_serv->getAllSponsored($tab_spons);
 
         $friend_list = $user_serv ->getAllFriends($user_table_friend);
 
-        $tab_spons =array();
+        /*$tab_spons =array();
 
         foreach($spons_list as $spons){
             array_push($tab_spons, ["sponsor"=>$spons,"user"=>$this->em->getRepository(User::class)->findOneById($spons["user_id"])]);
             
+        }*/
+
+        $tab_sponsors = array();
+
+        foreach ($spons_list as $sponsor) {
+            //$post_user = $this->em->getRepository(User::class)->findOneBy($sponsor["user_id"]);
+
+            $table_user_post = "tb_activity_".$sponsor["user_id"];
+
+            $all_post_activity = $activity_serv->getAll($table_user_post);
+
+            foreach ($all_post_activity as $post_activity) {
+                if($post_activity["id"]==$sponsor["post_id"]){
+                    array_push($tab_sponsors,$activity_serv->getOneBy($table_user_post, $sponsor["post_id"]));
+                }
+            }
+
         }
 
-        //dd($tab_spons);
+        //dd($tab_sponsors);
 
-        $activity_serv =  new VenteService();
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
@@ -1106,7 +1125,7 @@ class UserController extends AbstractController
 
         return $this->render('user/all_sponsors.html.twig', [
             'user'=>$user,
-            'spons_list'=>$tab_spons,
+            'spons_list'=>$tab_sponsors,
             'lastUsername' => $fullname,
             'post_number' => $post_number,
             'follower_number' => $follower_number,

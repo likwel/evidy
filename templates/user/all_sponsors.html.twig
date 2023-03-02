@@ -1,4 +1,4 @@
-use App\Service\VenteService;
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Hello UserController!
@@ -24,7 +24,7 @@ use App\Service\VenteService;
 						</li>
 					</ul>
 
-					{% if user_list %}
+					{% if spons_list %}
 
 					<div class="row" id="all_users" style="overflow-y: auto;">
 						<div class="col-md-12">
@@ -32,7 +32,7 @@ use App\Service\VenteService;
 								<table class="table manage-candidates-top mb-0">
 									<thead>
 										<tr>
-											<th>Nom et déscription</th>
+											<th>Articles</th>
 											<th class="text-center">Prix</th>
 											<th class="action text-right">Quantité</th>
 											<th class="action text-right">Action</th>
@@ -42,29 +42,26 @@ use App\Service\VenteService;
 										<!--boucle for-->
 
 										{% for spons in spons_list %}
-
-											{% if friend.user.id != app.user.id %}
 											<tr class="candidates-list">
 												<td class="title">
-													<div class="thumb">
-														{% if friend.user.profil %}
-															<img class="" src="/uploads/profil/{{friend.user.profil}}" alt="">
-														{% else %}
-															<img class="" src="/images/placeholder.jpg" alt="">
+													{% if spons.photos %}
+															{% set images = spons.photos|split(',') %}
+															{% set name_img = images[0]|replace({'"': "", '[': "", ']': ""}) %}
+																<img src="/uploads/post/{{name_img}}" class="card-img me-3" style = "max-width:200px;" alt="..." onclick="expandImg(this)">
+														
 														{% endif %}
-													</div>
 													<div class="candidate-list-details">
 														<div class="candidate-list-info">
 															<div class="candidate-list-title">
 																<h5 class="mb-0">
-																	<a href="/user/profil/{{friend.user.id}}">{{friend.user.firstname}}
+																	<a href="/user/profil/{{spons.user_id}}/detail/{{spons.id}}">{{spons.product}}
 																		</a>
 																</h5>
 															</div>
 															<div class="candidate-list-option">
 																<ul class="list-unstyled">
 																	<li>
-																		<i class="fas fa-filter pr-1 me-2"></i>{{friend.user.lastname}}</li>
+																		<i class="fas fa-filter pr-1 me-2"></i>{% if spons.description|length > 50 %}{{spons.description|slice(0,50)}}...{% else %}{{spons.description}}{% endif %}</li>
 
 																</ul>
 															</div>
@@ -72,15 +69,15 @@ use App\Service\VenteService;
 													</div>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<span class="badge text-bg-success order-1">80000 Ar</span>
+													<span class="badge text-bg-success order-1">{{spons.price}} {{spons.devise|slice(0, 2)}}</span>
 												</td>
 												<td class="candidate-list-favourite-time text-center">
-													<span class="badge text-bg-success order-1">8</span>
+													<span class="badge text-bg-success order-1">{{spons.quantity}}</span>
 												</td>
 												<td>
 													<ul class="list-unstyled mb-0 d-flex justify-content-end">
 														<li>
-															<a href="/user/profil/{{friend.user.id}}" class="btn btn-outline-primary">
+															<a href="/user/profil/{{spons.user_id}}" class="btn btn-outline-primary">
 																<i class="bi bi-cart2"></i> Ajouter au panier
 															</a>
 														</li>
@@ -88,7 +85,6 @@ use App\Service\VenteService;
 													</ul>
 												</td>
 											</tr>
-											{% endif %}
 										{% endfor %}
 
 									</tbody>

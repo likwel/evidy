@@ -171,14 +171,17 @@
 				<div class="card-body">
 					<b>{% if activity.activity.type == "Vente" %} A vendre{% else %}Cherche à achêter{% endif %}<br>{{activity.activity.product}}</b>
 					<p>{{activity.activity.description}}</p>
-					<p>Récuper à {{activity.activity.localisation}}</p>
+					{% if activity.activity.localisation %}
+						<p>Récuper à {{activity.activity.localisation}}</p>
+					{% endif %}
+					
 					{% if activity.activity.isDelivery == 1%}
 						<span class="badge text-bg-warning">Possible à livrer</span><br>
 					{% endif %}
 					<!-- Card img -->
 					<small class="text-muted">
-						Prix : 
-						<span class="badge rounded-pill text-bg-success">{{activity.activity.price}} {{activity.activity.devise}}</span>
+						
+						<span class="badge rounded-pill text-bg-success">Prix : {{activity.activity.price}} {{activity.activity.devise}}</span>
 						<strike>
 						{% if activity.activity.notPrice != 0 %}
 							{{activity.activity.notPrice}} {{activity.activity.devise}}
@@ -205,7 +208,7 @@
 
 					<!-- Image slider -->
 
-					{% if activity.activity.photos|length > 2 %}
+					{% if activity.activity.photos %}
 
 						{% set images = activity.activity.photos|split(',') %}
 
