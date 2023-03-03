@@ -12,6 +12,7 @@
 	{% endif %}
 	<!-- Start div post creation ****-->
 	<div class="card card-body">
+		<input type="hidden" value="{{app.user.id}}" id="app_user_id">
 		<div
 			class="d-flex mb-3">
 			<!-- Avatar -->
@@ -265,7 +266,7 @@
 							<span class="nav-link">
 								<i class="bi bi-hand-thumbs-up-fill pe-1"></i>J'aime <span class="active_reaction" data-rea-us="{{activity.activity.user_id}}" data-rea-actid="{{activity.activity.id}}" id="nb_comment_{{activity.activity.id}}_{{activity.activity.user_id}}">(0)</span></span>
 						</li>
-						<li class="nav-item" data-bs-toggle="collapse" onclick="openComment({{activity.activity.id}},{{activity.activity.user_id}})" href="#collapseCommentaire_{{activity.activity.id}}_{{activity.activity.user_id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
+						<li class="nav-item" data-bs-toggle="collapse" href="#collapseCommentaire_{{activity.activity.id}}_{{activity.activity.user_id}}" role="button" aria-expanded="false" aria-controls="collapseCommentaire">
 							<a class="nav-link" href="#!">
 								<i class="bi bi-chat-fill pe-1"></i>Commentaires <span class="active_commentaire" data-com-us="{{activity.activity.user_id}}" data-com-actid="{{activity.activity.id}}" id="nb_comment_{{activity.activity.id}}_{{activity.activity.user_id}}">(0)</span></a>
 						</li>

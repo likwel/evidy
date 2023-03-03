@@ -86,7 +86,7 @@
 				<div
 					class="card-body" id="journal">
 					<!-- News item -->
-					{% if list_journal %}
+					{% if list_journal|length > 0 %}
 						{% for journal in list_journal %}
 							<div class="mb-3">
 							<h6 class="mb-0">

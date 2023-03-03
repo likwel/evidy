@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	{# <form method="post"> #}
+        
+		<section class="vh-100">
+			<div class="container-fluid h-custom">
+				<div class="row d-flex justify-content-center align-items-center h-100">
+					<div class="col-md-9 col-lg-6 col-xl-5">
+						{# <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid" alt="Sample image"> #}
+						<img src="/images/hero.png" class="img-fluid" alt="Sample image">
+					</div>
+					<div
+						class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                        <h1 class="">Installation</h1><hr>
+						<!-- Email input -->
+
+						<div class="form-floating mb-3 sm">
+							
+							<input type="text" id="inputEmail" class="form-control form-control" name="email" value="MySQL" disabled/>
+							<label class="form-label" for="inputEmail">Base de donnée</label>
+						</div>
+
+						<!-- Password input -->
+						<div class="form-floating mb-3 sm">
+							
+							<input type="text" id="db_name" class="form-control" placeholder="Nom de base de données" name="password" value="evidy" required/>
+							<label class="form-label" for="inputPassword">Nom de la base MySQL</label>
+						</div>
+
+						<!-- Password input -->
+						<div class="form-floating mb-3 sm">
+							
+							<input type="text" id="user_name" class="form-control form-control" placeholder="Utilisateur" name="password" required/>
+							<label class="form-label" for="inputPassword">Utilisateur MySQL</label>
+						</div>
+						<!-- Password input -->
+						<div class="form-floating mb-3 sm">
+							
+							<input type="password" id="password_db" class="form-control form-control" placeholder="Mot de passe" name="password" required/>
+							<label class="form-label" for="inputPassword">Mot de passe MySQL</label>
+						</div>
+
+						<div class="alert alert-success" id="flag" style="display:none;"></div>
+
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						<div class="text-center text-lg-start mt-4 pt-2">
+						{# <button type="button" class="btn btn-outline-success btn me-3" style="padding-left: 2.5rem; padding-right: 2.5rem;">Tester la connexion</button> #}
+							<button type="button" onclick="run_installation()" class="btn btn-outline-primary btn w-100" style="padding-left: 2.5rem; padding-right: 2.5rem;">Installer</button>
+							<p class="small fw-bold mt-2 pt-1 mb-0">Ce parametre est-il déjà installé?
+								<a href="{{path("app_login")}}" class="link-danger"> Login</a>
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+		<script>
+
+		function run_installation(){
+			let db = document.querySelector("#db_name").value
+			let data = {
+				db : document.querySelector("#db_name").value,
+				username : document.querySelector("#user_name").value,
+				pwd : document.querySelector("#password_db").value
+
+			}
+			fetch("/install/run", {
+				method: "POST",
+				headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+				},
+				body : JSON.stringify(data)
+				})
+			.then(resp=>resp.json())
+			.then(message=>{
+				if(message.class == "PDOException"){
+					showAlert('Erreur',"Accès de base de données incorrect!", 'danger');
+				}else{
+					document.querySelector("#flag").style.display ="block";
+					document.querySelector("#flag").innerHTML = message+", vous pouvez connecter si vous avez un compte. <a href='{{path("app_login")}}'>Cliquer ici</a>";
+				}
+				
+			})
+		}
+		
+		</script>
+
+	{# </form> #}
+{% endblock %}

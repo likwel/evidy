@@ -351,6 +351,8 @@ function previewFile(file) {
 				item.textContent ="("+data.length+")"
 				//console.log("id : "+data.length)
 			})
+
+			openComment(id, user_id);
 		
 			//console.log("id : "+id)
 		})
@@ -664,6 +666,21 @@ function openComment(id, user_id){
 			let dff= diff4humans(com.comment.datetime)
 			//console.log(com.comment.content);
 			let profil = com.user.profil != null? "/uploads/profil/"+com.user.profil : "/images/placeholder.jpg";
+			let app_user = document.querySelector("#app_user_id").value
+
+			let btn_action = `<ul class="nav nav-divider py-1 small">
+								<li class="nav-item">
+									<span class="nav-link text-primary">
+										Modifier</span>
+								</li>
+								<li class="nav-item">
+									<span class="nav-link text-danger" onclick="deleteComment(${user_id}, ${com.comment.id})">
+										Supprimer</span>
+								</li>
+							</ul>`;
+			let action =  app_user == com.comment.user_id ? btn_action : "";
+
+			//console.log(app_user)
 
 			res+=`<li class="comment-item">
 					<div
@@ -687,16 +704,7 @@ function openComment(id, user_id){
 								<p class="small mb-0">${com.comment.content}</p>
 							</div>
 							<!-- Comment react -->
-							<ul class="nav nav-divider py-1 small">
-								<li class="nav-item">
-									<a class="nav-link" href="#!">
-										Modifier</a>
-								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="#!">
-										Supprimer</a>
-								</li>
-							</ul>
+							${action}
 						</div>
 					</div>
 				</li>`
@@ -705,4 +713,17 @@ function openComment(id, user_id){
 		document.querySelector("#content_comment_"+id+"_"+user_id).innerHTML = res;
 		
 	})
+}
+
+function deleteComment(user_id, id){
+	fetch("/user/delete_comment/"+user_id+"/"+id)
+		.then(resp=>resp.json())
+		.then(message=>{
+			if(message=="Success"){
+				showAlert('Succès',"Commentaire bien supprimé avec succès!", 'success');
+				//document.querySelector("#comment_"+id+"_"+user_id).value =""
+			}else{
+				showAlert('Erreur',"Une erreur se produite!", 'danger');
+			}
+		})
 }

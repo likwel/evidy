@@ -9,6 +9,97 @@ use App\Service\PDOService;
 
 class UserService extends PDOService{
 
+    
+    public function createTableUser($table, $host, $db, $username, $password)
+    {
+        $sql ="CREATE TABLE ".$table." (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `firstname` varchar(255) NOT NULL,
+            `lastname` varchar(255) NOT NULL,
+            `email` varchar(180) NOT NULL,
+            `telephone` varchar(50) NOT NULL,
+            `pseudo` varchar(255) NOT NULL,
+            `roles` longtext NOT NULL COMMENT '(DC2Type:json)',
+            `password` varchar(255) NOT NULL,
+            `profil` varchar(255) DEFAULT NULL,
+            `couverture` varchar(255) DEFAULT NULL,
+            `type` varchar(50) NOT NULL,
+            `is_verified` tinyint(1) NOT NULL DEFAULT 0,
+            `tablemessage` varchar(255) DEFAULT NULL,
+            `tablenotification` varchar(255) DEFAULT NULL,
+            `tablecarte` varchar(255) DEFAULT NULL,
+            `tableactivity` varchar(255) DEFAULT NULL,
+            `tablefriends` varchar(255) DEFAULT NULL,
+            `tablecommentaire` varchar(255) DEFAULT NULL,
+            `tablereaction` varchar(255) DEFAULT NULL,
+            `tablepartage` varchar(255) DEFAULT NULL,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            PRIMARY KEY(id),
+            UNIQUE(email),
+            UNIQUE(pseudo)
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+        
+            try {
+                $conn = new PDO("mysql:host=$host;dbname=$db", $username, $password);
+                // set the PDO error mode to exception
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                //echo "Connected successfully";
+                $conn->exec($sql);
+            } catch(PDOException $e) {
+                echo "Connection failed: " . $e->getMessage();
+            }
+
+    }
+
+    public function createSponsor($table, $host, $db, $username, $password)
+    {
+        $sql ="CREATE TABLE ".$table." (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `user_id` int(11) NOT NULL,
+            `post_id` int(11) NOT NULL,
+            `lasted` float NOT NULL,
+            `is_active` tinyint(1) NOT NULL DEFAULT 1,
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+             PRIMARY KEY(id),
+             FOREIGN KEY(user_id) REFERENCES User(id)
+             ON DELETE CASCADE
+             ON UPDATE CASCADE
+          ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+
+          try {
+            $conn = new PDO("mysql:host=$host;dbname=$db", $username, $password);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //echo "Connected successfully";
+            $conn->exec($sql);
+        } catch(PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+        }
+    }
+
+    public function createJournal($table, $host, $db, $username, $password)
+    {
+        $sql ="CREATE TABLE ".$table." (
+                `id` int(11) NOT NULL AUTO_INCREMENT,
+                `user_id` int(11) NOT NULL,
+                `content` text NOT NULL,
+                `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+                PRIMARY KEY(id),
+                FOREIGN KEY(user_id) REFERENCES User(id)
+                ON DELETE CASCADE
+                ON UPDATE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+            try {
+                $conn = new PDO("mysql:host=$host;dbname=$db", $username, $password);
+                // set the PDO error mode to exception
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                //echo "Connected successfully";
+                $conn->exec($sql);
+            } catch(PDOException $e) {
+                echo "Connection failed: " . $e->getMessage();
+            }
+    }
+
     public function createTablemessage($table){
         $rqt = "CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +108,10 @@ class UserService extends PDOService{
             `isForMe` tinyint(1) NOT NULL DEFAULT 0,
             `is_read` tinyint(1) NOT NULL DEFAULT 0,
             `is_show` tinyint(1) NOT NULL DEFAULT 0,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -33,7 +127,10 @@ class UserService extends PDOService{
             `type` varchar(100) NOT NULL,
             `is_read` tinyint(1) NOT NULL DEFAULT 0,
             `is_show` tinyint(1) NOT NULL DEFAULT 0,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(sender_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         
         $conn = $this->getConnection();
@@ -48,7 +145,10 @@ class UserService extends PDOService{
             `user_id` int(11) NOT NULL,
             `quantity` float NOT NULL,
             `status` tinyint(1) NOT NULL DEFAULT 0,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
         $conn = $this->getConnection();
         $conn->exec($rqt);
@@ -62,7 +162,10 @@ class UserService extends PDOService{
             `user_id` int(11) NOT NULL,
             `activity_id` int(11) NOT NULL,
             `content` text NOT NULL,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -76,7 +179,10 @@ class UserService extends PDOService{
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
             `user_id` int(11) NOT NULL,
             `activity_id` int(11) NOT NULL,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -90,7 +196,10 @@ class UserService extends PDOService{
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
             `user_id` int(11) NOT NULL,
             `activity_id` int(11) NOT NULL,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -117,7 +226,10 @@ class UserService extends PDOService{
             `category` varchar(25) NOT NULL,
             `isDelivery` tinyint(1) NOT NULL DEFAULT 0,
             `status` tinyint(1) NOT NULL DEFAULT 0,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -129,10 +241,13 @@ class UserService extends PDOService{
 
         $rqt ="CREATE TABLE ".$table." (
             `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-            `user_id` varchar(255) NOT NULL,
+            `user_id` int(11) NOT NULL,
             `is_follower` tinyint(1) NOT NULL DEFAULT 0,
             `is_wait` tinyint(1) NOT NULL DEFAULT 0,
-            `datetime` datetime NOT NULL DEFAULT current_timestamp()
+            `datetime` datetime NOT NULL DEFAULT current_timestamp(),
+            FOREIGN KEY(user_id) REFERENCES user(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
           ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
         $conn = $this->getConnection();
@@ -582,6 +697,40 @@ class UserService extends PDOService{
 
         return $result["NB"];
 
+    }
+
+    public function deleteComment($table, $id)
+    {
+        $conn = $this -> getConnection();
+        $sql = "DELETE FROM $table WHERE id=?";
+        $stmt= $conn->prepare($sql);
+        $stmt->execute([$id]);
+    }
+
+    public function isInstalled($host, $db, $username, $password){
+    
+        try {
+            $conn = new PDO("mysql:host=$host;dbname=$db", $username, $password);
+            // set the PDO error mode to exception
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            //echo "Connected successfully";
+
+            $query = "SHOW TABLES FROM $db like '%user%'";
+
+            $sql = $conn->query($query);
+
+            $resultat = $sql->rowCount();
+    
+            if($resultat>0){
+                return true;
+            }else {
+                return false;
+            }
+           
+        } catch(PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+        }
+       
     }
 
 

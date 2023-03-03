@@ -493,6 +493,16 @@ class UserController extends AbstractController
 
         //dd($tab_friend);
 
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+        
+        if(count($list_journal) > 0){
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+        }
+
         return $this->render('user/friends.html.twig', [
             'user'=>$user,
             'friends'=>$tab_friend,
@@ -500,7 +510,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'user_wait'=> $user_wait
+            'user_wait'=> $user_wait,
+            'list_journal' => $data_journal
         ]);
 
     }
@@ -568,6 +579,16 @@ class UserController extends AbstractController
 
         //dd($tab_friend);
 
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+        
+        if(count($list_journal) > 0){
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+        }
+
         return $this->render('user/subsciption.html.twig', [
             'user'=>$user,
             'friends'=>$tab_friend,
@@ -575,7 +596,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'user_wait'=> $user_wait
+            'user_wait'=> $user_wait,
+            'list_journal' => $data_journal
         ]);
 
     }
@@ -599,6 +621,16 @@ class UserController extends AbstractController
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
         $suivi_number = $user_serv->getSuiviNumber($user_table_friend);
         $user_wait = $user_serv->getNbFriendWait($user_table_friend);
+
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+        
+        if(count($list_journal) > 0){
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+        }
 
 
         $form = $this->createFormBuilder()
@@ -679,7 +711,8 @@ class UserController extends AbstractController
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
             'flash' => $flash,
-            'user_wait' => $user_wait
+            'user_wait' => $user_wait,
+            'list_journal' => $data_journal
         ]);
 
     }
@@ -714,6 +747,16 @@ class UserController extends AbstractController
             array_push($tab_carte,$carte);
         }
 
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+        
+        if(count($list_journal) > 0){
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+        }
+
         //dd($tab_carte );
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
@@ -730,7 +773,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'user_wait' => $user_wait
+            'user_wait' => $user_wait,
+            'list_journal'=> $data_journal
         ]);
 
     }
@@ -1049,6 +1093,16 @@ class UserController extends AbstractController
 
         //dd($tab_user);
 
+        $data_journal = array();
+
+        $list_journal = $user_serv->getJournal("admin_journal");
+        
+        if(count($list_journal) > 0){
+            forEach($list_journal as $journal){
+                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            }
+        }
+
         $activity_serv =  new VenteService();
         $post_number =  $activity_serv->getPostNumber($user_tab_activity);
         $follower_number = $user_serv->getFollowerNumber($user_table_friend);
@@ -1064,7 +1118,8 @@ class UserController extends AbstractController
             'post_number' => $post_number,
             'follower_number' => $follower_number,
             'suivi_number' => $suivi_number,
-            'user_wait'=>$user_wait
+            'user_wait'=>$user_wait,
+            'list_journal'=>$data_journal
         ]);
 
     }
@@ -1289,8 +1344,29 @@ class UserController extends AbstractController
         $data_comment = array();
 
         foreach ($commentaire as $com) {
-            array_push($data_comment,["comment"=>$com,"user"=> $this->em->getRepository(User::class)->findOneById($com["user_id"])]);
+            array_push($data_comment,["comment"=>$com,"user"=> $user_serv->getUserById($com["user_id"])]);
         }
+
+        /*$response = new StreamedResponse();
+
+        if(count($data_comment)>0){
+            $response->setCallback(function () use (&$data_comment) {
+
+                echo "data:" . json_encode($data_comment) .  "\n\n";
+                ob_end_flush();
+                flush();
+            });
+            
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->headers->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
+            $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, PATCH, OPTIONS');
+            $response->headers->set('Cache-Control', 'no-cache');
+            $response->headers->set('Content-Type', 'text/event-stream');
+            return $response;
+            //return  $this->json($all_message);
+        }else{
+            return $this->json("Aucun message");
+        }*/
 
         return $this->json($data_comment);
     }
@@ -1323,6 +1399,19 @@ class UserController extends AbstractController
         $my_reaction = $user_serv->getMyReaction($table, $id, $user->getId());
 
         return $this->json($my_reaction);
+    }
+    #[Route('/user/delete_comment/{user_id}/{id}', name: 'app_delete_comment')]
+    public function deleteComment($user_id, $id): Response
+    {
+        $user = $this->getUser();
+
+        $user_serv = new UserService();
+
+        $table_comment = "tb_commentaire_".$user_id;
+
+        $user_serv->deleteComment($table_comment, $id);
+
+        return $this->json("Success");
     }
 
 }

@@ -24,6 +24,12 @@ class MainController extends AbstractController
     #[Route('/', name: 'app_main')]
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
+        $user_serv = new UserService();
+
+        if($user_serv->isInstalled("localhost", "evidy", "root", "") == false){
+            return new RedirectResponse($this->urlGenerator->generate('app_install'));
+        }else{
+
         $user = $this->getUser();
 
         //$lastUsername = $authenticationUtils->getLastUsername();
@@ -32,8 +38,6 @@ class MainController extends AbstractController
         $user_list = $this->em->getRepository(User::class)->findByUser();
 
         $activity_serv = new VenteService();
-
-        //dd($user_list);
 
         if($user == null){
             return new RedirectResponse($this->urlGenerator->generate('app_login'));
@@ -46,8 +50,6 @@ class MainController extends AbstractController
             $user_tab_friend = $user->getTablefriends();
 
             $all_activity = $activity_serv->getAll($user_tab_activity);
-
-            $user_serv = new UserService();
 
             $all_friends = $user_serv->getAllFriends($user_tab_friend);
 
@@ -106,11 +108,13 @@ class MainController extends AbstractController
             $data_journal = array();
 
             $list_journal = $user_serv->getJournal("admin_journal");
-
-            forEach($list_journal as $journal){
-                array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+            
+            if(count($list_journal) > 0){
+                forEach($list_journal as $journal){
+                    array_push($data_journal, ["jour"=>$journal, "user"=>$this->em->getRepository(User::class)->findOneById($journal["user_id"])]);
+                }
             }
-           
+            //dd($data_journal);
 
             $post_number =  $activity_serv->getPostNumber($user_tab_activity);
             $follower_number = $user_serv->getFollowerNumber($user_tab_friend);
@@ -143,4 +147,5 @@ class MainController extends AbstractController
         }
         
     }
+}
 }

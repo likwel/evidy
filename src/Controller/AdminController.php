@@ -8,14 +8,17 @@ use App\Service\UserService;
 use App\Service\CarteService;
 use App\Service\VenteService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminController extends AbstractController
 {
     private $em;
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, private UrlGeneratorInterface $urlGenerator)
     {
         $this->em = $em;
     }
@@ -191,4 +194,58 @@ class AdminController extends AbstractController
         
         return $this->json("Success");
     }
+
+    #[Route('/install', name: 'app_install')]
+    public function install(): Response
+    {
+        
+        $user_serv = new UserService();
+
+        if($user_serv->isInstalled("localhost", "evidy", "root", "") == true){
+            return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        }else{
+
+            return $this->render('admin/installation.html.twig', [
+                'controller_name' => 'AdminController',
+            ]);
+        }
+        
+        //return $this->json("Success");
+    }
+
+    #[Route('/install/run', name: 'app_run_install')]
+    public function run_install(Request $request): Response
+    {
+        $user_serv = new UserService();
+
+        $requestContent = json_decode($request->getContent(), true);
+
+        $db = $requestContent["db"];
+        $username = $requestContent["username"];
+        $pwd = $requestContent["pwd"];
+
+        $isInstalled = $user_serv ->isInstalled("localhost", $db, $username, $pwd);
+
+        $message = "";
+
+        if($isInstalled == false){
+
+            $user_serv->createTableUser("user","localhost",$db, $username, $pwd);
+            $user_serv->createSponsor("admin_sponsored","localhost",$db, $username, $pwd);
+            $user_serv->createJournal("admin_journal","localhost",$db, $username, $pwd);
+
+            return $this->json("Installation reussi avec succès");//"Votre application est déjà installé"
+
+        }else {
+            
+
+            return $this->json("Votre application est déjà installée!");//"Installation reussi avec succès"
+
+        }
+
+        
+        
+    }
+
+    
 }
